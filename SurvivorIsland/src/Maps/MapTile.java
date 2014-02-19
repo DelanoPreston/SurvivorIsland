@@ -2,7 +2,6 @@ package Maps;
 
 public class MapTile {
 	TileType type;
-	String imagePath = "";
 	Covering covering;
 	
 	public MapTile(){
@@ -10,32 +9,38 @@ public class MapTile {
 	}
 	
 	public MapTile(char inType){
-		type = getType(inType);
+		setType(inType);
 		if(inType == 'j')
 			covering = Covering.JUNGLE;
 		else if(inType == 'f')
 			covering = Covering.FOREST;
 		else
 			covering = Covering.NONE;
+		
+		
 	}
 	
-	public TileType getType(char inchar){
+	public TileType getType(){
+		return type;
+	}
+	
+	public void setType(char inchar){
 		switch(inchar){
 		case 's':
-			imagePath = "";
-			return TileType.SEA;
+			type = TileType.SEA;
+			break;
 		case 'b':
-			imagePath = "";
-			return TileType.BEACH;
+			type = TileType.BEACH;
+			break;
 		case 'f':
-			imagePath = "";
-			return TileType.FOREST;
+			type = TileType.FOREST;
+			break;
 		case 'j':
-			imagePath = "";
-			return TileType.JUNGLE;
+			type = TileType.JUNGLE;
+			break;
 		default:
-			imagePath = "";
-			return TileType.UNKNOWN;
+			type = TileType.UNKNOWN;
+			break;
 		}
 	}
 }

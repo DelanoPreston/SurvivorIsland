@@ -91,7 +91,8 @@ public class GamePanel extends JPanel{
 		super.paintComponent(g);
 //		Graphics2D g2D = (Graphics2D) g;
 		
-		g.drawImage(ContentBank.beach, 0, 0, null);
+		map.paintComponent(g);
+//		g.drawImage(ContentBank.beach, 0, 0, null);
 		
 	}
 	
