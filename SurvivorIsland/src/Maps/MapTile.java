@@ -3,6 +3,7 @@ package Maps;
 public class MapTile {
 	TileType type;
 	String imagePath = "";
+	Covering covering;
 	
 	public MapTile(){
 		
@@ -10,6 +11,12 @@ public class MapTile {
 	
 	public MapTile(char inType){
 		type = getType(inType);
+		if(inType == 'j')
+			covering = Covering.JUNGLE;
+		else if(inType == 'f')
+			covering = Covering.FOREST;
+		else
+			covering = Covering.NONE;
 	}
 	
 	public TileType getType(char inchar){
