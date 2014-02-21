@@ -1,5 +1,10 @@
 package Items;
 
 public enum ToolType {
-	AXE, SHOVEL, PICKAXE, SWORD, KNIFE, GUN, BOW, CROSSBOW, STAFF, HOE, RAKE, BUCKET;
+	NONE, AXE, SHOVEL, PICKAXE, SWORD, KNIFE, GUN, BOW, CROSSBOW, STAFF, HOE, RAKE, BUCKET;
+	
+	@Override
+	public String toString(){
+		return this.toString();
+	}
 }

@@ -6,7 +6,28 @@ public class Animal extends Entity{
 	int health;
 	MovementType movementType;
 	
-	public Animal(String inName, double[] inLocation, MovementType inMoveType, int inHealth, int inWeight, boolean inSolid) {
+	/**
+	 * 
+	 * @param inName
+	 * @param inHealth
+	 * @param inWeight
+	 * @param inSolid
+	 */
+	public Animal(String inName, int inHealth, double inWeight, boolean inSolid) {
+		super(inName, inWeight, inSolid);
+		health = inHealth;
+	}
+	
+	/**
+	 * 
+	 * @param inName
+	 * @param inLocation
+	 * @param inMoveType
+	 * @param inHealth
+	 * @param inWeight
+	 * @param inSolid
+	 */
+	public Animal(String inName, double[] inLocation, MovementType inMoveType, int inHealth, double inWeight, boolean inSolid) {
 		super(inName, inLocation, inWeight, inSolid);
 		health = inHealth;
 		movementType = inMoveType;

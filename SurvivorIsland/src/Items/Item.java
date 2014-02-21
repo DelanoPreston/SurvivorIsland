@@ -3,28 +3,15 @@ package Items;
 import Main.Entity;
 
 public class Item extends Entity{
-	public int condition; 
+	public int condition;
+	public ToolType toolType;
+	public int replen;
 	
-	/**
-	 * 
-	 * @param inName
-	 * @param inWeight
-	 * @param inSolid
-	 */
-	public Item(String inName, double inWeight, boolean inSolid){
-		super(inName, inWeight, inSolid);
-	}
-	
-	/**
-	 * 
-	 * @param inName
-	 * @param inCond
-	 * @param inWeight
-	 * @param inSolid
-	 */
-	public Item(String inName, int inCond, double inWeight, boolean inSolid) {
+	public Item(String inName,double inWeight, boolean inSolid, int inCond, ToolType inToolType, int inReplen) {
 		super(inName, inWeight, inSolid);
 		condition = inCond;
+		toolType = inToolType;
+		replen = inReplen;
 	}
 	
 	/**
