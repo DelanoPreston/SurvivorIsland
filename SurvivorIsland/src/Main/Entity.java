@@ -1,12 +1,18 @@
 package Main;
 
 public class Entity {
-	String name;
-	double[] location;
-	boolean solid;
-	int weight;
+	public String name;
+	public double[] location;
+	public boolean solid;
+	public double weight;
 	
-	public Entity(String inName, double[] inLocation, int inWeight, boolean inSolid){
+	public Entity(String inName, double inWeight, boolean inSolid){
+		name = inName;
+		weight = inWeight;
+		solid = inSolid;
+	}
+	
+	public Entity(String inName, double[] inLocation, double inWeight, boolean inSolid){
 		name = inName;
 		location = inLocation;
 		weight = inWeight;
