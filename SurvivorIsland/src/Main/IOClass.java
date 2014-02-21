@@ -66,7 +66,7 @@ public class IOClass {
 		return fileStrings;
 	}
 	
-	public Boolean saveRecipes(List<Item> inItems, File savelocation){
+	public Boolean saveRecipes(List<Item> inItems, String savelocation){
 		for(int i = 0; i < inItems.size(); i++){
 			Properties recipeProps = new Properties();
 			FileOutputStream out = null;
@@ -84,7 +84,7 @@ public class IOClass {
 				File filePath = new File(path);
 				if(!filePath.exists())
 					filePath.mkdirs();
-				out = new FileOutputStream(savelocation + inItems.get(i).name + ".properties");
+				out = new FileOutputStream(new File(savelocation + inItems.get(i).name + ".properties"));
 				recipeProps.store(out, "---No Comment---");
 				out.close();
 			} catch (IOException e) {

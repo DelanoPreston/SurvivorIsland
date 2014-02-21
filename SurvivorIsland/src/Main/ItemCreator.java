@@ -80,7 +80,7 @@ public class ItemCreator {
 				
 				
 				
-				io.saveRecipes(itesmsa, new File(System.getProperty("user.dir") + "/Items"));
+				io.saveRecipes(itesmsa, System.getProperty("user.dir") + "/Items/");
 				fileName = "";
 				items.clear();
 			}else if(input.contains("new file")){
