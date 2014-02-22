@@ -1,11 +1,16 @@
 package Main;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import javax.swing.JMenuItem;
@@ -25,6 +30,9 @@ public class GamePanel extends JPanel{
 	PopupListener popupListener;
 	IOClass fileStuff;
 	Map map;
+	double translateX = 0;
+	double translateY = 0;
+	double scale = 1.0;
 //	public List<Tower> towers = new ArrayList<Tower>();
 //	public List<Creep> creeps = new ArrayList<Creep>();
 	
@@ -39,6 +47,9 @@ public class GamePanel extends JPanel{
 		
 		//adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
+		this.addMouseListener(popupListener);
+		this.addMouseMotionListener(popupListener);
+		this.addMouseWheelListener(popupListener);
 		
 		//makes the file io class, and gets the map data
 		fileStuff = new IOClass();
@@ -73,8 +84,8 @@ public class GamePanel extends JPanel{
         popup.add(menuItem);
  
         //Add listener to the text area so the popup menu can come up.
-        popupListener = new PopupListener(popup);
-        this.addMouseListener(popupListener);
+        popupListener = new PopupListener(popup, this);
+        
     }
 	
 	/**
@@ -89,9 +100,18 @@ public class GamePanel extends JPanel{
 	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-//		Graphics2D g2D = (Graphics2D) g;
 		
-		map.paintComponent(g);
+		AffineTransform at = new AffineTransform();
+		
+		at.translate(getWidth()/2, getHeight()/2);
+	    at.scale(scale, scale);
+	    at.translate(-getWidth()/2, -getHeight()/2);
+		
+	    at.translate(translateX, translateY);
+		Graphics2D g2D = (Graphics2D) g;
+		g2D.setTransform(at);
+		
+		map.paintComponent(g2D);
 //		g.drawImage(ContentBank.beach, 0, 0, null);
 		
 	}
@@ -178,18 +198,24 @@ public class GamePanel extends JPanel{
 	 * @author Preston Delano
 	 *
 	 */
-	class PopupListener extends MouseAdapter{
+	class PopupListener implements MouseListener, MouseWheelListener, MouseMotionListener{
+		GamePanel reference;
 		JPopupMenu popup;
+		private int lastOffsetX;
+		private int lastOffsetY;
 		Point2D location = null;
 		
-	    PopupListener(JPopupMenu popupMenu) {
-	        popup = popupMenu;
+	    PopupListener(JPopupMenu popupMenu, GamePanel inGamePanel) {
+	        reference = inGamePanel;
+	    	popup = popupMenu;
 	    }
 	    public Point2D GetPopupLocation(){
 			return location;
 		}
 	    public void mousePressed(MouseEvent e) {
-	    	ShowPopup(e);
+	    	// capture starting point
+			lastOffsetX = e.getX();
+			lastOffsetY = e.getY();
 	    }
 	    public void mouseReleased(MouseEvent e) {
 	    	ShowPopup(e);
@@ -200,5 +226,56 @@ public class GamePanel extends JPanel{
 	            location = new Point2D.Double(e.getX(), e.getY());
 	        }
 	    }
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// new x and y are defined by current mouse location subtracted
+			// by previously processed mouse location
+			int newX = e.getX() - lastOffsetX;
+			int newY = e.getY() - lastOffsetY;
+ 
+			// increment last offset to last processed by drag event.
+			lastOffsetX += newX;
+			lastOffsetY += newY;
+ 
+			// update the canvas locations
+			reference.translateX += newX;
+			reference.translateY += newY;
+			
+			// schedule a repaint.
+			reference.repaint();
+		}
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			if(e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+				
+				// make it a reasonable amount of zoom
+				// .1 gives a nice slow transition
+				reference.scale -= (.1 * e.getWheelRotation());
+				// don't cross negative threshold.
+				// also, setting scale to 0 has bad effects
+				reference.scale = Math.max(1.0, reference.scale); 
+				reference.repaint();
+			}
+		}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 }

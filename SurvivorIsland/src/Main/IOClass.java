@@ -27,10 +27,11 @@ public class IOClass {
 			
 			char[][] tempMap = new char[mapFileData.length][mapFileData.length];
 			
-			for(int mapFileLine = 0; mapFileLine < mapFileData.length;){
+			for(int mapFileLine = 0; mapFileLine < mapFileData.length; mapFileLine++){
 				//read map character
-				for(int j = 0; j < mapFileData.length; j++, mapFileLine++){
-					char[] charLine = mapFileData[mapFileLine].toCharArray();
+				char[] charLine = mapFileData[mapFileLine].toCharArray();
+				for(int j = 0; j < mapFileData.length; j++){
+					
 					tempMap[mapFileLine][j] = charLine[j];
 				}
 			}
