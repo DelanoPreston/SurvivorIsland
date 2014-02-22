@@ -12,7 +12,7 @@ import Animals.WildAnimal;
 
 
 public class ContentBank {
-	public static Image grass, beach, sea, forest, jungle;
+	public static Image beach, sea, forest, jungle;
 		
 		
 	public static void ContentLoader(){
@@ -23,8 +23,8 @@ public class ContentBank {
 			
 			sea = bigImg.getSubimage(0, 0, 64, 64);
 			beach = bigImg.getSubimage(64, 0, 64, 64);
-			grass = bigImg.getSubimage(128, 0, 64, 64);
-			forest = bigImg.getSubimage(192, 0, 64, 64);
+			forest = bigImg.getSubimage(0, 64, 64, 64);
+			jungle = bigImg.getSubimage(64, 64, 64, 64);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
