@@ -22,6 +22,8 @@ public class ContentBank {
 	public static Image survivorW1;
 	public static Image survivorW2;
 	public static Image survivorW3;
+	
+	public static Image woodenAxe;
 		
 	public static void ContentLoader(){
 		BufferedImage bigImg = null;
@@ -42,6 +44,10 @@ public class ContentBank {
 			survivorW1 = bigImg.getSubimage(0, 96, 16, 32);
 			survivorW2 = bigImg.getSubimage(0, 128, 16, 32);
 			survivorW3 = bigImg.getSubimage(0, 160, 16, 32);
+			
+			bigImg = ImageIO.read(new File("Images/tools1.png"));
+			
+			woodenAxe = bigImg.getSubimage(0, 0, 16, 16);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

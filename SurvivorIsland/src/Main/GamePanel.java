@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+import Items.Item;
+import Items.ItemEntity;
+import Items.ToolType;
 import Maps.Map;
 import People.Human;
 import People.Survivor;
@@ -32,12 +35,12 @@ public class GamePanel extends JPanel{
 	Timer mainTimer;
 	PopupListener popupListener;
 	IOClass fileStuff;
-	Map map;
+	 Map map;
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
 	public List<Human> humans = new ArrayList<>();
-//	public List<Creep> creeps = new ArrayList<Creep>();
+	public static List<ItemEntity> itemEntities = new ArrayList<>();
 	
 	/**
 	 * Constructor for the GamePanel class that extends JPanel
@@ -73,12 +76,12 @@ public class GamePanel extends JPanel{
         
         //Create the popup menu.
         JPopupMenu popup = new JPopupMenu();
-        menuItem = new JMenuItem("New Survivor");
+        menuItem = new JMenuItem("new survivor");
         menuItem.addActionListener(menuListener);
         popup.add(menuItem);
-//        menuItem = new JMenuItem("Tower:Fire");
-//        menuItem.addActionListener(menuListener);
-//        popup.add(menuItem);
+        menuItem = new JMenuItem("new axe");
+        menuItem.addActionListener(menuListener);
+        popup.add(menuItem);
 //        menuItem = new JMenuItem("Tower:Ice");
 //        menuItem.addActionListener(menuListener);
 //        popup.add(menuItem);
@@ -119,6 +122,9 @@ public class GamePanel extends JPanel{
 		map.paintComponent(g2D);
 		for(int i = 0; i < humans.size(); i++){
 			humans.get(i).paintComponent(g2D);
+		}
+		for(int i = 0; i < itemEntities.size(); i++){
+			itemEntities.get(i).paintComponent(g2D);
 		}
 		g2D.drawOval((int)(-translateX), (int)(-translateY), 15, 15);
 	}
@@ -182,16 +188,15 @@ public class GamePanel extends JPanel{
 	class MenuListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			
-			if(arg0.paramString().contains("New Survivor")){
-				//public Survivor(String inName, double[] inLocation, int inWeight, boolean inSolid) {
-				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
+			double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
+			if(arg0.paramString().contains("new survivor")){
 				Survivor survivor = new Survivor("Rob", loc, 150, true);
 				humans.add(survivor);
+			}else if(arg0.paramString().contains("new axe")){
+				Item axe = new Item("axe", 100, false, 100, ToolType.AXE, -1);
+				ItemEntity axeEntity = new ItemEntity(axe, loc);
+				itemEntities.add(axeEntity);
 			}
-//			if(arg0.paramString().contains("Fire")){
-//				NewTower(ContentBank.TowerType.Fire);
-//			}
 //			else if(arg0.paramString().contains("Ice")){
 //				NewTower(ContentBank.TowerType.Ice);
 //			}
