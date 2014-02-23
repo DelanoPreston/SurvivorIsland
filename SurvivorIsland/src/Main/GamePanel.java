@@ -12,6 +12,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -19,6 +21,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
 import Maps.Map;
+import People.Human;
+import People.Survivor;
 /**
  * GamePanel class that extends JPanel
  */
@@ -26,14 +30,13 @@ import Maps.Map;
 public class GamePanel extends JPanel{
 	int timer = 0;
 	Timer mainTimer;
-//	GameFunctions.BaseGameFunctions bgf;
 	PopupListener popupListener;
 	IOClass fileStuff;
 	Map map;
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
-//	public List<Tower> towers = new ArrayList<Tower>();
+	public List<Human> humans = new ArrayList<>();
 //	public List<Creep> creeps = new ArrayList<Creep>();
 	
 	/**
@@ -70,18 +73,18 @@ public class GamePanel extends JPanel{
         
         //Create the popup menu.
         JPopupMenu popup = new JPopupMenu();
-        menuItem = new JMenuItem("Tower:Standard");
+        menuItem = new JMenuItem("New Survivor");
         menuItem.addActionListener(menuListener);
         popup.add(menuItem);
-        menuItem = new JMenuItem("Tower:Fire");
-        menuItem.addActionListener(menuListener);
-        popup.add(menuItem);
-        menuItem = new JMenuItem("Tower:Ice");
-        menuItem.addActionListener(menuListener);
-        popup.add(menuItem);
-        menuItem = new JMenuItem("Tower:Poison");
-        menuItem.addActionListener(menuListener);
-        popup.add(menuItem);
+//        menuItem = new JMenuItem("Tower:Fire");
+//        menuItem.addActionListener(menuListener);
+//        popup.add(menuItem);
+//        menuItem = new JMenuItem("Tower:Ice");
+//        menuItem.addActionListener(menuListener);
+//        popup.add(menuItem);
+//        menuItem = new JMenuItem("Tower:Poison");
+//        menuItem.addActionListener(menuListener);
+//        popup.add(menuItem);
  
         //Add listener to the text area so the popup menu can come up.
         popupListener = new PopupListener(popup, this);
@@ -92,7 +95,9 @@ public class GamePanel extends JPanel{
 	 * Update Method, Action performed calls this to update game
 	 */
 	public void Update(){
-		
+		for(int i = 0; i < humans.size(); i++){
+			humans.get(i).update();
+		}
 	}
 	
 	/**
@@ -112,8 +117,10 @@ public class GamePanel extends JPanel{
 		g2D.setTransform(at);
 		
 		map.paintComponent(g2D);
-//		g.drawImage(ContentBank.beach, 0, 0, null);
-		
+		for(int i = 0; i < humans.size(); i++){
+			humans.get(i).paintComponent(g2D);
+		}
+		g2D.drawOval((int)(-translateX), (int)(-translateY), 15, 15);
 	}
 	
 	/**
@@ -176,9 +183,12 @@ public class GamePanel extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-//			if(arg0.paramString().contains("Standard")){
-//				NewTower(ContentBank.TowerType.Standard);
-//			}
+			if(arg0.paramString().contains("New Survivor")){
+				//public Survivor(String inName, double[] inLocation, int inWeight, boolean inSolid) {
+				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
+				Survivor survivor = new Survivor("Rob", loc, 150, true);
+				humans.add(survivor);
+			}
 //			if(arg0.paramString().contains("Fire")){
 //				NewTower(ContentBank.TowerType.Fire);
 //			}
@@ -222,8 +232,9 @@ public class GamePanel extends JPanel{
 	    }
 	    private void ShowPopup(MouseEvent e) {
 	        if (e.isPopupTrigger()) {
+	        	
 	            popup.show(e.getComponent(), e.getX(), e.getY());
-	            location = new Point2D.Double(e.getX(), e.getY());
+	            location = new Point2D.Double(e.getX() - reference.translateX, e.getY() - reference.translateY);
 	        }
 	    }
 		@Override

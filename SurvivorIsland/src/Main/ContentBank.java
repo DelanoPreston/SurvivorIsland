@@ -12,49 +12,40 @@ import Animals.WildAnimal;
 
 
 public class ContentBank {
-	public static Image beach, sea, forest, jungle;
-		
+	public static Image beach;
+	public static Image sea;
+	public static Image forest;
+	public static Image jungle;
+	public static Image survivorM1;
+	public static Image survivorM2;
+	public static Image survivorM3;
+	public static Image survivorW1;
+	public static Image survivorW2;
+	public static Image survivorW3;
 		
 	public static void ContentLoader(){
 		BufferedImage bigImg = null;
 		
 		try {
-			bigImg = ImageIO.read(new File("Images/SurvivorTileMap.png"));
+			bigImg = ImageIO.read(new File("Images/SurvivorTileMap1.png"));
 			
 			sea = bigImg.getSubimage(0, 0, 64, 64);
 			beach = bigImg.getSubimage(64, 0, 64, 64);
 			forest = bigImg.getSubimage(0, 64, 64, 64);
 			jungle = bigImg.getSubimage(64, 64, 64, 64);
+			
+			bigImg = ImageIO.read(new File("Images/oie_transparent.png"));
+			
+			survivorM1 = bigImg.getSubimage(0, 0, 16, 32);
+			survivorM2 = bigImg.getSubimage(0, 32, 16, 32);
+			survivorM3 = bigImg.getSubimage(0, 64, 16, 32);
+			survivorW1 = bigImg.getSubimage(0, 96, 16, 32);
+			survivorW2 = bigImg.getSubimage(0, 128, 16, 32);
+			survivorW3 = bigImg.getSubimage(0, 160, 16, 32);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	//items
-//	public static Item branch = new Item("Branch", .35, false);
-//	public static Item stick = new Item("Stick", .5, false);
-//	public static Item leaf = new Item("Leaf", .02, false);
-//	public static Item pebble = new Item("Pebble", .25, false);
-//	public static Item rock = new Item("Rock", 1.00, false);
-//	public static Item wheatSeed = new Item("Wheat Seed", .05, false);
-//	
-//	//food
-//	public static Food apple = new Food("Apple", 3, .2, false);
-//	public static Food biscuit = new Food("Biscuit", 6, .1, false);
-//	
-//	//tools
-//	public static Tool woodenAxe = new Tool("Wooden Axe", 200, ToolType.AXE, 1.0, false);
-//	public static Tool woodenBow = new Tool("Wooden Bow", 200, ToolType.BOW, 1.0, false);
-//	public static Tool woodenBucket = new Tool("Wooden Bucket", 200, ToolType.BUCKET, 1.0, false);
-//	public static Tool woodenCrossbow = new Tool("Wooden Crossbow", 200, ToolType.CROSSBOW, 1.0, false);
-//	public static Tool woodenHoe = new Tool("Wooden Hoe", 200, ToolType.HOE, 1.0, false);
-//	public static Tool woodenPickaxe = new Tool("Wooden Pickaxe", 200, ToolType.PICKAXE, 1.0, false);
-//	public static Tool woodenRake = new Tool("Wooden Rake", 200, ToolType.RAKE, 1.0, false);
-//	public static Tool woodenSword = new Tool("Wooden Sword", 200, ToolType.SWORD, 1.0, false);
-//	
-//	//furniture
-//	public static Furniture woodenStool = new Furniture("Wooden Stool", 150, 3.0, true);
-//	public static Furniture woodenTable = new Furniture("Wooden Table", 150, 5.0, true);
-	
 	//animals
 	public static Animal pig1 = new Animal("Pig", 20, 80.0, true);
 	public static TameAnimal pig = new TameAnimal("Pig", 20, 80.0, true);
