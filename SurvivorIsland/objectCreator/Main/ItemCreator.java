@@ -23,12 +23,12 @@ public class ItemCreator {
 			input = in.nextLine();
 			
 			if(input.contains("load")){
-				if(input.contains("=")){
-					fileName = getInput(input);
-					items = io.loadItems(new File(System.getProperty("user.dir") + "/Items/" + fileName));
-				}else{
-					items = io.loadItems(new File(System.getProperty("user.dir") + "/Items"));
-				}
+//				if(input.contains("=")){
+//					fileName = getInput(input);
+//					items = io.loadItems(new File(System.getProperty("user.dir") + "/Items/" + fileName));
+//				}else{
+//					items = io.loadItems(new File(System.getProperty("user.dir") + "/Items"));
+//				}
 			}else if(input.contains("save")){
 				//public Item(String inName,double inWeight, boolean inSolid, int inCond, ToolType inToolType, int inReplen) {
 				

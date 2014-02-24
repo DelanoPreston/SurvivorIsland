@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -83,10 +84,8 @@ public class IOClass {
 			// inItems.get(i).getClass().toString().split("\\.")[1];
 			// recipeProps.setProperty("Type" , itemType);
 			recipeProps.setProperty("Name", inItems.get(i).name);
-			recipeProps.setProperty("Weight",
-					Double.toString(inItems.get(i).weight));
-			recipeProps.setProperty("Solid",
-					Boolean.toString(inItems.get(i).solid));
+			recipeProps.setProperty("Weight", Double.toString(inItems.get(i).weight));
+			recipeProps.setProperty("Solid", Boolean.toString(inItems.get(i).solid));
 			// recipeProps.setProperty("Condition" ,
 			// Integer.toString(inItems.get(i).condition));
 			// recipeProps.setProperty("ToolType" ,
@@ -98,8 +97,7 @@ public class IOClass {
 				File filePath = new File(path);
 				if (!filePath.exists())
 					filePath.mkdirs();
-				out = new FileOutputStream(new File(savelocation
-						+ inItems.get(i).name + ".properties"));
+				out = new FileOutputStream(new File(savelocation + inItems.get(i).name + ".properties"));
 				recipeProps.store(out, "---No Comment---");
 				out.close();
 			} catch (IOException e) {
@@ -110,16 +108,19 @@ public class IOClass {
 		return true;
 	}
 
-	public List<Item> loadItems(final File folder) {
-		List<Item> tempItems = new ArrayList<>();
+	// public List<Item> loadItems(final File folder) {
+	public HashMap<String, Item> loadItems(final File folder, String itemType) {
+		// list of items to be returned
+		HashMap<String, Item> tempItems = new HashMap<>();
 		List<String> tempItemNames = new ArrayList<>();
 		Properties itemProps = new Properties();
-		FileInputStream in;
+		FileInputStream in = null;
 
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
-				loadItems(fileEntry);// this will run this same method to get
-										// property file inside of it
+				loadItems(fileEntry, itemType);// this will run this same method
+												// to get
+				// property file inside of it
 			} else {
 				tempItemNames.add(fileEntry.getName());
 				// System.out.println(fileEntry.getName());
@@ -127,54 +128,46 @@ public class IOClass {
 		}
 		for (int i = 0; i < tempItemNames.size(); i++) {
 			try {
-
-				in = new FileInputStream("Recipes/" + tempItemNames.get(i));
+				String path = folder.getPath() + "/" + tempItemNames.get(i);
+				in = new FileInputStream(path);// + ".properties");
 				itemProps.load(in);
 
-				String tempType = itemProps.getProperty("Type");
-				String tempName = itemProps.getProperty("Name");
-				double tempWeight = Double.parseDouble(itemProps
-						.getProperty("Weight"));
-				boolean tempSolid = Boolean.parseBoolean(itemProps
-						.getProperty("Solid"));
-				int tempDurability = Integer.parseInt(itemProps
-						.getProperty("Condition"));
-				ToolType tempToolType = ToolType.valueOf(itemProps
-						.getProperty("ToolType"));
-				int tempReplen = Integer.parseInt(itemProps
-						.getProperty("Replenishment"));
-
 				Item temp = null;
-				// Item temp = new Item(tempName, tempWeight, tempSolid,
-				// tempDurability, tempToolType, tempReplen);
-
-				switch (tempType) {
+				
+				// String tempType = itemProps.getProperty("Type");
+				String tempName = itemProps.getProperty("Name");
+				double tempWeight = Double.parseDouble(itemProps.getProperty("Weight"));
+				boolean tempSolid = Boolean.parseBoolean(itemProps.getProperty("Solid"));
+				ToolType tempToolType = ToolType.NONE;
+				int tempDurability = 0;
+				int tempReplen = 0;
+				switch (itemType) {
 				case "Item":
 					temp = new Item(tempName, tempWeight, tempSolid);
 					break;
 				case "Tool":
-					temp = new Tool(tempName, tempToolType, tempDurability,
-							tempSolid);
+					tempToolType = ToolType.valueOf(itemProps.getProperty("ToolType"));
+					tempDurability = Integer.parseInt(itemProps.getProperty("Condition"));
+					temp = new Tool(tempName, tempToolType, tempDurability, tempSolid);
 					break;
 				case "Furniture":
+					tempDurability = Integer.parseInt(itemProps.getProperty("Condition"));
 					temp = new Furniture(tempName, tempWeight, tempSolid);
 					break;
 				case "Food":
+					tempReplen = Integer.parseInt(itemProps.getProperty("Replenishment"));
 					temp = new Food(tempName, tempWeight, tempSolid, tempReplen);
 					break;
 				default:
-					temp = new Item(tempName, tempWeight, tempSolid);
 					break;
 				}
 
-				tempItems.add(temp);
+				tempItems.put(temp.name, temp); // add(temp);
 
 				in.close();
 
 			} catch (IOException e) {
-				System.out.println("failed to load" + tempItemNames.get(i));
-				// e.printStackTrace();
-				// return null;
+				System.out.println("failed to load: " + tempItemNames.get(i));
 			}
 		}
 
@@ -198,8 +191,7 @@ public class IOClass {
 	public Level loadGamePanel(String name) {
 		Level temp = null;
 		try {
-			FileInputStream fileIn = new FileInputStream(
-					System.getProperty("user.dir") + "/SaveGame/" + name + ".ser");
+			FileInputStream fileIn = new FileInputStream(System.getProperty("user.dir") + "/SaveGame/" + name + ".ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 
 			temp = (Level) in.readObject();
