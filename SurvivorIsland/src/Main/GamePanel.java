@@ -1,4 +1,5 @@
 package Main;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -12,9 +13,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -23,8 +24,6 @@ import javax.swing.Timer;
 import Items.ItemEntity;
 import Items.Tool;
 import Items.ToolType;
-import Maps.Map;
-import People.Human;
 import People.Survivor;
 /**
  * GamePanel class that extends JPanel
@@ -33,14 +32,15 @@ import People.Survivor;
 public class GamePanel extends JPanel{
 	int timer = 0;
 	Timer mainTimer;
-	PopupListener popupListener;
-	IOClass fileStuff;
-	 Map map;
+	transient PopupListener popupListener;
+	transient IOClass iostuff;
+//	Map map;
+	public Level level;
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
-	public List<Human> humans = new ArrayList<>();
-	public static List<ItemEntity> itemEntities = new ArrayList<>();
+//	public List<Human> humans = new ArrayList<>();
+//	public static List<ItemEntity> itemEntities = new ArrayList<>();
 	
 	/**
 	 * Constructor for the GamePanel class that extends JPanel
@@ -48,8 +48,12 @@ public class GamePanel extends JPanel{
 	public GamePanel(){
 		setFocusable(true);
 		
+		level = new Level();
+		
 		//creates the popup menu
 		CreatePopupMenu();
+		
+		createLayout();
 		
 		//adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
@@ -58,8 +62,8 @@ public class GamePanel extends JPanel{
 		this.addMouseWheelListener(popupListener);
 		
 		//makes the file io class, and gets the map data
-		fileStuff = new IOClass();
-		map = fileStuff.ReadMap();
+		iostuff = new IOClass();
+		level.map = iostuff.ReadMap();
 		
 		//timer for updating game every 10 miliseconds
 		mainTimer = new Timer(10, new TimerListener());
@@ -72,7 +76,7 @@ public class GamePanel extends JPanel{
 	public void CreatePopupMenu() {
         JMenuItem menuItem;
         
-        MenuListener menuListener = new MenuListener();
+        MenuListener menuListener = new MenuListener(this);
         
         //Create the popup menu.
         JPopupMenu popup = new JPopupMenu();
@@ -94,12 +98,54 @@ public class GamePanel extends JPanel{
         
     }
 	
+	public void createLayout(){
+		this.setLayout(new BorderLayout());
+		
+		/**
+		 * menu Creation
+		 */
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+//		JMenu editMenu = new JMenu("Edit");
+//		JMenu helpMenu = new JMenu("Help");
+		JMenuItem tempMI;
+		MenuListener menuListener = new MenuListener(this);
+		
+		/**
+		 * file menu item creation
+		 */
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription("The File Menu Item");
+        menuBar.add(fileMenu);
+        
+        tempMI = new JMenuItem("Save");
+        tempMI.getAccessibleContext().setAccessibleDescription("The Save File Menu Item");
+        tempMI.addActionListener(menuListener);
+        fileMenu.add(tempMI);
+        
+        tempMI = new JMenuItem("Load");
+        tempMI.getAccessibleContext().setAccessibleDescription("The Load File Menu Item");
+        tempMI.addActionListener(menuListener);
+        fileMenu.add(tempMI);
+        
+        
+        tempMI = new JMenuItem("Exit");
+        tempMI.getAccessibleContext().setAccessibleDescription("The Exit File Menu Item");
+        tempMI.addActionListener(menuListener);
+        fileMenu.add(tempMI);
+        
+        /**
+         * adding menu bar to panel
+         */
+        this.add(menuBar, BorderLayout.PAGE_START);
+	}
+	
 	/**
 	 * Update Method, Action performed calls this to update game
 	 */
 	public void Update(){
-		for(int i = 0; i < humans.size(); i++){
-			humans.get(i).update();
+		for(int i = 0; i < level.humans.size(); i++){
+			level.humans.get(i).update();
 		}
 	}
 	
@@ -119,15 +165,15 @@ public class GamePanel extends JPanel{
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setTransform(at);
 		
-		map.paintComponent(g2D);
-		for(int i = 0; i < humans.size(); i++){
-			humans.get(i).paintComponent(g2D);
+		level.map.paintComponent(g2D);
+		for(int i = 0; i < level.humans.size(); i++){
+			level.humans.get(i).paintComponent(g2D);
 		}
-		for(int i = 0; i < itemEntities.size(); i++){
-			itemEntities.get(i).paintComponent(g2D);
+		for(int i = 0; i < level.itemEntities.size(); i++){
+			level.itemEntities.get(i).paintComponent(g2D);
 		}
-		g2D.drawOval((int)(-translateX), (int)(-translateY), 15, 15);
 	}
+
 	
 	/**
 	 * TimerListener class, implements ActionListener, this class only calls the update methods that
@@ -142,9 +188,7 @@ public class GamePanel extends JPanel{
 			repaint();
 			
 			if(timer >= 25){
-//				Creep tempCreep = new Creep(1.0, map.mapPath, 10.0, 1);
-//				creeps.add(tempCreep);
-//				timer = 0;
+				System.out.println(timer);
 			}
 			timer++;
 		}
@@ -186,20 +230,30 @@ public class GamePanel extends JPanel{
 	 *
 	 */
 	class MenuListener implements ActionListener{
+		GamePanel ref;
+		public MenuListener(GamePanel inref){
+			ref = inref;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
+			
 			if(arg0.paramString().contains("new survivor")){
+				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
 				Survivor survivor = new Survivor("Rob", loc, 150, true);
-				humans.add(survivor);
+				level.humans.add(survivor);
 			}else if(arg0.paramString().contains("new axe")){
+				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
 				Tool axe = new Tool("axe", ToolType.AXE, 100, false);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
-				itemEntities.add(axeEntity);
+				level.itemEntities.add(axeEntity);
+			}else if(arg0.paramString().contains("Save")){
+				ref.iostuff.saveGamePanel(ref.level, "name");
+			}else if(arg0.paramString().contains("Load")){
+				level = ref.iostuff.loadGamePanel("name");
+			}else if(arg0.paramString().contains("Exit")){
+				
 			}
-//			else if(arg0.paramString().contains("Ice")){
-//				NewTower(ContentBank.TowerType.Ice);
-//			}
 //			else if(arg0.paramString().contains("Poison")){
 //				NewTower(ContentBank.TowerType.Poison);
 //			}

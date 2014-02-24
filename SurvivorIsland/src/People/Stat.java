@@ -1,16 +1,18 @@
 package People;
 
-public class Level {
+import java.io.Serializable;
+
+public class Stat implements Serializable{
 	public int level;
 	public int progress;
 	public int nextLevel;
 	
-	public Level(){
+	public Stat(){
 		level = 0;
 		progress = 0;
 		nextLevel = 100;
 	}
-	public Level(int inLevel){
+	public Stat(int inLevel){
 		level = inLevel;
 		progress = 0;
 		nextLevel = 100 * (int)Math.pow(2.5, inLevel);

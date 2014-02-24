@@ -5,6 +5,10 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 public class Entity extends JComponent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 723472537018845637L;
 	public String name;
 	public double[] location;
 	public boolean solid;

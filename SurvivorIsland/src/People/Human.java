@@ -1,16 +1,20 @@
 package People;
 
 import java.awt.Graphics;
-import java.util.Random;
 
 import Main.BaseGameFunctions;
 import Main.Entity;
 
-@SuppressWarnings("serial")
 public class Human extends Entity{
+	/**
+	 * this is just the id of the serializing object (verification thing)
+	 */
+	private static final long serialVersionUID = 10101010L;
 	CommonStats cStats;
-	BaseGameFunctions bgf = new BaseGameFunctions();
 	double[] destination = new double[2];
+	int hunger = 20;
+	BaseGameFunctions bgf = new BaseGameFunctions();
+	
 	
 	public Human(String inName, double[] inLocation, int inWeight, boolean inSolid) {
 		super(inName, inLocation, inWeight, inSolid);

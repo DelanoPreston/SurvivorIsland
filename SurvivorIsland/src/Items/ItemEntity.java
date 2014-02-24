@@ -5,8 +5,11 @@ import java.awt.Graphics;
 import Main.ContentBank;
 import Main.Entity;
 
-@SuppressWarnings("serial")
 public class ItemEntity extends Entity{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1163587124918848417L;
 	public Item item;
 	public boolean targetted;
 	

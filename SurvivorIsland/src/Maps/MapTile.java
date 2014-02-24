@@ -1,6 +1,12 @@
 package Maps;
 
-public class MapTile {
+import javax.swing.JComponent;
+
+public class MapTile extends JComponent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2832950817061632470L;
 	TileType type;
 	Covering covering;
 	

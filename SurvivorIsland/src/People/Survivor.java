@@ -9,6 +9,7 @@ import Items.ItemEntity;
 import Main.ContentBank;
 import Main.Entity;
 import Main.GamePanel;
+import Main.Level;
 
 @SuppressWarnings("serial")
 public class Survivor extends Human{
@@ -28,12 +29,12 @@ public class Survivor extends Human{
 		double dist = bgf.getDistance(location, destination);
 		switch(job){
 		case GATHER:
-			if(targetItem == null && GamePanel.itemEntities.size() > 0){
+			if(targetItem == null && Level.itemEntities.size() > 0){
 				ItemEntity closestItem = null;
-				for(int i = 0; i < GamePanel.itemEntities.size(); i++){
-					GamePanel.itemEntities.get(i);
-					if(closestItem == null || bgf.getDistance(GamePanel.itemEntities.get(i).location, location) < bgf.getDistance(closestItem.location, location)){
-						closestItem = GamePanel.itemEntities.get(i);
+				for(int i = 0; i < Main.Level.itemEntities.size(); i++){
+					Level.itemEntities.get(i);
+					if(closestItem == null || bgf.getDistance(Level.itemEntities.get(i).location, location) < bgf.getDistance(closestItem.location, location)){
+						closestItem = Level.itemEntities.get(i);
 					}
 				}
 				targetItem = closestItem;
@@ -42,7 +43,7 @@ public class Survivor extends Human{
 				destination = targetItem.location;
 				if(bgf.getDistance(location, destination) < 5){
 					inventory.add(targetItem.item);
-					GamePanel.itemEntities.remove(targetItem);
+					Level.itemEntities.remove(targetItem);
 					targetItem = null;
 				}
 				break;

@@ -1,9 +1,10 @@
 package Main;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.Random;
 
 
-public class BaseGameFunctions {
+public class BaseGameFunctions implements Serializable{
 	public Random random;
 	
 	public BaseGameFunctions(){

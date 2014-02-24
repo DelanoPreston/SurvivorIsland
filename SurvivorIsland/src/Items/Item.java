@@ -2,7 +2,13 @@ package Items;
 
 import java.awt.Graphics;
 
-public class Item{
+import javax.swing.JComponent;
+
+public class Item extends JComponent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8067743070572962088L;
 	public String name;
 	public double weight;
 	public boolean solid;
