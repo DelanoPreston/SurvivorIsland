@@ -20,8 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
-import Items.Item;
 import Items.ItemEntity;
+import Items.Tool;
 import Items.ToolType;
 import Maps.Map;
 import People.Human;
@@ -193,7 +193,7 @@ public class GamePanel extends JPanel{
 				Survivor survivor = new Survivor("Rob", loc, 150, true);
 				humans.add(survivor);
 			}else if(arg0.paramString().contains("new axe")){
-				Item axe = new Item("axe", 100, false, 100, ToolType.AXE, -1);
+				Tool axe = new Tool("axe", ToolType.AXE, 100, false);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
 				itemEntities.add(axeEntity);
 			}

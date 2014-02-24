@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import Items.Food;
+import Items.Furniture;
 import Items.Item;
+import Items.Tool;
 import Items.ToolType;
 import Maps.Map;
 
@@ -77,9 +80,9 @@ public class IOClass {
 			recipeProps.setProperty("Name" , inItems.get(i).name);
 			recipeProps.setProperty("Weight" , Double.toString(inItems.get(i).weight));
 			recipeProps.setProperty("Solid" , Boolean.toString(inItems.get(i).solid));
-			recipeProps.setProperty("Condition" , Integer.toString(inItems.get(i).condition));
-			recipeProps.setProperty("ToolType" , inItems.get(i).toolType.toString());
-			recipeProps.setProperty("Replenishment" , Integer.toString(inItems.get(i).replen));
+//			recipeProps.setProperty("Condition" , Integer.toString(inItems.get(i).condition));
+//			recipeProps.setProperty("ToolType" , inItems.get(i).toolType.toString());
+//			recipeProps.setProperty("Replenishment" , Integer.toString(inItems.get(i).replen));
 			
 			try {
 				File filePath = new File(path);
@@ -116,7 +119,7 @@ public class IOClass {
 				in = new FileInputStream("Recipes/" + tempItemNames.get(i));
 				itemProps.load(in);
 				
-//				String tempType = itemProps.getProperty("Type");
+				String tempType = itemProps.getProperty("Type");
 				String tempName = itemProps.getProperty("Name");
 				double tempWeight = Double.parseDouble(itemProps.getProperty("Weight"));
 				boolean tempSolid = Boolean.parseBoolean(itemProps.getProperty("Solid"));
@@ -124,26 +127,26 @@ public class IOClass {
 				ToolType tempToolType = ToolType.valueOf(itemProps.getProperty("ToolType"));
 				int tempReplen = Integer.parseInt(itemProps.getProperty("Replenishment"));
 				
-				Item temp = new Item(tempName, tempWeight, tempSolid, tempDurability, tempToolType, tempReplen);
+				Item temp = null;
+//				Item temp = new Item(tempName, tempWeight, tempSolid, tempDurability, tempToolType, tempReplen);
 				
-//				switch(tempType){
-//				case "Item":
-//					temp = new Item(tempName, tempWeight, tempSolid);
-//					break;
-//				case "Tool":
-//					temp = new Tool(tempName, tempDurability, tempToolType, tempWeight, tempSolid);
-//					break;
-//				case "Furniture":
-//					temp = new Furniture(tempName, tempDurability, tempWeight, tempSolid);
-//					break;
-//				case "Food":
-//					
-//					temp = new Food(tempName, tempReplen, tempWeight, tempSolid);
-//					break;
-//				default:
-//					temp = new Item(tempName, tempWeight, tempSolid);
-//					break;
-//				}
+				switch(tempType){
+				case "Item":
+					temp = new Item(tempName, tempWeight, tempSolid);
+					break;
+				case "Tool":
+					temp = new Tool(tempName, tempToolType, tempDurability, tempSolid);
+					break;
+				case "Furniture":
+					temp = new Furniture(tempName, tempWeight, tempSolid);
+					break;
+				case "Food":
+					temp = new Food(tempName, tempWeight, tempSolid, tempReplen);
+					break;
+				default:
+					temp = new Item(tempName, tempWeight, tempSolid);
+					break;
+				}
 				
 				tempItems.add(temp);
 				
