@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import Animals.Animal;
 import Animals.TameAnimal;
 import Animals.WildAnimal;
+import Items.Tool;
+import Items.ToolType;
 
 
 public class ContentBank {
@@ -60,4 +62,47 @@ public class ContentBank {
 	public static WildAnimal elk = new WildAnimal("Elk", 30, 90.0, true);
 	public static WildAnimal moose = new WildAnimal("Moose", 50, 150.0, true);
 	public static WildAnimal bear = new WildAnimal("Bear", 75, 140.0, true);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	Tool woodenAxe = new Tool("Wooden Axe", ToolType.AXE, 50, false);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
