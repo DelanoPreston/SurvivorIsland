@@ -1,10 +1,10 @@
 package Items;
 
 public class Food extends Item{
-  	int replenishment;
+  	public int replenishment;
   	
-	public Food(String inName, double inWeight, boolean inSolid, int inReplenish) {
- 		super(inName, inWeight, inSolid);
+	public Food(String inName, double inWeight, boolean inSolid, int inReplenish, int inCondition) {
+ 		super(inName, inWeight, inSolid, inCondition);
   		replenishment = inReplenish;
   	}
 }

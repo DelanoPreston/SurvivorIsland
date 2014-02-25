@@ -39,14 +39,14 @@ public class ContentBank {
 	}
 
 	private static void loadAnimals() {
-		// animals
-		Animal pig1 = new Animal("Pig", 20, 80.0, true);
-		TameAnimal pig = new TameAnimal("Pig", 20, 80.0, true);
-		TameAnimal sheep = new TameAnimal("Sheep", 20, 50.0, true);
-		WildAnimal deer = new WildAnimal("Deer", 20, 60.0, true);
-		WildAnimal elk = new WildAnimal("Elk", 30, 90.0, true);
-		WildAnimal moose = new WildAnimal("Moose", 50, 150.0, true);
-		WildAnimal bear = new WildAnimal("Bear", 75, 140.0, true);
+//		// animals
+//		Animal pig1 = new Animal("Pig", 20, 80.0, true);
+//		TameAnimal pig = new TameAnimal("Pig", 20, 80.0, true);
+//		TameAnimal sheep = new TameAnimal("Sheep", 20, 50.0, true);
+//		WildAnimal deer = new WildAnimal("Deer", 20, 60.0, true);
+//		WildAnimal elk = new WildAnimal("Elk", 30, 90.0, true);
+//		WildAnimal moose = new WildAnimal("Moose", 50, 150.0, true);
+//		WildAnimal bear = new WildAnimal("Bear", 75, 140.0, true);
 	}
 
 	private static void loadImages() {

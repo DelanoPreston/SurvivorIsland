@@ -12,6 +12,7 @@ public class Item extends JComponent{
 	public String name;
 	public double weight;
 	public boolean solid;
+	public int condition;
 	public int imageKey;
 	
 	/**
@@ -23,10 +24,11 @@ public class Item extends JComponent{
 	 * @param inToolType - type of the Item
 	 * @param inReplen - replenish of the Item
 	 */
-	public Item(String inName,double inWeight, boolean inSolid) {
+	public Item(String inName,double inWeight, boolean inSolid, int inCondition) {
 		name = inName;
 		weight = inWeight;
 		solid = inSolid;
+		condition = inCondition;
 	}
 	
 	public void paintComponent(Graphics g) {

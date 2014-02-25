@@ -244,13 +244,13 @@ public class GamePanel extends JPanel{
 				level.humans.add(survivor);
 			}else if(arg0.paramString().contains("new axe")){
 				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
-				Tool axe = new Tool("axe", ToolType.AXE, 100, false);
+				Tool axe = new Tool("axe", 2.5, false, 100, ToolType.AXE, 100);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
 				level.itemEntities.add(axeEntity);
 			}else if(arg0.paramString().contains("Save")){
-				ref.iostuff.saveGamePanel(ref.level, "name");
+				ref.iostuff.saveLevel(ref.level, "name");
 			}else if(arg0.paramString().contains("Load")){
-				level = ref.iostuff.loadGamePanel("name");
+				level = ref.iostuff.loadLevel("name");
 			}else if(arg0.paramString().contains("Exit")){
 				
 			}

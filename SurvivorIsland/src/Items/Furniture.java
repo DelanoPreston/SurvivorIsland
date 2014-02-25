@@ -6,8 +6,8 @@ import java.util.List;
 public class Furniture extends Item {
 	List<Item> storage = new ArrayList<>();
 
-	public Furniture(String inName, double inWeight, boolean inSolid) {
-		super(inName, inWeight, inSolid);
+	public Furniture(String inName, double inWeight, boolean inSolid, int inCondition) {
+		super(inName, inWeight, inSolid, inCondition);
 	}
 
 	public void addItemToChest(Item inItem) {

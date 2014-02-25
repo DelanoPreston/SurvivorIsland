@@ -20,7 +20,6 @@ import Items.ToolType;
 import Maps.Map;
 
 public class IOClass {
-	public String path = "";
 
 	/**
 	 * public method to be called to get maps
@@ -75,37 +74,64 @@ public class IOClass {
 		return fileStrings;
 	}
 
-	public Boolean saveRecipes(List<Item> inItems, String savelocation) {
+	/**
+	 * saves all the items as separate .properties files
+	 * 
+	 * @param folder
+	 *            - pass in the Items folder
+	 * @param inItems
+	 *            - the items to be saved
+	 */
+	public void saveItems(String folder, List<Item> inItems) {
+		String outFileLocation = "";
 		for (int i = 0; i < inItems.size(); i++) {
-			Properties recipeProps = new Properties();
-			FileOutputStream out = null;
-
-			// String itemType =
-			// inItems.get(i).getClass().toString().split("\\.")[1];
-			// recipeProps.setProperty("Type" , itemType);
-			recipeProps.setProperty("Name", inItems.get(i).name);
-			recipeProps.setProperty("Weight", Double.toString(inItems.get(i).weight));
-			recipeProps.setProperty("Solid", Boolean.toString(inItems.get(i).solid));
-			// recipeProps.setProperty("Condition" ,
-			// Integer.toString(inItems.get(i).condition));
-			// recipeProps.setProperty("ToolType" ,
-			// inItems.get(i).toolType.toString());
-			// recipeProps.setProperty("Replenishment" ,
-			// Integer.toString(inItems.get(i).replen));
-
 			try {
-				File filePath = new File(path);
-				if (!filePath.exists())
-					filePath.mkdirs();
-				out = new FileOutputStream(new File(savelocation + inItems.get(i).name + ".properties"));
-				recipeProps.store(out, "---No Comment---");
+				Properties itemProps = new Properties();
+				FileOutputStream out = null;
+
+				itemProps.setProperty("Type", inItems.get(i).getClass().toString().split("\\.")[1]);
+				itemProps.setProperty("Name", inItems.get(i).name);
+				itemProps.setProperty("Weight", Double.toString(inItems.get(i).weight));
+				itemProps.setProperty("Solid", Boolean.toString(inItems.get(i).solid));
+				itemProps.setProperty("Condition", Integer.toString(inItems.get(i).condition));
+				// recipeProps.setProperty("Condition" ,
+				// Integer.toString(inItems.get(i).condition));
+				// recipeProps.setProperty("ToolType" ,
+				// inItems.get(i).toolType.toString());
+				// recipeProps.setProperty("Replenishment" ,
+				// Integer.toString(inItems.get(i).replen));
+
+				String switchString = inItems.get(i).getClass().toString().split("\\.")[1];
+				switch (switchString) {
+				case "Item":
+					outFileLocation = folder + "/Item/" + inItems.get(i).name + ".properties";
+					break;
+				case "Tool":
+					Tool tempTool = (Tool) inItems.get(i);
+					itemProps.setProperty("Durability", Integer.toString(tempTool.durability));
+					itemProps.setProperty("ToolType", tempTool.toolType.toString());
+					outFileLocation = folder + "/Tool/" + inItems.get(i).name + ".properties";
+					break;
+				case "Food":
+					Food tempFood = (Food) inItems.get(i);
+					itemProps.setProperty("Replenishment", Integer.toString(tempFood.replenishment));
+					outFileLocation = folder + "/Food/" + inItems.get(i).name + ".properties";
+					break;
+				case "Furniture":
+					// Furniture tempFurniture = (Furniture) inItems.get(i);
+					outFileLocation = folder + "/Furniture/" + inItems.get(i).name + ".properties";
+					break;
+				default:
+					break;
+				}
+				out = new FileOutputStream(outFileLocation);
+				itemProps.store(out, "---No Comment---");
 				out.close();
 			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
+				System.out.println("failed to save: " + inItems.get(i).name);
+				// e.printStackTrace();
 			}
 		}
-		return true;
 	}
 
 	// public List<Item> loadItems(final File folder) {
@@ -118,8 +144,8 @@ public class IOClass {
 
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
-				loadItems(fileEntry, itemType);// this will run this same method
-												// to get
+				HashMap<String, Item> temp = loadItems(fileEntry, itemType);
+				tempItems.putAll(temp);
 				// property file inside of it
 			} else {
 				tempItemNames.add(fileEntry.getName());
@@ -133,30 +159,32 @@ public class IOClass {
 				itemProps.load(in);
 
 				Item temp = null;
-				
+
 				// String tempType = itemProps.getProperty("Type");
 				String tempName = itemProps.getProperty("Name");
 				double tempWeight = Double.parseDouble(itemProps.getProperty("Weight"));
+				int tempCondition = Integer.parseInt(itemProps.getProperty("Condition"));
 				boolean tempSolid = Boolean.parseBoolean(itemProps.getProperty("Solid"));
 				ToolType tempToolType = ToolType.NONE;
 				int tempDurability = 0;
 				int tempReplen = 0;
 				switch (itemType) {
 				case "Item":
-					temp = new Item(tempName, tempWeight, tempSolid);
+					temp = new Item(tempName, tempWeight, tempSolid, tempCondition);
 					break;
 				case "Tool":
 					tempToolType = ToolType.valueOf(itemProps.getProperty("ToolType"));
-					tempDurability = Integer.parseInt(itemProps.getProperty("Condition"));
-					temp = new Tool(tempName, tempToolType, tempDurability, tempSolid);
+					if (itemProps.containsKey("Durability"))
+						tempDurability = Integer.parseInt(itemProps.getProperty("Durability"));
+					temp = new Tool(tempName, tempWeight, tempSolid, tempCondition, tempToolType, tempDurability);
 					break;
 				case "Furniture":
 					tempDurability = Integer.parseInt(itemProps.getProperty("Condition"));
-					temp = new Furniture(tempName, tempWeight, tempSolid);
+					temp = new Furniture(tempName, tempWeight, tempSolid, tempCondition);
 					break;
 				case "Food":
 					tempReplen = Integer.parseInt(itemProps.getProperty("Replenishment"));
-					temp = new Food(tempName, tempWeight, tempSolid, tempReplen);
+					temp = new Food(tempName, tempWeight, tempSolid, tempReplen, tempCondition);
 					break;
 				default:
 					break;
@@ -174,7 +202,7 @@ public class IOClass {
 		return tempItems;
 	}
 
-	public void saveGamePanel(Level inGamePanel, String saveGameName) {
+	public void saveLevel(Level inGamePanel, String saveGameName) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(System.getProperty("user.dir") + "/SaveGame/" + saveGameName + ".ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -188,7 +216,7 @@ public class IOClass {
 		}
 	}
 
-	public Level loadGamePanel(String name) {
+	public Level loadLevel(String name) {
 		Level temp = null;
 		try {
 			FileInputStream fileIn = new FileInputStream(System.getProperty("user.dir") + "/SaveGame/" + name + ".ser");
