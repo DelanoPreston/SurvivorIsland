@@ -130,7 +130,7 @@ public class ItemCreatorPanel extends JPanel {
 		JButton editButton = new JButton("Edit");
 
 		// create drop down
-		String[] recipeTypeArray = { "Item", "Food", "Tool", "Furniture" };
+		String[] recipeTypeArray = { "Plain Item", "Food Item", "Tool Item", "Furniture Item" };
 		JComboBox<String> recipeTypeComboBox = new JComboBox<>(recipeTypeArray);
 		recipeTypeComboBox.setSelectedIndex(0);
 
@@ -301,7 +301,7 @@ public class ItemCreatorPanel extends JPanel {
 								break;
 							case "Food":
 								if (!replenishmentTA.getText().equals("") && !replenishmentTA.getText().equals(null)) {
-									int tempReplen = Integer.parseInt(conditionTA.getText());
+									int tempReplen = Integer.parseInt(replenishmentTA.getText());
 									Food tempFood = new Food(tempName, tempWeight, false, tempCondition, tempReplen);
 									items.add(tempFood);
 								}
@@ -325,13 +325,13 @@ public class ItemCreatorPanel extends JPanel {
 				setTextArea();
 			} else if (arg0.getActionCommand().equals("Edit")) {
 
-			} else if (arg0.getSource().toString().contains("Item")) {
+			} else if (arg0.getSource().toString().contains("Plain Item")) {
 				itemType = "Item";
-			} else if (arg0.getSource().toString().contains("Tool")) {
+			} else if (arg0.getSource().toString().contains("Tool Item")) {
 				itemType = "Tool";
-			} else if (arg0.getSource().toString().contains("Food")) {
+			} else if (arg0.getSource().toString().contains("Food Item")) {
 				itemType = "Food";
-			} else if (arg0.getSource().toString().contains("Furniture")) {
+			} else if (arg0.getSource().toString().contains("Furniture Item")) {
 				itemType = "Furniture";
 			}
 		}
