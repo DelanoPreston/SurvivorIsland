@@ -39,11 +39,12 @@ public class ItemCreatorPanel extends JPanel {
 	IOClass io = new IOClass();
 	JTextArea textArea;
 	String itemType;
-
+	
+	String[] toolTypeArray = { "NONE", "AXE", "SHOVEL", "PICKAXE", "SWORD", "KNIFE", "GUN", "BOW", "CROSSBOW", "STAFF", "HOE", "RAKE", "BUCKET" };
 	JLabel nameL, weightL, conditionL, solidL, durabilityL, replenishmentL, toolTypeL;
 	JTextField nameTA, weightTA, conditionTA, durabilityTA, replenishmentTA;
 	JCheckBox solidCB;
-	JComboBox<ToolType> toolTypeCB;
+	JComboBox<String> toolTypeCB;
 
 	public ItemCreatorPanel() {
 		setFocusable(true);
@@ -182,11 +183,12 @@ public class ItemCreatorPanel extends JPanel {
 		replenishmentTA = new JTextField();
 		replenishmentTA.setMaximumSize(new Dimension(250, 10));
 		toolTypeL = new JLabel("Tool Type");
-		// String[] toolTypeArray = {"NONE", "AXE", "SHOVEL", "PICKAXE",
-		// "SWORD", "KNIFE", "GUN", "BOW", "CROSSBOW", "STAFF", "HOE", "RAKE",
-		// "BUCKET"};
-		ToolType[] toolTypeArray = { ToolType.NONE, ToolType.AXE, ToolType.SHOVEL, ToolType.PICKAXE, ToolType.SWORD, ToolType.KNIFE, ToolType.GUN,
-				ToolType.BOW, ToolType.CROSSBOW, ToolType.STAFF, ToolType.HOE, ToolType.RAKE, ToolType.BUCKET };
+		
+		// ToolType[] toolTypeArray = { ToolType.NONE, ToolType.AXE,
+		// ToolType.SHOVEL, ToolType.PICKAXE, ToolType.SWORD, ToolType.KNIFE,
+		// ToolType.GUN,
+		// ToolType.BOW, ToolType.CROSSBOW, ToolType.STAFF, ToolType.HOE,
+		// ToolType.RAKE, ToolType.BUCKET };
 		toolTypeCB = new JComboBox<>(toolTypeArray);
 		recipeTypeComboBox.setSelectedIndex(0);
 
@@ -253,9 +255,15 @@ public class ItemCreatorPanel extends JPanel {
 			} else if (arg0.paramString().contains("Save All")) {
 				io.saveItems(System.getProperty("user.dir") + "/Items", items);
 			} else if (arg0.paramString().contains("Load")) {
-				HashMap<String, Item> temp = io.loadItems(new File(System.getProperty("user.dir") + "/Items"), "Item");
+				HashMap<String, Item> temp = io.loadItems(new File(System.getProperty("user.dir") + "/Items/Item"), "Item");
+				temp.putAll(io.loadItems(new File(System.getProperty("user.dir") + "/Items/Tool"), "Tool"));
+				temp.putAll(io.loadItems(new File(System.getProperty("user.dir") + "/Items/Food"), "Food"));
+				temp.putAll(io.loadItems(new File(System.getProperty("user.dir") + "/Items/Furniture"), "Furniture"));
 				items = new ArrayList<Item>(temp.values());
 				setTextArea();
+				for(int i = 0; i< items.size(); i++){
+					System.out.println(items.get(i).getClass().toString().split("\\.")[1]);
+				}
 			} else if (arg0.paramString().contains("Exit")) {
 				System.exit(0);
 			}
@@ -279,7 +287,6 @@ public class ItemCreatorPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (arg0.getActionCommand().equals("New")) {
-
 			} else if (arg0.getActionCommand().equals("Add")) {
 				if (!nameTA.getText().equals("") && !nameTA.getText().equals(null)) {
 					String tempName = nameTA.getText();
@@ -306,7 +313,7 @@ public class ItemCreatorPanel extends JPanel {
 							case "Tool":
 								if (!durabilityTA.getText().equals("") && !durabilityTA.getText().equals(null)) {
 									int tempDura = Integer.parseInt(durabilityTA.getText());
-									Tool tempTool = new Tool(tempName, tempWeight, false, tempCondition, ToolType.valueOf((String)(toolTypeCB.getSelectedItem())), tempDura);
+									Tool tempTool = new Tool(tempName, tempWeight, false, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
 									items.add(tempTool);
 								}
 								break;

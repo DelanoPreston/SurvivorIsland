@@ -94,12 +94,6 @@ public class IOClass {
 				itemProps.setProperty("Weight", Double.toString(inItems.get(i).weight));
 				itemProps.setProperty("Solid", Boolean.toString(inItems.get(i).solid));
 				itemProps.setProperty("Condition", Integer.toString(inItems.get(i).condition));
-				// recipeProps.setProperty("Condition" ,
-				// Integer.toString(inItems.get(i).condition));
-				// recipeProps.setProperty("ToolType" ,
-				// inItems.get(i).toolType.toString());
-				// recipeProps.setProperty("Replenishment" ,
-				// Integer.toString(inItems.get(i).replen));
 
 				String switchString = inItems.get(i).getClass().toString().split("\\.")[1];
 				switch (switchString) {
@@ -196,9 +190,16 @@ public class IOClass {
 
 			} catch (IOException e) {
 				System.out.println("failed to load: " + tempItemNames.get(i));
+			} catch(Exception e){
+				System.out.println("failed to load: " + tempItemNames.get(i));
+				e.printStackTrace();
 			}
 		}
-
+		
+//		List<Item> items = new ArrayList<>(tempItems.values());
+//		for(int i = 0; i< tempItems.size(); i++){
+//			System.out.println(items.get(i).getClass().toString().split("\\.")[1]);
+//		}
 		return tempItems;
 	}
 
