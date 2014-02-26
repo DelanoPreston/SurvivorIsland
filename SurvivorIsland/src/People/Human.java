@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import Main.BaseGameFunctions;
 import Main.Entity;
+import Main.MyEventSource;
 
 public class Human extends Entity{
 	/**
@@ -13,13 +14,15 @@ public class Human extends Entity{
 	CommonStats cStats;
 	double[] destination = new double[2];
 	int hunger = 20;
+	MyEventSource source;
 	BaseGameFunctions bgf = new BaseGameFunctions();
 	
 	
-	public Human(String inName, double[] inLocation, int inWeight, boolean inSolid) {
+	public Human(String inName, double[] inLocation, double inWeight, boolean inSolid, MyEventSource inSource) {
 		super(inName, inLocation, inWeight, inSolid);
 		cStats = new CommonStats(bgf.random.nextInt(1), bgf.random.nextInt(3));
 		setDestination(16);
+		source = inSource;
 	}
 	
 	public void update(){

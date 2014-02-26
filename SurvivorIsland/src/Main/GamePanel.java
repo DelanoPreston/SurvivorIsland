@@ -36,6 +36,7 @@ public class GamePanel extends JPanel{
 	transient IOClass iostuff;
 //	Map map;
 	public Level level;
+	MyEventSource source;
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
@@ -49,6 +50,9 @@ public class GamePanel extends JPanel{
 		setFocusable(true);
 		
 		level = new Level();
+		source = new MyEventSource();
+		source.addEventListener(level);
+		
 		
 		//creates the popup menu
 		CreatePopupMenu();
@@ -147,6 +151,10 @@ public class GamePanel extends JPanel{
 		for(int i = 0; i < level.humans.size(); i++){
 			level.humans.get(i).update();
 		}
+		for(int i = 0; i < level.itemEntities.size(); i++){
+			level.itemEntities.get(i).update();
+		}
+		
 	}
 	
 	/**
@@ -187,10 +195,10 @@ public class GamePanel extends JPanel{
 			Update();
 			repaint();
 			
-			if(timer >= 25){
-				System.out.println(timer);
-			}
-			timer++;
+//			if(timer >= 25){
+//				System.out.println(timer);
+//			}
+//			timer++;
 		}
 	}
 	
@@ -240,7 +248,7 @@ public class GamePanel extends JPanel{
 			
 			if(arg0.paramString().contains("new survivor")){
 				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};
-				Survivor survivor = new Survivor("Rob", loc, 150, true);
+				Survivor survivor = new Survivor("Rob", loc, 150, true, ref.source);
 				level.humans.add(survivor);
 			}else if(arg0.paramString().contains("new axe")){
 				double[] loc = {popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY()};

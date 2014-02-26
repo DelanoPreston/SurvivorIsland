@@ -27,9 +27,15 @@ public class Entity extends JComponent{
 		solid = inSolid;
 	}
 	
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }

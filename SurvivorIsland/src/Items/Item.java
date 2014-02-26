@@ -1,8 +1,12 @@
 package Items;
 
 import java.awt.Graphics;
+import java.util.EventObject;
 
 import javax.swing.JComponent;
+
+import Main.MyEventClassListener;
+import Main.MyEventSource;
 
 public class Item extends JComponent{
 	/**
@@ -29,9 +33,13 @@ public class Item extends JComponent{
 		weight = inWeight;
 		solid = inSolid;
 		condition = inCondition;
+//		this.addInputMethodListener(l);
+//		this.add
 	}
 	
 	public void paintComponent(Graphics g) {
 		
 	}
+	
+	
 }
