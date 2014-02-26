@@ -41,9 +41,8 @@ public class ItemCreatorPanel extends JPanel {
 	String itemType;
 	
 	String[] toolTypeArray = { "NONE", "AXE", "SHOVEL", "PICKAXE", "SWORD", "KNIFE", "GUN", "BOW", "CROSSBOW", "STAFF", "HOE", "RAKE", "BUCKET" };
-	JLabel nameL, weightL, conditionL, solidL, durabilityL, replenishmentL, toolTypeL;
+	JLabel nameL, weightL, conditionL, durabilityL, replenishmentL, toolTypeL;
 	JTextField nameTA, weightTA, conditionTA, durabilityTA, replenishmentTA;
-	JCheckBox solidCB;
 	JComboBox<String> toolTypeCB;
 
 	public ItemCreatorPanel() {
@@ -174,8 +173,6 @@ public class ItemCreatorPanel extends JPanel {
 		conditionL = new JLabel("Condition");
 		conditionTA = new JTextField();
 		conditionTA.setMaximumSize(new Dimension(500, 10));
-		solidL = new JLabel("Solid");
-		solidCB = new JCheckBox();
 		durabilityL = new JLabel("Durability");
 		durabilityTA = new JTextField();
 		durabilityTA.setMaximumSize(new Dimension(250, 10));
@@ -211,10 +208,6 @@ public class ItemCreatorPanel extends JPanel {
 		buttonPane.add(conditionL);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		buttonPane.add(conditionTA);
-		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-		buttonPane.add(solidL);
-		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-		buttonPane.add(solidCB);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		buttonPane.add(durabilityL);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -324,14 +317,43 @@ public class ItemCreatorPanel extends JPanel {
 
 				setTextArea();
 			} else if (arg0.getActionCommand().equals("Edit")) {
-
+				//durabilityL, replenishmentL, toolTypeL; durabilityTA, replenishmentTA;
 			} else if (arg0.getSource().toString().contains("Plain Item")) {
+				durabilityL.setVisible(false);
+				durabilityTA.setVisible(false);
+				replenishmentL.setVisible(false);
+				replenishmentTA.setVisible(false);
+				toolTypeL.setVisible(false);
+				toolTypeCB.setVisible(false);
+				//paintImmediately(0,0,600,600);
+				isPaintingOrigin();
 				itemType = "Item";
 			} else if (arg0.getSource().toString().contains("Tool Item")) {
+				durabilityL.setVisible(true);
+				durabilityTA.setVisible(true);
+				replenishmentL.setVisible(false);
+				replenishmentTA.setVisible(false);
+				toolTypeL.setVisible(true);
+				toolTypeCB.setVisible(true);
+				isPaintingOrigin();
 				itemType = "Tool";
 			} else if (arg0.getSource().toString().contains("Food Item")) {
+				durabilityL.setVisible(false);
+				durabilityTA.setVisible(false);
+				replenishmentL.setVisible(true);
+				replenishmentTA.setVisible(true);
+				toolTypeL.setVisible(false);
+				toolTypeCB.setVisible(false);
+				isPaintingOrigin();
 				itemType = "Food";
 			} else if (arg0.getSource().toString().contains("Furniture Item")) {
+				durabilityL.setVisible(true);
+				durabilityTA.setVisible(true);
+				replenishmentL.setVisible(false);
+				replenishmentTA.setVisible(false);
+				toolTypeL.setVisible(false);
+				toolTypeCB.setVisible(false);
+				isPaintingOrigin();
 				itemType = "Furniture";
 			}
 		}
