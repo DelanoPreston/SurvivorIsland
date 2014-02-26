@@ -19,7 +19,7 @@ public class CommonStats implements Serializable{
 		Random random = new Random();
 		stats.put("attack", new Stat(random.nextInt(3)));
 		stats.put("defense", new Stat(random.nextInt(3)));
-		stats.put("speed", new Stat(1));
+		stats.put("speed", new Stat(2));
 		stats.put("visibility", new Stat(random.nextInt(3)));
 		stats.put("strength", new Stat(random.nextInt(3)));
 	}

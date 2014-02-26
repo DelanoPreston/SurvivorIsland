@@ -7,7 +7,6 @@ import java.util.List;
 import Items.Item;
 import Items.ItemEntity;
 import Main.ContentBank;
-import Main.Level;
 import Main.MyEventSource;
 
 public class Survivor extends Human {
@@ -36,24 +35,14 @@ public class Survivor extends Human {
 		double dist = bgf.getDistance(location, destination);
 		switch (job) {
 		case GATHER:
-			if (targetItem == null && Level.itemEntities.size() > 0) {
-				destination = source.fireEntityEvent(this);
-				System.out.println(destination[0] + "," + destination [1]);/////////////////almost!!!!
-				ItemEntity closestItem = null;
-				for (int i = 0; i < Main.Level.itemEntities.size(); i++) {
-					Level.itemEntities.get(i);
-					if (closestItem == null || bgf.getDistance(Level.itemEntities.get(i).location, location) < bgf.getDistance(closestItem.location, location)) {
-						closestItem = Level.itemEntities.get(i);
-					}
-				}
-				targetItem = closestItem;
+			if (targetItem == null && source.getEntityCountEvent() > 0) {
+				targetItem = (ItemEntity)source.findEntityEvent(this);
 				targetItem.targetted = true;
-				break;
 			} else if (targetItem != null) {
 				destination = targetItem.location;
 				if (bgf.getDistance(location, destination) < 5) {
 					inventory.add(targetItem.item);
-					Level.itemEntities.remove(targetItem);
+					source.removeEntityEvent(targetItem);
 					targetItem = null;
 				}
 				break;

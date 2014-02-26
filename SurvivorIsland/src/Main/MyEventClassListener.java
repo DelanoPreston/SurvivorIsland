@@ -1,7 +1,8 @@
 package Main;
 
-
 public interface MyEventClassListener {
-	public double[] handleMyEventClassEvent(Entity e);
+	public Entity handleFindEntityEvent(Entity e);
+	public void handleRemoveEntityEvent(Entity e);
+	public int handleGetEntityCountEvent();
 //	public void hangleMyOtherEventClass(EventObject e);
 }

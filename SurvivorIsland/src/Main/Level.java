@@ -2,7 +2,6 @@ package Main;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 
 import Items.ItemEntity;
@@ -19,13 +18,12 @@ public class Level  implements Serializable, MyEventClassListener{
 	
 	public Map map;
 	public List<Human> humans = new ArrayList<>();
-	public static List<ItemEntity> itemEntities = new ArrayList<>();
+	public List<ItemEntity> itemEntities = new ArrayList<>();
 	public List<Plant> plants = new ArrayList<>();
 	BaseGameFunctions bgf = new BaseGameFunctions();
 	
 	@Override
-	public double[] handleMyEventClassEvent(Entity e) {
-//		System.out.println(e.getSource().toString());
+	public Entity handleFindEntityEvent(Entity e) {
 		ItemEntity closestItem = null;
 		if(e instanceof Survivor){
 			System.out.println(e.location[0] + "," + e.location[1]);
@@ -38,6 +36,16 @@ public class Level  implements Serializable, MyEventClassListener{
 				}
 			}
 		}
-		return closestItem.location;
+		return closestItem;
+	}
+	
+	@Override
+	public void handleRemoveEntityEvent(Entity e){
+		itemEntities.remove(e);
+	}
+	
+	@Override
+	public int handleGetEntityCountEvent(){
+		return itemEntities.size();
 	}
 }

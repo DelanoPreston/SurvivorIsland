@@ -1,12 +1,11 @@
 package Main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import Items.Item;
-
-public class MyEventSource {
+public class MyEventSource implements Serializable{
+	private static final long serialVersionUID = 1515868116459166516L;
 	private List<MyEventClassListener> _listeners = new ArrayList<>();
 
 	public synchronized void addEventListener(MyEventClassListener listener) {
@@ -19,7 +18,7 @@ public class MyEventSource {
 
 	// call this method whenever you want to notify
 	// the event listeners of the particular event
-	public synchronized double[] fireEntityEvent(Entity entity) {
+	public synchronized Entity findEntityEvent(Entity entity) {
 //		MyEventClass event = new MyEventClass(this);
 //		MyEventClass event = new MyEventClass(location);
 		//MyEventClass event = new MyEventClass(entity);
@@ -28,6 +27,12 @@ public class MyEventSource {
 ////			((MyEventClassListener) i.next()).handleMyEventClassEvent(event);
 //			((MyEventClassListener) i.next()).handleMyEventClassEvent(entity);
 //		}
-		return _listeners.get(0).handleMyEventClassEvent(entity);
+		return _listeners.get(0).handleFindEntityEvent(entity);
+	}
+	public synchronized void removeEntityEvent(Entity entity){
+		_listeners.get(0).handleRemoveEntityEvent(entity);
+	}
+	public synchronized int getEntityCountEvent(){
+		return _listeners.get(0).handleGetEntityCountEvent();
 	}
 }
