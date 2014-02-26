@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+import Event.CustomEventSource;
 import Items.ItemEntity;
 import Items.Tool;
 import Items.ToolType;
@@ -36,7 +37,7 @@ public class GamePanel extends JPanel{
 	transient IOClass iostuff;
 //	Map map;
 	public Level level;
-	MyEventSource source;
+	CustomEventSource source;
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
@@ -50,7 +51,7 @@ public class GamePanel extends JPanel{
 		setFocusable(true);
 		
 		level = new Level();
-		source = new MyEventSource();
+		source = new CustomEventSource();
 		source.addEventListener(level);
 		
 		

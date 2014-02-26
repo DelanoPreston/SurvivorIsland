@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import Event.CustomEventSource;
 import Items.Item;
 import Items.ItemEntity;
 import Main.ContentBank;
-import Main.MyEventSource;
 
 public class Survivor extends Human {
 	/**
@@ -20,12 +20,12 @@ public class Survivor extends Human {
 	Job job = Job.GATHER;
 	List<Item> inventory = new ArrayList<>();
 
-	public Survivor(String inName, double[] inLocation, int inWeight, boolean inSolid, MyEventSource inSource) {
+	public Survivor(String inName, double[] inLocation, int inWeight, boolean inSolid, CustomEventSource inSource) {
 		super(inName, inLocation, inWeight, inSolid, inSource);
 		wStats = new WorkingStats();
 	}
 
-	public Survivor(Survivor dad, Survivor mom, MyEventSource inSource) {
+	public Survivor(Survivor dad, Survivor mom, CustomEventSource inSource) {
 		super(dad.name, dad.location, 3.6, false, inSource);
 
 	}

@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import Event.EntityEvent;
+import Event.CustomEventClassListener;
+import Event.StringEvent;
 import Items.ItemEntity;
 import Maps.Map;
 import People.Human;
-import People.Survivor;
 import Plants.Plant;
 
-public class Level implements Serializable, MyEventClassListener {
+public class Level implements Serializable, CustomEventClassListener {
 	/**
 	 * 
 	 */
@@ -23,15 +25,15 @@ public class Level implements Serializable, MyEventClassListener {
 	BaseGameFunctions bgf = new BaseGameFunctions();
 
 	@Override
-	public Entity handleFindEntityEvent(Entity e, String s) {
+	public Entity handleFindEntityEvent(EntityEvent e) {
 		Entity entity = null;
-		switch (s.toLowerCase()) {
+		switch (e.entityType.toLowerCase()) {
 		case "itementities":
-			System.out.println(e.location[0] + "," + e.location[1]);
+			System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
 
 			for (int i = 0; i < itemEntities.size(); i++) {
 				itemEntities.get(i);
-				if (entity == null || bgf.getDistance(itemEntities.get(i).location, e.location) < bgf.getDistance(entity.location, e.location)) {
+				if (entity == null || bgf.getDistance(itemEntities.get(i).location, e.entity.location) < bgf.getDistance(entity.location, e.entity.location)) {
 					entity = itemEntities.get(i);
 				}
 			}
@@ -48,8 +50,8 @@ public class Level implements Serializable, MyEventClassListener {
 	}
 
 	@Override
-	public void handleRemoveEntityEvent(Entity e, String s) {
-		switch (s.toLowerCase()) {
+	public void handleRemoveEntityEvent(EntityEvent e) {
+		switch (e.entityType.toLowerCase()) {
 		case "itementities":
 			itemEntities.remove(e);
 			break;
@@ -63,8 +65,8 @@ public class Level implements Serializable, MyEventClassListener {
 	}
 
 	@Override
-	public int handleGetEntityCountEvent(String s) {
-		switch (s.toLowerCase()) {
+	public int handleGetEntityCountEvent(StringEvent e) {
+		switch (e.entityType.toLowerCase()) {
 		case "itementities":
 			return itemEntities.size();
 		case "plants":

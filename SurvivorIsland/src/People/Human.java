@@ -2,9 +2,9 @@ package People;
 
 import java.awt.Graphics;
 
+import Event.CustomEventSource;
 import Main.BaseGameFunctions;
 import Main.Entity;
-import Main.MyEventSource;
 
 public class Human extends Entity{
 	/**
@@ -14,11 +14,11 @@ public class Human extends Entity{
 	CommonStats cStats;
 	double[] destination = new double[2];
 	int hunger = 20;
-	MyEventSource source;
+	CustomEventSource source;
 	BaseGameFunctions bgf = new BaseGameFunctions();
 	
 	
-	public Human(String inName, double[] inLocation, double inWeight, boolean inSolid, MyEventSource inSource) {
+	public Human(String inName, double[] inLocation, double inWeight, boolean inSolid, CustomEventSource inSource) {
 		super(inName, inLocation, inWeight, inSolid);
 		cStats = new CommonStats(bgf.random.nextInt(1), bgf.random.nextInt(3));
 		setDestination(16);

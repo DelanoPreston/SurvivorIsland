@@ -5,8 +5,8 @@ import java.util.EventObject;
 
 import javax.swing.JComponent;
 
-import Main.MyEventClassListener;
-import Main.MyEventSource;
+import Event.CustomEventClassListener;
+import Event.CustomEventSource;
 
 public class Item extends JComponent{
 	/**

@@ -3,10 +3,10 @@ package Items;
 import java.awt.Graphics;
 import java.util.EventObject;
 
+import Event.CustomEventClassListener;
+import Event.CustomEventSource;
 import Main.ContentBank;
 import Main.Entity;
-import Main.MyEventClassListener;
-import Main.MyEventSource;
 
 public class ItemEntity extends Entity{
 	/**
