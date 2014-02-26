@@ -176,6 +176,10 @@ public class GamePanel extends JPanel {
 
 		if (level != null)
 			level.paintComponent(g2D);
+		
+		//this resets the at for the j components to draw normally
+		at = new AffineTransform();
+		g2D.setTransform(at);
 	}
 
 	/**
@@ -263,7 +267,7 @@ public class GamePanel extends JPanel {
 			} else if (arg0.paramString().contains("Load")) {
 				level = ref.iostuff.loadLevel("name");
 			} else if (arg0.paramString().contains("Exit")) {
-
+				System.exit(0);
 			}
 			// else if(arg0.paramString().contains("Poison")){
 			// NewTower(ContentBank.TowerType.Poison);

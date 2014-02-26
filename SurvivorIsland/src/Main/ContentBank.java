@@ -29,6 +29,9 @@ public class ContentBank {
 	public static HashMap<String, Item> food = new HashMap<>();
 	public static HashMap<String, Item> furniture = new HashMap<>();
 
+	public static String[] boySurviorNames = {"Rob", "Jared", "Doug", "Rufus", "Royce"};
+	public static String[] girlSurviorNames = {"Sara", "Casandra", "Elizabeth", "Susan", "Erica"};
+	
 	public static void ContentLoader() {
 		loadImages();
 		loadItems();
