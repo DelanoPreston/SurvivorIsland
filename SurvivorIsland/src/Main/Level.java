@@ -25,11 +25,13 @@ public class Level implements Serializable, CustomEventClassListener {
 	public List<FurnitureEntity> furnitureEntities = new ArrayList<>();
 	public List<Plant> plants = new ArrayList<>();
 	BaseGameFunctions bgf = new BaseGameFunctions();
+	public Entity selectedEntity = null;
 	
 	public void paintComponent(Graphics2D g2D){
 		map.paintComponent(g2D);
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).paintComponent(g2D);
+			g2D.drawOval((int)humans.get(i).location[0] - 25, (int)humans.get(i).location[1] - 25, 50, 50);
 		}
 		for (int i = 0; i < itemEntities.size(); i++) {
 			itemEntities.get(i).paintComponent(g2D);
@@ -78,11 +80,14 @@ public class Level implements Serializable, CustomEventClassListener {
 		case "plants":
 			break;
 		case "humans":
+			for (int i = 0; i < humans.size(); i++) {
+				humans.get(i);
+				if (entity == null || bgf.getDistance(humans.get(i).location, e.entity.location) < bgf.getDistance(entity.location, e.entity.location)) {
+					entity = humans.get(i);
+				}
+			}
 			break;
 		}
-		// if (e instanceof Survivor) {
-		//
-		// }
 		return entity;
 	}
 

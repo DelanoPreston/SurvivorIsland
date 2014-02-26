@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+import Entity.Entity;
 import Entity.FurnitureEntity;
 import Entity.ItemEntity;
 import Event.CustomEventSource;
@@ -172,7 +173,7 @@ public class GamePanel extends JPanel {
 		at.translate(translateX, translateY);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setTransform(at);
-		
+
 		if (level != null)
 			level.paintComponent(g2D);
 	}
@@ -284,6 +285,7 @@ public class GamePanel extends JPanel {
 		private int lastOffsetX;
 		private int lastOffsetY;
 		Point2D location = null;
+		BaseGameFunctions bgf = new BaseGameFunctions();
 
 		PopupListener(JPopupMenu popupMenu, GamePanel inGamePanel) {
 			reference = inGamePanel;
@@ -353,20 +355,25 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			// this is clicking with no movement
+			// System.out.println("mouse clicked");
+			double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+			Entity temp = new Entity("mouse", loc, 0.0);
+			reference.level.selectedEntity = reference.source.findEntityEvent(temp, "humans");
+			if (reference.level.selectedEntity != null && bgf.getDistance(loc, reference.level.selectedEntity.location) < 25)
+				System.out.println("you found: " + reference.level.selectedEntity.name);
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			// this is when the mouse enters the jpanel i think
+			// System.out.println("mouse entered");
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			// this is when the mouse exits the jpanel i think
+			// System.out.println("mouse exited");
 		}
 	}
 }

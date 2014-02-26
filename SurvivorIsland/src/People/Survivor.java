@@ -14,6 +14,7 @@ public class Survivor extends Human {
 	 * 
 	 */
 	private static final long serialVersionUID = 8276603702773051758L;
+	int timer = 0;
 	int happiness;
 	WorkingStats wStats;
 	ItemEntity targetItem;
@@ -43,6 +44,7 @@ public class Survivor extends Human {
 			if (targetItem == null && source.getEntityCountEvent("itementities") > 0) {
 				targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
 				targetItem.targetted = true;
+				break;
 			} else if (targetItem != null) {
 				destination = targetItem.location;
 				if (bgf.getDistance(location, destination) < 5) {
@@ -55,15 +57,22 @@ public class Survivor extends Human {
 		case NONE:
 			// wander
 			if (dist < 5) {
-				setDestination(32);
+				timer++;
+				if (timer >= 100) {
+					setDestination(32);
+					timer = 0;
+				}
+
 			}
 			break;
 		default:
 			break;
 		}
+		if (dist > 5) {
+			location[0] -= bgf.getComponentLengths(location, destination, cStats.stats.get("speed").level)[0];
+			location[1] -= bgf.getComponentLengths(location, destination, cStats.stats.get("speed").level)[1];
+		}
 
-		location[0] -= bgf.getComponentLengths(location, destination, cStats.stats.get("speed").level)[0];
-		location[1] -= bgf.getComponentLengths(location, destination, cStats.stats.get("speed").level)[1];
 	}
 
 	@Override
