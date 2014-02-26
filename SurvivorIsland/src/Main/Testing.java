@@ -13,10 +13,10 @@ public class Testing {
 	public static void main(String[] args) {
 //		(String inName, double inWeight, boolean inSolid, int inCond, ToolType inToolType, int inReplen, int inStorageCap){
 		
-		Furniture chest = new Furniture("chest", 12.0, true, 300);
-		Tool axe = new Tool("axe", 10.0, false, 100, ToolType.AXE, 100);
+		Furniture chest = new Furniture("chest", 12.0, 300);
+		Tool axe = new Tool("axe", 10.0, 100, ToolType.AXE, 100);
 		chest.addItemToChest(axe);
-		axe = new Tool("axe2qwer", 100, false, 100, ToolType.AXE, 200);
+		axe = new Tool("axe2qwer", 100, 100, ToolType.AXE, 200);
 		chest.addItemToChest(axe);
 		
 		Item holder = null;

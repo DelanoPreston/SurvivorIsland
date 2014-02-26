@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import Main.Entity;
+import Entity.Entity;
 
 public class CustomEventSource implements Serializable{
 	private static final long serialVersionUID = 1515868116459166516L;

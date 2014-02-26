@@ -7,8 +7,8 @@ public class Furniture extends Item {
 	private static final long serialVersionUID = -887641074375066035L;
 	List<Item> storage = new ArrayList<>();
 
-	public Furniture(String inName, double inWeight, boolean inSolid, int inCondition) {
-		super(inName, inWeight, inSolid, inCondition);
+	public Furniture(String inName, double inWeight, int inCondition) {
+		super(inName, inWeight, inCondition);
 	}
 
 	public void addItemToChest(Item inItem) {

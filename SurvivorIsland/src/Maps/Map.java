@@ -17,6 +17,10 @@ public class Map extends JComponent{
 		map = createMap(mapKey);
 	}
 	
+	public void update(){
+		
+	}
+	
 	@Override
 	public void paintComponent(Graphics g){
 		for(int i = 0; i < map.length; i++){

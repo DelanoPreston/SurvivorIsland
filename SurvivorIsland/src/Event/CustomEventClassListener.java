@@ -2,7 +2,7 @@ package Event;
 
 import java.util.EventListener;
 
-import Main.Entity;
+import Entity.Entity;
 
 public interface CustomEventClassListener extends EventListener{
 	public Entity handleFindEntityEvent(EntityEvent e);

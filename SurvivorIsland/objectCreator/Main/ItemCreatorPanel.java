@@ -296,24 +296,24 @@ public class ItemCreatorPanel extends JPanel {
 							int tempCondition = Integer.parseInt(conditionTA.getText());
 							switch (itemType) {
 							case "Item":
-								Item tempItem = new Item(tempName, tempWeight, false, tempCondition);
+								Item tempItem = new Item(tempName, tempWeight, tempCondition);
 								items.add(tempItem);
 								break;
 							case "Food":
 								if (!replenishmentTA.getText().equals("") && !replenishmentTA.getText().equals(null)) {
 									int tempReplen = Integer.parseInt(replenishmentTA.getText());
-									Food tempFood = new Food(tempName, tempWeight, false, tempCondition, tempReplen);
+									Food tempFood = new Food(tempName, tempWeight, tempCondition, tempReplen);
 									items.add(tempFood);
 								}
 								break;
 							case "Furniture":
-								Furniture tempFurniture = new Furniture(tempName, tempWeight, false, tempCondition);
+								Furniture tempFurniture = new Furniture(tempName, tempWeight, tempCondition);
 								items.add(tempFurniture);
 								break;
 							case "Tool":
 								if (!durabilityTA.getText().equals("") && !durabilityTA.getText().equals(null)) {
 									int tempDura = Integer.parseInt(durabilityTA.getText());
-									Tool tempTool = new Tool(tempName, tempWeight, false, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
+									Tool tempTool = new Tool(tempName, tempWeight, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
 									items.add(tempTool);
 								}
 								break;

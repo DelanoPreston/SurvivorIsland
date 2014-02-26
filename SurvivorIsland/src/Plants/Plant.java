@@ -1,6 +1,6 @@
 package Plants;
 
-import Main.Entity;
+import Entity.Entity;
 
 public class Plant extends Entity {
 

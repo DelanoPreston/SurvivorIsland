@@ -11,7 +11,6 @@ public class Item extends JComponent {
 	private static final long serialVersionUID = -8067743070572962088L;
 	public String name;
 	public double weight;
-	public boolean solid;
 	public int condition;
 	public int imageKey;
 
@@ -31,10 +30,9 @@ public class Item extends JComponent {
 	 * @param inReplen
 	 *            - replenish of the Item
 	 */
-	public Item(String inName, double inWeight, boolean inSolid, int inCondition) {
+	public Item(String inName, double inWeight, int inCondition) {
 		name = inName;
 		weight = inWeight;
-		solid = inSolid;
 		condition = inCondition;
 		// this.addInputMethodListener(l);
 		// this.add

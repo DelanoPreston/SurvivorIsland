@@ -92,7 +92,7 @@ public class IOClass {
 				itemProps.setProperty("Type", inItems.get(i).getClass().toString().split("\\.")[1]);
 				itemProps.setProperty("Name", inItems.get(i).name);
 				itemProps.setProperty("Weight", Double.toString(inItems.get(i).weight));
-				itemProps.setProperty("Solid", Boolean.toString(inItems.get(i).solid));
+//				itemProps.setProperty("Solid", Boolean.toString(inItems.get(i).solid));
 				itemProps.setProperty("Condition", Integer.toString(inItems.get(i).condition));
 
 				String switchString = inItems.get(i).getClass().toString().split("\\.")[1];
@@ -158,27 +158,27 @@ public class IOClass {
 				String tempName = itemProps.getProperty("Name");
 				double tempWeight = Double.parseDouble(itemProps.getProperty("Weight"));
 				int tempCondition = Integer.parseInt(itemProps.getProperty("Condition"));
-				boolean tempSolid = Boolean.parseBoolean(itemProps.getProperty("Solid"));
+//				boolean tempSolid = Boolean.parseBoolean(itemProps.getProperty("Solid"));
 				ToolType tempToolType = ToolType.NONE;
 				int tempDurability = 0;
 				int tempReplen = 0;
 				switch (itemType) {
 				case "Item":
-					temp = new Item(tempName, tempWeight, tempSolid, tempCondition);
+					temp = new Item(tempName, tempWeight, tempCondition);
 					break;
 				case "Tool":
 					tempToolType = ToolType.valueOf(itemProps.getProperty("ToolType"));
 					if (itemProps.containsKey("Durability"))
 						tempDurability = Integer.parseInt(itemProps.getProperty("Durability"));
-					temp = new Tool(tempName, tempWeight, tempSolid, tempCondition, tempToolType, tempDurability);
+					temp = new Tool(tempName, tempWeight, tempCondition, tempToolType, tempDurability);
 					break;
 				case "Furniture":
 					tempDurability = Integer.parseInt(itemProps.getProperty("Condition"));
-					temp = new Furniture(tempName, tempWeight, tempSolid, tempCondition);
+					temp = new Furniture(tempName, tempWeight, tempCondition);
 					break;
 				case "Food":
 					tempReplen = Integer.parseInt(itemProps.getProperty("Replenishment"));
-					temp = new Food(tempName, tempWeight, tempSolid, tempReplen, tempCondition);
+					temp = new Food(tempName, tempWeight, tempReplen, tempCondition);
 					break;
 				default:
 					break;

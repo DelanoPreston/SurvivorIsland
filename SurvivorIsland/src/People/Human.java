@@ -2,9 +2,9 @@ package People;
 
 import java.awt.Graphics;
 
+import Entity.Entity;
 import Event.CustomEventSource;
 import Main.BaseGameFunctions;
-import Main.Entity;
 
 public class Human extends Entity{
 	/**

@@ -2,7 +2,7 @@ package Event;
 
 import java.util.EventObject;
 
-import Main.Entity;
+import Entity.Entity;
 
 public class EntityEvent extends EventObject {
 	private static final long serialVersionUID = -2516985610201628221L;

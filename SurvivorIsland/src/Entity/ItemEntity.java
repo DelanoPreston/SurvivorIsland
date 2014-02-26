@@ -1,9 +1,9 @@
-package Items;
+package Entity;
 
 import java.awt.Graphics;
 
+import Items.Item;
 import Main.ContentBank;
-import Main.Entity;
 
 public class ItemEntity extends Entity {
 	private static final long serialVersionUID = -1163587124918848417L;
@@ -13,7 +13,7 @@ public class ItemEntity extends Entity {
 	// MyEventSource source;
 
 	public ItemEntity(Item inItem, double[] inLocation) {
-		super(inItem.name, inLocation, inItem.weight, inItem.solid);
+		super(inItem.name, inLocation, inItem.weight);
 		targetted = false;
 		item = inItem;
 		// source = new MyEventSource();
@@ -31,13 +31,4 @@ public class ItemEntity extends Entity {
 
 		g.drawImage(ContentBank.woodenAxe, (int) location[0], (int) location[1], null);
 	}
-
-	// class EventListener implements MyEventClassListener{
-	//
-	// @Override
-	// public void handleMyEventClassEvent(EventObject e) {
-	// // System.out.println(e.getSource().toString());
-	// }
-	//
-	// }
 }

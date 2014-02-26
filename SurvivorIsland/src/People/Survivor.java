@@ -4,9 +4,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import Entity.ItemEntity;
 import Event.CustomEventSource;
 import Items.Item;
-import Items.ItemEntity;
 import Main.ContentBank;
 
 public class Survivor extends Human {
@@ -35,8 +35,13 @@ public class Survivor extends Human {
 		double dist = bgf.getDistance(location, destination);
 		switch (job) {
 		case GATHER:
+			/*
+			 * if(targetItem == null && inventory.size() > 1){ targetItem =
+			 * (ItemEntity)source.findEntityEvent(this,
+			 * "item:furnitureEntities"); // targetItem.targetted = true; }else
+			 */
 			if (targetItem == null && source.getEntityCountEvent("itementities") > 0) {
-				targetItem = (ItemEntity)source.findEntityEvent(this, "itementities");
+				targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
 				targetItem.targetted = true;
 			} else if (targetItem != null) {
 				destination = targetItem.location;

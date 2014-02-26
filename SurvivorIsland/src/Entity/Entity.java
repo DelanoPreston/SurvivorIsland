@@ -1,4 +1,4 @@
-package Main;
+package Entity;
 
 import java.awt.Graphics;
 
@@ -14,17 +14,19 @@ public class Entity extends JComponent{
 	public boolean solid;
 	public double weight;
 	
-	public Entity(String inName, double inWeight, boolean inSolid){
-		name = inName;
-		weight = inWeight;
-		solid = inSolid;
-	}
+	
 	
 	public Entity(String inName, double[] inLocation, double inWeight, boolean inSolid){
 		name = inName;
 		location = inLocation;
 		weight = inWeight;
 		solid = inSolid;
+	}
+	
+	public Entity(String inName, double[] inLocation, double inWeight){
+		name = inName;
+		location = inLocation;
+		weight = inWeight;
 	}
 	
 	public void update() {
