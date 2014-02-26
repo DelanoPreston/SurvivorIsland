@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class CommonStats implements Serializable{
+	private static final long serialVersionUID = 4393463075886017235L;
 	public HashMap<String, Stat> stats = new HashMap<String, Stat>();
 	int gender;
 	int race;

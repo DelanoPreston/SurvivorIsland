@@ -42,7 +42,6 @@ public class Human extends Entity{
 	protected void setDestination(int range){
 		destination[0] = location[0] + bgf.random.nextInt(range * 2) - range;
 		destination[1] = location[1] + bgf.random.nextInt(range * 2) - range;
-		int i = 0;
 	}
 
 }

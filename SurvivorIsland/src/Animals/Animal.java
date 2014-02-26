@@ -2,10 +2,11 @@ package Animals;
 
 import Main.Entity;
 
-public class Animal extends Entity{
+public class Animal extends Entity {
+	private static final long serialVersionUID = 481638741773743044L;
 	int health;
 	MovementType movementType;
-	
+
 	/**
 	 * 
 	 * @param inName
@@ -17,7 +18,7 @@ public class Animal extends Entity{
 		super(inName, inWeight, inSolid);
 		health = inHealth;
 	}
-	
+
 	/**
 	 * 
 	 * @param inName

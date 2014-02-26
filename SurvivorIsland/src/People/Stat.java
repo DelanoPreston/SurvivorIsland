@@ -3,6 +3,7 @@ package People;
 import java.io.Serializable;
 
 public class Stat implements Serializable{
+	private static final long serialVersionUID = -4795703727497778867L;
 	public int level;
 	public int progress;
 	public int nextLevel;

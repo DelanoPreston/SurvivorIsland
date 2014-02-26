@@ -145,7 +145,7 @@ public class ItemCreatorPanel extends JPanel {
 		buttonPane.add(printButton);
 
 		// add action listeners
-		ButtonListener buttonListener = new ButtonListener(this);
+		ButtonListener buttonListener = new ButtonListener();//this);
 		recipeTypeComboBox.addActionListener(buttonListener);
 		addButton.addActionListener(buttonListener);
 		printButton.addActionListener(buttonListener);
@@ -278,10 +278,10 @@ public class ItemCreatorPanel extends JPanel {
 	 * 
 	 */
 	private class ButtonListener implements ActionListener {
-		ItemCreatorPanel ref;
+//		ItemCreatorPanel ref;
 
-		public ButtonListener(ItemCreatorPanel inRef) {
-			ref = inRef;
+		public ButtonListener(){//ItemCreatorPanel inRef) {
+//			ref = inRef;
 		}
 
 		@Override

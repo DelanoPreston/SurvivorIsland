@@ -1,14 +1,10 @@
 package Items;
 
 import java.awt.Graphics;
-import java.util.EventObject;
 
 import javax.swing.JComponent;
 
-import Event.CustomEventClassListener;
-import Event.CustomEventSource;
-
-public class Item extends JComponent{
+public class Item extends JComponent {
 	/**
 	 * 
 	 */
@@ -18,28 +14,34 @@ public class Item extends JComponent{
 	public boolean solid;
 	public int condition;
 	public int imageKey;
-	
+
 	/**
 	 * constructor for Item
-	 * @param inName - name of the Item
-	 * @param inWeight - weight of the Item
-	 * @param inSolid - if the Item is solid
-	 * @param inCond - condition of the Item
-	 * @param inToolType - type of the Item
-	 * @param inReplen - replenish of the Item
+	 * 
+	 * @param inName
+	 *            - name of the Item
+	 * @param inWeight
+	 *            - weight of the Item
+	 * @param inSolid
+	 *            - if the Item is solid
+	 * @param inCond
+	 *            - condition of the Item
+	 * @param inToolType
+	 *            - type of the Item
+	 * @param inReplen
+	 *            - replenish of the Item
 	 */
-	public Item(String inName,double inWeight, boolean inSolid, int inCondition) {
+	public Item(String inName, double inWeight, boolean inSolid, int inCondition) {
 		name = inName;
 		weight = inWeight;
 		solid = inSolid;
 		condition = inCondition;
-//		this.addInputMethodListener(l);
-//		this.add
+		// this.addInputMethodListener(l);
+		// this.add
 	}
-	
+
 	public void paintComponent(Graphics g) {
-		
+
 	}
-	
-	
+
 }

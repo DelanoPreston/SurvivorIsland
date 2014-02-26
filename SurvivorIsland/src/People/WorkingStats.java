@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class WorkingStats implements Serializable{
+	private static final long serialVersionUID = 5218390195192939512L;
 	HashMap<String, Stat> stats = new HashMap<String, Stat>();
 	
 	WorkingStats(){
