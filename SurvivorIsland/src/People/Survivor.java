@@ -35,14 +35,14 @@ public class Survivor extends Human {
 		double dist = bgf.getDistance(location, destination);
 		switch (job) {
 		case GATHER:
-			if (targetItem == null && source.getEntityCountEvent() > 0) {
-				targetItem = (ItemEntity)source.findEntityEvent(this);
+			if (targetItem == null && source.getEntityCountEvent("itementities") > 0) {
+				targetItem = (ItemEntity)source.findEntityEvent(this, "itementities");
 				targetItem.targetted = true;
 			} else if (targetItem != null) {
 				destination = targetItem.location;
 				if (bgf.getDistance(location, destination) < 5) {
 					inventory.add(targetItem.item);
-					source.removeEntityEvent(targetItem);
+					source.removeEntityEvent(targetItem, "itementities");
 					targetItem = null;
 				}
 				break;

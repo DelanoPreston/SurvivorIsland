@@ -18,7 +18,7 @@ public class MyEventSource implements Serializable{
 
 	// call this method whenever you want to notify
 	// the event listeners of the particular event
-	public synchronized Entity findEntityEvent(Entity entity) {
+	public synchronized Entity findEntityEvent(Entity entity, String s) {
 //		MyEventClass event = new MyEventClass(this);
 //		MyEventClass event = new MyEventClass(location);
 		//MyEventClass event = new MyEventClass(entity);
@@ -27,12 +27,12 @@ public class MyEventSource implements Serializable{
 ////			((MyEventClassListener) i.next()).handleMyEventClassEvent(event);
 //			((MyEventClassListener) i.next()).handleMyEventClassEvent(entity);
 //		}
-		return _listeners.get(0).handleFindEntityEvent(entity);
+		return _listeners.get(0).handleFindEntityEvent(entity, s);
 	}
-	public synchronized void removeEntityEvent(Entity entity){
-		_listeners.get(0).handleRemoveEntityEvent(entity);
+	public synchronized void removeEntityEvent(Entity entity, String s){
+		_listeners.get(0).handleRemoveEntityEvent(entity, s);
 	}
-	public synchronized int getEntityCountEvent(){
-		return _listeners.get(0).handleGetEntityCountEvent();
+	public synchronized int getEntityCountEvent(String s){
+		return _listeners.get(0).handleGetEntityCountEvent(s);
 	}
 }
