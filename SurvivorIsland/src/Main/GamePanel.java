@@ -14,8 +14,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
