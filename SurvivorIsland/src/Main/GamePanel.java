@@ -14,6 +14,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -215,8 +217,9 @@ public class GamePanel extends JPanel {
 			int key = arg0.getKeyCode();
 
 			if (key == KeyEvent.VK_SPACE) {
-				// Creep tempCreep = new Creep(1.0, map.mapPath, 10.0, 1);
-				// creeps.add(tempCreep);
+				
+				level.testingAddDestination();
+				
 			}
 		}
 
@@ -361,11 +364,14 @@ public class GamePanel extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// this is clicking with no movement
 			// System.out.println("mouse clicked");
-			double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+//			double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+			double[] loc = { e.getX(), e.getY() };
 			Entity temp = new Entity("mouse", loc, 0.0);
 			reference.level.selectedEntity = reference.source.findEntityEvent(temp, "humans");
 			if (reference.level.selectedEntity != null && bgf.getDistance(loc, reference.level.selectedEntity.location) < 25)
 				System.out.println("you found: " + reference.level.selectedEntity.name);
+			else
+				System.out.println("no one is there");
 		}
 
 		@Override

@@ -27,6 +27,17 @@ public class Level implements Serializable, CustomEventClassListener {
 	BaseGameFunctions bgf = new BaseGameFunctions();
 	public Entity selectedEntity = null;
 	
+	public void testingAddDestination(){
+		List<double[]> tempDoub = new ArrayList<>();
+		double[] temp1 = {400, 100};
+		tempDoub.add(temp1);
+		double[] temp2 = {100, 100};
+		tempDoub.add(temp2);
+		double[] temp3 = {200, 200};
+		tempDoub.add(temp3);
+		humans.get(0).destination = tempDoub;
+	}
+	
 	public void paintComponent(Graphics2D g2D){
 		map.paintComponent(g2D);
 		for (int i = 0; i < humans.size(); i++) {

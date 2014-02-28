@@ -9,31 +9,38 @@ import javax.swing.JComponent;
 import Main.ContentBank;
 
 @SuppressWarnings("serial")
-public class Map extends JComponent{
+public class Map extends JComponent implements TileBasedMap {
 	MapTile[][] map;
 	Random random;
+
+//	/** The terrain settings for each tile in the map */
+//	private int[][] terrain = new int[map.length][map[0].length];
+//	/** The unit in each tile of the map */
+//	private int[][] units = new int[map.length][map[0].length];
+	/** Indicator if a given tile has been visited during the search */
+	private boolean[][] visited = new boolean[map.length][map[0].length];
 	
-	public Map(char[][] mapKey){
+	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
 	}
-	
-	public void update(){
-		
+
+	public void update() {
+
 	}
-	
+
 	@Override
-	public void paintComponent(Graphics g){
-		for(int i = 0; i < map.length; i++){
-			for(int j = 0; j < map[0].length; j++){
-//				map[i][j].
+	public void paintComponent(Graphics g) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				// map[i][j].
 				drawTile(g, map[i][j].getType(), i * 64, j * 64);
 			}
 		}
 	}
-	
-	private void drawTile(Graphics g, TileType tileType, int xPos, int yPos){
+
+	private void drawTile(Graphics g, TileType tileType, int xPos, int yPos) {
 		Image temp = null;
-		switch(tileType){
+		switch (tileType) {
 		case SEA:
 			temp = ContentBank.sea;
 			break;
@@ -52,15 +59,45 @@ public class Map extends JComponent{
 		}
 		g.drawImage(temp, xPos, yPos, null);
 	}
-	
-	private MapTile[][] createMap(char[][] mapKey){
+
+	private MapTile[][] createMap(char[][] mapKey) {
 		MapTile[][] temp = new MapTile[mapKey.length][mapKey[0].length];
-		
-		for(int i = 0; i < mapKey.length; i++){
-			for(int j = 0; j < mapKey[i].length; j++){
+
+		for (int i = 0; i < mapKey.length; i++) {
+			for (int j = 0; j < mapKey[i].length; j++) {
 				temp[i][j] = new MapTile(mapKey[i][j]);
 			}
 		}
 		return temp;
+	}
+
+	@Override
+	public int getWidthInTiles() {
+		// TODO Auto-generated method stub
+		return map[0].length;
+	}
+
+	@Override
+	public int getHeightInTiles() {
+		// TODO Auto-generated method stub
+		return map.length;
+	}
+
+	@Override
+	public void pathFinderVisited(int x, int y) {
+		// TODO Auto-generated method stub
+		visited[x][y] = true;
+	}
+
+	@Override
+	public boolean blocked(UnitMover mover, int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public float getCost(UnitMover mover, int sx, int sy, int tx, int ty) {
+		// no cost implemented yet
+		return 0;
 	}
 }

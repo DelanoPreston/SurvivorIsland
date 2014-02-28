@@ -33,44 +33,57 @@ public class Survivor extends Human {
 
 	@Override
 	public void update() {
-		double dist = bgf.getDistance(location, destination);
-		switch (job) {
-		case GATHER:
-			/*
-			 * if(targetItem == null && inventory.size() > 1){ targetItem =
-			 * (ItemEntity)source.findEntityEvent(this,
-			 * "item:furnitureEntities"); // targetItem.targetted = true; }else
-			 */
-			if (targetItem == null && source.getEntityCountEvent("itementities") > 0) {
-				targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
-				targetItem.targetted = true;
-				break;
-			} else if (targetItem != null) {
-				destination = targetItem.location;
-				if (bgf.getDistance(location, destination) < 5) {
-					inventory.add(targetItem.item);
-					source.removeEntityEvent(targetItem, "itementities");
-					targetItem = null;
-				}
-				break;
+		try {
+			double dist = 0.0;
+			if (destination.size() > 0)
+				dist = bgf.getDistance(location, destination.get(destinationIndex));
+			if (dist > 5) {
+				double tempVal = bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[0];
+				location[0] -= tempVal;
+				tempVal = bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[1];
+				location[1] -= tempVal;
 			}
-		case NONE:
-			// wander
-			if (dist < 5) {
-				timer++;
-				if (timer >= 100) {
-					setDestination(32);
-					timer = 0;
+			switch (job) {
+			case GATHER:
+				/*
+				 * if(targetItem == null && inventory.size() > 1){ targetItem =
+				 * (ItemEntity)source.findEntityEvent(this,
+				 * "item:furnitureEntities"); // targetItem.targetted = true;
+				 * }else
+				 */
+				if (targetItem == null && source.getEntityCountEvent("itementities") > 0) {
+					targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
+					targetItem.targetted = true;
+					destination.add(targetItem.location);
+					break;
+				} else if (targetItem != null) {
+					// destination = targetItem.location;
+					double tempdist = bgf.getDistance(location, targetItem.location);// destination.get(destinationIndex));
+					if (tempdist < 5) {
+						inventory.add(targetItem.item);
+						source.removeEntityEvent(targetItem, "itementities");
+						targetItem = null;
+					}
+					break;
 				}
+			case NONE:
+				// wander
+				if (dist < 5) {
+					if (destination.size() > 0)
+						destination.remove(0);
+					timer++;
+					if (timer >= 100) {
+						setDestination(32);
+						timer = 0;
+					}
 
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
-		}
-		if (dist > 5) {
-			location[0] -= bgf.getComponentLengths(location, destination, cStats.stats.get("speed").level)[0];
-			location[1] -= bgf.getComponentLengths(location, destination, cStats.stats.get("speed").level)[1];
+		} catch (Exception e) {
+
 		}
 
 	}

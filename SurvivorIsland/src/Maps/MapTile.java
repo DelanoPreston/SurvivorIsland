@@ -2,36 +2,33 @@ package Maps;
 
 import javax.swing.JComponent;
 
-public class MapTile extends JComponent{
-	/**
-	 * 
-	 */
+public class MapTile extends JComponent {
+
 	private static final long serialVersionUID = -2832950817061632470L;
 	TileType type;
 	Covering covering;
-	
-	public MapTile(){
-		
+
+	public MapTile() {
+
 	}
-	
-	public MapTile(char inType){
+
+	public MapTile(char inType) {
 		setType(inType);
-		if(inType == 'j')
+		if (inType == 'j')
 			covering = Covering.JUNGLE;
-		else if(inType == 'f')
+		else if (inType == 'f')
 			covering = Covering.FOREST;
 		else
 			covering = Covering.NONE;
-		
-		
+
 	}
-	
-	public TileType getType(){
+
+	public TileType getType() {
 		return type;
 	}
-	
-	public void setType(char inchar){
-		switch(inchar){
+
+	public void setType(char inchar) {
+		switch (inchar) {
 		case 's':
 			type = TileType.SEA;
 			break;
