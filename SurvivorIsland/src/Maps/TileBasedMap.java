@@ -1,5 +1,7 @@
 package Maps;
 
+import Entity.Entity;
+
 public interface TileBasedMap {
 	/**
 	 * Get the width of the tile map. The slightly odd name is used to
@@ -41,7 +43,7 @@ public interface TileBasedMap {
 	 *            The y coordinate of the tile to check
 	 * @return True if the location is blocked
 	 */
-	public boolean blocked(UnitMover mover, int x, int y);
+	public boolean blocked(Entity entity, int x, int y);
 
 	/**
 	 * Get the cost of moving through the given tile. This can be used to make
@@ -60,5 +62,5 @@ public interface TileBasedMap {
 	 *            The y coordinate of the tile we're moving to
 	 * @return The relative cost of moving across the given tile
 	 */
-	public float getCost(UnitMover mover, int sx, int sy, int tx, int ty);
+	public float getCost(Entity entity, int sx, int sy, int tx, int ty);
 }

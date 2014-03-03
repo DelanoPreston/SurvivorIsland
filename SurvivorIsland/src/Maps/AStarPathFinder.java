@@ -2,6 +2,8 @@ package Maps;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Entity.Entity;
+
 public class AStarPathFinder implements PathFinder{
 	/** The set of nodes that have been searched through */
 	private ArrayList<Node> closed = new ArrayList<>();
@@ -64,23 +66,23 @@ public class AStarPathFinder implements PathFinder{
 	/**
 	 * @see PathFinder#findPath(UnitMover, int, int, int, int)
 	 */
-	public Path findPath(UnitMover mover, int sx, int sy, int tx, int ty) {
+	public Path findPath(Entity entity, int entityX, int entityY, int targetX, int targetY) {
 		// easy first check, if the destination is blocked, we can't get there
 
-		if (map.blocked(mover, tx, ty)) {
+		if (map.blocked(entity, targetX, targetY)) {
 			return null;
 		}
 
 		// initial state for A*. The closed group is empty. Only the starting
 
 		// tile is in the open list and it'e're already there
-		nodes[sx][sy].cost = 0;
-		nodes[sx][sy].depth = 0;
+		nodes[entityX][entityY].cost = 0;
+		nodes[entityX][entityY].depth = 0;
 		closed.clear();
 		open.clear();
-		open.add(nodes[sx][sy]);
+		open.add(nodes[entityX][entityY]);
 
-		nodes[tx][ty].parent = null;
+		nodes[targetX][targetY].parent = null;
 
 		// while we haven'n't exceeded our max search depth
 		int maxDepth = 0;
@@ -90,7 +92,7 @@ public class AStarPathFinder implements PathFinder{
 			// be the most likely to be the next step based on our heuristic
 
 			Node current = getFirstInOpen();
-			if (current == nodes[tx][ty]) {
+			if (current == nodes[targetX][targetY]) {
 				break;
 			}
 
@@ -124,7 +126,7 @@ public class AStarPathFinder implements PathFinder{
 					int xp = x + current.x;
 					int yp = y + current.y;
 
-					if (isValidLocation(mover, sx, sy, xp, yp)) {
+					if (isValidLocation(entity, entityX, entityY, xp, yp)) {
 						// the cost to get to this node is cost the current plus
 						// the movement
 
@@ -133,7 +135,7 @@ public class AStarPathFinder implements PathFinder{
 
 						// in the sorted open list
 
-						float nextStepCost = current.cost + getMovementCost(mover, current.x, current.y, xp, yp);
+						float nextStepCost = current.cost + getMovementCost(entity, current.x, current.y, xp, yp);
 						Node neighbour = nodes[xp][yp];
 						map.pathFinderVisited(xp, yp);
 
@@ -165,7 +167,7 @@ public class AStarPathFinder implements PathFinder{
 
 						if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
 							neighbour.cost = nextStepCost;
-							neighbour.heuristic = getHeuristicCost(mover, xp, yp, tx, ty);
+							neighbour.heuristic = getHeuristicCost(entity, xp, yp, targetX, targetY);
 							maxDepth = Math.max(maxDepth, neighbour.setParent(current));
 							addToOpen(neighbour);
 						}
@@ -177,7 +179,7 @@ public class AStarPathFinder implements PathFinder{
 		// since we'e've run out of search
 		// there was no path. Just return null
 
-		if (nodes[tx][ty].parent == null) {
+		if (nodes[targetX][targetY].parent == null) {
 			return null;
 		}
 
@@ -188,12 +190,12 @@ public class AStarPathFinder implements PathFinder{
 		// to the start recording the nodes on the way.
 
 		Path path = new Path();
-		Node target = nodes[tx][ty];
-		while (target != nodes[sx][sy]) {
+		Node target = nodes[targetX][targetY];
+		while (target != nodes[entityX][entityY]) {
 			path.prependStep(target.x, target.y);
 			target = target.parent;
 		}
-		path.prependStep(sx, sy);
+		path.prependStep(entityX, entityY);
 
 		// thats it, we have our path
 
@@ -275,7 +277,7 @@ public class AStarPathFinder implements PathFinder{
 	/**
 	 * Check if a given location is valid for the supplied mover
 	 * 
-	 * @param mover
+	 * @param entity
 	 *            The mover that would hold a given location
 	 * @param sx
 	 *            The starting x coordinate
@@ -287,11 +289,11 @@ public class AStarPathFinder implements PathFinder{
 	 *            The y coordinate of the location to check
 	 * @return True if the location is valid for the given mover
 	 */
-	protected boolean isValidLocation(UnitMover mover, int sx, int sy, int x, int y) {
+	protected boolean isValidLocation(Entity entity, int sx, int sy, int x, int y) {
 		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
 
 		if ((!invalid) && ((sx != x) || (sy != y))) {
-			invalid = map.blocked(mover, x, y);
+			invalid = map.blocked(entity, x, y);
 		}
 
 		return !invalid;
@@ -300,7 +302,7 @@ public class AStarPathFinder implements PathFinder{
 	/**
 	 * Get the cost to move through a given location
 	 * 
-	 * @param mover
+	 * @param entity
 	 *            The entity that is being moved
 	 * @param sx
 	 *            The x coordinate of the tile whose cost is being determined
@@ -312,8 +314,8 @@ public class AStarPathFinder implements PathFinder{
 	 *            The y coordinate of the target location
 	 * @return The cost of movement through the given tile
 	 */
-	public float getMovementCost(UnitMover mover, int sx, int sy, int tx, int ty) {
-		return map.getCost(mover, sx, sy, tx, ty);
+	public float getMovementCost(Entity entity, int sx, int sy, int tx, int ty) {
+		return map.getCost(entity, sx, sy, tx, ty);
 	}
 
 	/**
@@ -332,8 +334,8 @@ public class AStarPathFinder implements PathFinder{
 	 *            The y coordinate of the target location
 	 * @return The heuristic cost assigned to the tile
 	 */
-	public float getHeuristicCost(UnitMover mover, int x, int y, int tx, int ty) {
-		return heuristic.getCost(map, mover, x, y, tx, ty);
+	public float getHeuristicCost(Entity entity, int x, int y, int tx, int ty) {
+		return heuristic.getCost(map, entity, x, y, tx, ty);
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package Maps;
 
+import Entity.Entity;
+
 public interface AStarHeuristic {
 	/**
 	 * Get the additional heuristic cost of the given tile. This controls the
@@ -21,5 +23,5 @@ public interface AStarHeuristic {
 	 *            Teh y coordinate of the target location
 	 * @return The cost associated with the given tile
 	 */
-	public float getCost(TileBasedMap map, UnitMover mover, int x, int y, int tx, int ty);
+	public float getCost(TileBasedMap map, Entity entity, int x, int y, int tx, int ty);
 }

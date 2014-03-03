@@ -19,7 +19,7 @@ public class Level implements Serializable, CustomEventClassListener {
 
 	private static final long serialVersionUID = -6787896202288628502L;
 
-	public Map map;
+	public static Map map;
 	public List<Human> humans = new ArrayList<>();
 	public List<ItemEntity> itemEntities = new ArrayList<>();
 	public List<FurnitureEntity> furnitureEntities = new ArrayList<>();

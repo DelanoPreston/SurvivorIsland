@@ -6,13 +6,14 @@ import java.util.Random;
 
 import javax.swing.JComponent;
 
+import Entity.Entity;
 import Main.ContentBank;
 
 @SuppressWarnings("serial")
 public class Map extends JComponent implements TileBasedMap {
-	MapTile[][] map;
+	static MapTile[][] map;
 	Random random;
-
+	int[][] charMap;
 //	/** The terrain settings for each tile in the map */
 //	private int[][] terrain = new int[map.length][map[0].length];
 //	/** The unit in each tile of the map */
@@ -22,6 +23,14 @@ public class Map extends JComponent implements TileBasedMap {
 	
 	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
+		for(int y = 0; y < mapKey.length; y++){
+			for(int x = 0; x < mapKey[0].length; x++){
+				if(mapKey[x][y] == 's')
+					charMap[x][y] = 0;
+				else
+					charMap[x][y] = 1;
+			}
+		}
 	}
 
 	public void update() {
@@ -90,13 +99,13 @@ public class Map extends JComponent implements TileBasedMap {
 	}
 
 	@Override
-	public boolean blocked(UnitMover mover, int x, int y) {
+	public boolean blocked(Entity entity, int x, int y) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public float getCost(UnitMover mover, int sx, int sy, int tx, int ty) {
+	public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
 		// no cost implemented yet
 		return 0;
 	}
