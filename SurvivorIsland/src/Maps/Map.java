@@ -14,24 +14,38 @@ public class Map extends JComponent implements TileBasedMap {
 	static MapTile[][] map;
 	Random random;
 	int[][] intMap;
-//	/** The terrain settings for each tile in the map */
-//	private int[][] terrain = new int[map.length][map[0].length];
-//	/** The unit in each tile of the map */
-//	private int[][] units = new int[map.length][map[0].length];
+	// /** The terrain settings for each tile in the map */
+	// private int[][] terrain = new int[map.length][map[0].length];
+	// /** The unit in each tile of the map */
+	// private int[][] units = new int[map.length][map[0].length];
 	/** Indicator if a given tile has been visited during the search */
 	private boolean[][] visited;// = new boolean[map.length][map[0].length];
-	
+
 	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
-		visited = new boolean[map.length][map[0].length];
-		intMap = new int[map.length][map[0].length];
-		for(int y = 0; y < mapKey.length; y++){
-			for(int x = 0; x < mapKey[0].length; x++){
-				if(mapKey[x][y] == 's')
-					intMap[x][y] = 0;
-				else
-					intMap[x][y] = 1;
+		visited = new boolean[map.length * 4][map[0].length * 4];
+		intMap = new int[map.length * 4][map[0].length * 4];
+		for (int y = 0; y < mapKey.length; y++) {
+			for (int x = 0; x < mapKey[0].length; x++) {
+
+				for (int iy = y * 4; iy < 4 * (y + 1); iy++) {
+					for (int ix = x * 4; ix < 4 * (x + 1); ix++) {
+
+						if (mapKey[x][y] == 's')
+							intMap[iy][ix] = 0;
+						else
+							intMap[iy][ix] = 1;
+
+					}
+				}
 			}
+		}
+
+		for (int y = 0; y < intMap.length; y++) {
+			for (int x = 0; x < intMap[0].length; x++) {
+				System.out.print(intMap[x][y]);
+			}
+			System.out.print("\r\n");
 		}
 	}
 
@@ -103,14 +117,14 @@ public class Map extends JComponent implements TileBasedMap {
 	@Override
 	public boolean blocked(Entity entity, int x, int y) {
 		// TODO Auto-generated method stub
-		switch(entity.type){
+		switch (entity.type) {
 		case LAND:
-			if(map[x][y].equals('s'))
+			if (map[x][y].equals('s'))
 				return true;
 			else
 				return false;
 		case SEA:
-			if(map[x][y].equals('s'))
+			if (map[x][y].equals('s'))
 				return false;
 			else
 				return true;
@@ -122,7 +136,8 @@ public class Map extends JComponent implements TileBasedMap {
 
 	@Override
 	public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
-		// no cost implemented yet
-		return 0;
+		if (Math.abs(sx - tx) == 1 && Math.abs(sy - ty) == 1)
+			return (float) Math.sqrt(1 + 1);
+		return 1;
 	}
 }
