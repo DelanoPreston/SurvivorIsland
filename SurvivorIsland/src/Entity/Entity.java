@@ -14,7 +14,7 @@ public class Entity extends JComponent{
 	public double[] location;
 	public boolean solid;
 	public double weight;
-	EntityType type;
+	public EntityType type;
 	
 	
 	public Entity(String inName, double[] inLocation, double inWeight, boolean inSolid){
@@ -46,6 +46,7 @@ public class Entity extends JComponent{
 	public Path findClosestPath(int[] destination){
 		Path path;
 		AStarPathFinder finder = new AStarPathFinder(Level.map, 5000, true);
+		//the locations need to be changed so that the entities walk on tiles, not pixels
 		path = finder.findPath(this, (int)location[0], (int)location[1], destination[0], destination[1]);
 		return path;
 	}

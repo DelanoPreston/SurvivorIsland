@@ -36,7 +36,7 @@ import People.Survivor;
  */
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
-	int timer = 0;
+	int timer = 0;//if I load a game, this will be reset to 0 causing problems with crops and other timed things
 	Timer mainTimer;
 	transient PopupListener popupListener;
 	transient IOClass iostuff;

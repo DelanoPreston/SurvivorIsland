@@ -13,22 +13,24 @@ import Main.ContentBank;
 public class Map extends JComponent implements TileBasedMap {
 	static MapTile[][] map;
 	Random random;
-	int[][] charMap;
+	int[][] intMap;
 //	/** The terrain settings for each tile in the map */
 //	private int[][] terrain = new int[map.length][map[0].length];
 //	/** The unit in each tile of the map */
 //	private int[][] units = new int[map.length][map[0].length];
 	/** Indicator if a given tile has been visited during the search */
-	private boolean[][] visited = new boolean[map.length][map[0].length];
+	private boolean[][] visited;// = new boolean[map.length][map[0].length];
 	
 	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
+		visited = new boolean[map.length][map[0].length];
+		intMap = new int[map.length][map[0].length];
 		for(int y = 0; y < mapKey.length; y++){
 			for(int x = 0; x < mapKey[0].length; x++){
 				if(mapKey[x][y] == 's')
-					charMap[x][y] = 0;
+					intMap[x][y] = 0;
 				else
-					charMap[x][y] = 1;
+					intMap[x][y] = 1;
 			}
 		}
 	}
@@ -101,6 +103,20 @@ public class Map extends JComponent implements TileBasedMap {
 	@Override
 	public boolean blocked(Entity entity, int x, int y) {
 		// TODO Auto-generated method stub
+		switch(entity.type){
+		case LAND:
+			if(map[x][y].equals('s'))
+				return true;
+			else
+				return false;
+		case SEA:
+			if(map[x][y].equals('s'))
+				return false;
+			else
+				return true;
+		case AIR:
+			return false;
+		}
 		return false;
 	}
 
