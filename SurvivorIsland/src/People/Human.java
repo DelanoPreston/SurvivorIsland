@@ -41,7 +41,18 @@ public class Human extends Entity{
 	public void paintComponent(Graphics g) {
 		
 	}
-
+	
+	public void moveToAndRemoveDest(){
+		if (destination.size() > 0) {
+			//this imcrements the movement of the survivor
+			location[0] -= bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[0];
+			location[1] -= bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[1];
+			if (bgf.getDistance(location, destination.get(destinationIndex)) < 5) {
+				destination.remove(0);
+			}
+		}
+	}
+	
 	protected void setDestination(int range){
 		double[] temp = new double[2];
 		temp[0] = location[0] + bgf.random.nextInt(range * 2) - range;

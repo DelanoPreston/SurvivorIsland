@@ -1,5 +1,6 @@
 package People;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +11,6 @@ import Items.Item;
 import Main.ContentBank;
 
 public class Survivor extends Human {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8276603702773051758L;
 	int timer = 0;
 	int happiness;
@@ -32,65 +30,55 @@ public class Survivor extends Human {
 	}
 
 	@Override
-	public void update() {
-		try {
-			double dist = 0.0;
-			if (destination.size() > 0)
-				dist = bgf.getDistance(location, destination.get(destinationIndex));
-			if (dist > 5) {
-				double tempVal = bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[0];
-				location[0] -= tempVal;
-				tempVal = bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[1];
-				location[1] -= tempVal;
-			}
-			switch (job) {
-			case GATHER:
-				/*
-				 * if(targetItem == null && inventory.size() > 1){ targetItem =
-				 * (ItemEntity)source.findEntityEvent(this,
-				 * "item:furnitureEntities"); // targetItem.targetted = true;
-				 * }else
-				 */
-				if (targetItem == null && source.getEntityCountEvent("itementities") > 0) {
-					targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
-					targetItem.targetted = true;
-					destination.add(targetItem.location);
-					break;
-				} else if (targetItem != null) {
-					// destination = targetItem.location;
-					double tempdist = bgf.getDistance(location, targetItem.location);// destination.get(destinationIndex));
-					if (tempdist < 5) {
-						inventory.add(targetItem.item);
-						source.removeEntityEvent(targetItem, "itementities");
-						targetItem = null;
-					}
-					break;
-				}
-			case NONE:
-				// wander
-				if (dist < 5) {
-					if (destination.size() > 0)
-						destination.remove(0);
-					timer++;
-					if (timer >= 100) {
-						setDestination(32);
-						timer = 0;
-					}
-
-				}
-				break;
-			default:
-				break;
-			}
-		} catch (Exception e) {
-
-		}
-
-	}
-
-	@Override
 	public void paintComponent(Graphics g) {
+		g.setColor(new Color(0, 0, 0, 96));
+		for (int i = 0; i < destination.size(); i++) {
+			if (i == 0)
+				g.drawLine((int) location[0], (int) location[1], (int) destination.get(i)[0], (int) destination.get(i)[1]);
+			else
+				g.drawLine((int) destination.get(i - 1)[0], (int) destination.get(i - 1)[1], (int) destination.get(i)[0], (int) destination.get(i)[1]);
+		}
+		g.setColor(new Color(0, 0, 0, 255));
 		g.drawImage(ContentBank.survivorM1, (int) location[0], (int) location[1], null);
 	}
 
+	@Override
+	public void update() {
+		moveToAndRemoveDest();
+
+		switch (job) {
+		case GATHER:
+			gather();
+			break;
+		case NONE:
+			wander();
+			break;
+		default:
+			break;
+		}
+
+	}
+	
+	public void gather() {
+		if (targetItem == null && source.getEntityCountEvent("itementities", "targettable") > 0) {
+			targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
+			targetItem.targetted = true;
+			destination.add(targetItem.location);
+		} else if (targetItem != null) {
+			double tempdist = bgf.getDistance(location, targetItem.location);
+			if (tempdist < 5) {
+				inventory.add(targetItem.item);
+				source.removeEntityEvent(targetItem, "itementities");
+				targetItem = null;
+			}
+		}
+	}
+
+	public void wander() {
+		timer++;
+		if (timer >= 100) {
+			setDestination(32);
+			timer = 0;
+		}
+	}
 }
