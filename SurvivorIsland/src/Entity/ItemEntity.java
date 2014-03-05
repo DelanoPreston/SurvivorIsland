@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import Items.Item;
 import Main.ContentBank;
+import Main.Location;
 
 public class ItemEntity extends Entity {
 	private static final long serialVersionUID = -1163587124918848417L;
@@ -12,7 +13,7 @@ public class ItemEntity extends Entity {
 
 	// MyEventSource source;
 
-	public ItemEntity(Item inItem, double[] inLocation) {
+	public ItemEntity(Item inItem, Location inLocation) {
 		super(inItem.name, inLocation, inItem.weight);
 		targetted = false;
 		item = inItem;
@@ -29,6 +30,6 @@ public class ItemEntity extends Entity {
 	@Override
 	public void paintComponent(Graphics2D g) {
 
-		g.drawImage(ContentBank.woodenAxe, (int) location[0], (int) location[1], null);
+		g.drawImage(ContentBank.woodenAxe, location.getMapX(), location.getMapY(), null);
 	}
 }

@@ -1,6 +1,7 @@
 package Animals;
 
 import Entity.Entity;
+import Main.Location;
 
 public class Animal extends Entity {
 	private static final long serialVersionUID = 481638741773743044L;
@@ -14,7 +15,7 @@ public class Animal extends Entity {
 	 * @param inWeight
 	 * @param inSolid
 	 */
-	public Animal(String inName, double[] inLocation, int inHealth, double inWeight) {
+	public Animal(String inName, Location inLocation, int inHealth, double inWeight) {
 		super(inName, inLocation, inWeight);
 		health = inHealth;
 	}
@@ -28,7 +29,7 @@ public class Animal extends Entity {
 	 * @param inWeight
 	 * @param inSolid
 	 */
-	public Animal(String inName, double[] inLocation, MovementType inMoveType, int inHealth, double inWeight) {
+	public Animal(String inName, Location inLocation, MovementType inMoveType, int inHealth, double inWeight) {
 		super(inName, inLocation, inWeight);
 		health = inHealth;
 		movementType = inMoveType;

@@ -4,26 +4,24 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
-import Main.Level;
-import Maps.AStarPathFinder;
-import Maps.Path;
+import Main.Location;
 
 public class Entity extends JComponent{
 	private static final long serialVersionUID = 723472537018845637L;
 	public String name;
-	public double[] location;
+	public Location location;
 	public boolean solid;
 	public double weight;
 	public EntityType type;
 	
 	public int getX(){
-		return (int)location[0];
+		return location.getMapX();
 	}
 	public int getY(){
-		return (int)location[1];
+		return location.getMapY();
 	}
 	
-	public Entity(String inName, double[] inLocation, double inWeight, boolean inSolid){
+	public Entity(String inName, Location inLocation, double inWeight, boolean inSolid){
 		name = inName;
 		location = inLocation;
 		weight = inWeight;
@@ -31,7 +29,7 @@ public class Entity extends JComponent{
 		type = EntityType.LAND;
 	}
 	
-	public Entity(String inName, double[] inLocation, double inWeight){
+	public Entity(String inName, Location inLocation, double inWeight){
 		name = inName;
 		location = inLocation;
 		weight = inWeight;
@@ -48,11 +46,5 @@ public class Entity extends JComponent{
 		
 	}
 	
-	public Path findClosestPath(int[] destination){
-		Path path;
-		AStarPathFinder finder = new AStarPathFinder(Level.map, 5000, true);
-		//the locations need to be changed so that the entities walk on tiles, not pixels
-		path = finder.findPath(this, (int)location[0], (int)location[1], destination[0], destination[1]);
-		return path;
-	}
+	
 }

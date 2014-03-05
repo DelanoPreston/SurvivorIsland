@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import Items.Furniture;
 import Main.ContentBank;
+import Main.Location;
 
 public class FurnitureEntity extends Entity {
 
@@ -13,7 +14,7 @@ public class FurnitureEntity extends Entity {
 
 	// MyEventSource source;
 
-	public FurnitureEntity(Furniture inFurniture, double[] inLocation) {
+	public FurnitureEntity(Furniture inFurniture, Location inLocation) {
 		super(inFurniture.name, inLocation, inFurniture.weight);
 		targetted = false;
 		furniture = inFurniture;
@@ -30,6 +31,6 @@ public class FurnitureEntity extends Entity {
 	@Override
 	public void paintComponent(Graphics g) {
 
-		g.drawImage(ContentBank.survivorW3, (int) location[0], (int) location[1], null);
+		g.drawImage(ContentBank.survivorW3, location.getMapX(), location.getMapY(), null);
 	}
 }

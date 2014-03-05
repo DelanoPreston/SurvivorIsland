@@ -11,7 +11,14 @@ public class BaseGameFunctions implements Serializable {
 	public BaseGameFunctions() {
 		random = new Random();
 	}
+	
+	public double getDistance(Location obj1, Location obj2) {
+		double tempX = obj1.getMapX() - obj2.getMapX();
+		double tempY = obj1.getMapY() - obj2.getMapY();
 
+		return Math.sqrt(Math.pow(tempX, 2.0) + Math.pow(tempY, 2.0));
+	}
+	
 	public double getDistance(Point2D obj1, Point2D obj2) {
 		double tempX = obj1.getX() - obj2.getX();
 		double tempY = obj1.getY() - obj2.getY();
@@ -29,6 +36,13 @@ public class BaseGameFunctions implements Serializable {
 	public double getAngleRad(double[] obj1, double[] obj2) {
 		double xDiff = obj1[0] - obj2[0];
 		double yDiff = obj1[1] - obj2[1];
+
+		return Math.atan2(yDiff, xDiff);
+	}
+	
+	public double getAngleRad(Location obj1, Location obj2) {
+		double xDiff = obj1.getMapX() - obj2.getMapX();
+		double yDiff = obj1.getMapY() - obj2.getMapY();
 
 		return Math.atan2(yDiff, xDiff);
 	}
@@ -59,6 +73,12 @@ public class BaseGameFunctions implements Serializable {
 	}
 
 	public double[] getComponentLengths(double[] obj1, double[] obj2, int multiplier) {
+		double rad = getAngleRad(obj1, obj2);
+
+		double[] temp = { Math.cos(rad) * multiplier, Math.sin(rad) * multiplier };
+		return temp;
+	}
+	public double[] getComponentLengths(Location obj1, Location obj2, int multiplier) {
 		double rad = getAngleRad(obj1, obj2);
 
 		double[] temp = { Math.cos(rad) * multiplier, Math.sin(rad) * multiplier };

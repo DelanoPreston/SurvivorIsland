@@ -14,37 +14,47 @@ import Event.EntityEvent;
 import Event.StringEvent;
 import Maps.Map;
 import People.Human;
+import People.Survivor;
 import Plants.Plant;
 
 public class Level implements Serializable, CustomEventClassListener {
 
 	private static final long serialVersionUID = -6787896202288628502L;
-	public static Map map;
-	public List<Human> humans = new ArrayList<>();
-	public List<ItemEntity> itemEntities = new ArrayList<>();
-	public List<FurnitureEntity> furnitureEntities = new ArrayList<>();
-	public List<Plant> plants = new ArrayList<>();
-	BaseGameFunctions bgf = new BaseGameFunctions();
-	public Entity selectedEntity = null;
+	private Map map;
+	private List<Human> humans = new ArrayList<>();
+	private List<ItemEntity> itemEntities = new ArrayList<>();
+	private List<FurnitureEntity> furnitureEntities = new ArrayList<>();
+	private List<Plant> plants = new ArrayList<>();
+	private BaseGameFunctions bgf = new BaseGameFunctions();
+	private Entity selectedEntity = null;
 
-	public void testingAddDestination() {
-		List<double[]> tempDoub = new ArrayList<>();
-		double[] temp1 = { 400, 100 };
-		tempDoub.add(temp1);
-		double[] temp2 = { 100, 100 };
-		tempDoub.add(temp2);
-		double[] temp3 = { 200, 200 };
-		tempDoub.add(temp3);
-		humans.get(0).destination = tempDoub;
+	public void addHuman(Survivor human) {
+		humans.add(human);
 	}
 
+	public void addItem(ItemEntity itemEntity) {
+		itemEntities.add(itemEntity);
+	}
+
+	public void addFurniture(FurnitureEntity fEntity) {
+		furnitureEntities.add(fEntity);
+	}
+	
+	public Entity getSelectedEntity(){
+		return selectedEntity;
+	}
+	
+	public void setMap(Map inMap){
+		map = inMap;
+	}
+	
 	public void paintComponent(Graphics2D g2D) {
 		map.paintComponent(g2D);
-		
+
 		AffineTransform at = g2D.getTransform();
-		
-//		g2D.setTransform(at);
-		
+
+		// g2D.setTransform(at);
+
 		for (int i = 0; i < furnitureEntities.size(); i++) {
 			furnitureEntities.get(i).paintComponent(g2D);
 		}
@@ -54,12 +64,10 @@ public class Level implements Serializable, CustomEventClassListener {
 		for (int i = 0; i < itemEntities.size(); i++) {
 			itemEntities.get(i).paintComponent(g2D);
 		}
-		AffineTransform humanAT = at;
-		humanAT.translate(-8, -32);
-		g2D.setTransform(humanAT);
+		
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).paintComponent(g2D);
-			//g2D.drawOval((int) humans.get(i).location[0] - 25, (int) humans.get(i).location[1] - 25, 50, 50);
+			// g2D.drawOval((int) humans.get(i).location[0] - 25, (int) humans.get(i).location[1] - 25, 50, 50);
 		}
 	}
 
@@ -81,7 +89,7 @@ public class Level implements Serializable, CustomEventClassListener {
 		Entity entity = null;
 		switch (e.entityType.toLowerCase()) {
 		case "item:itementities":
-			//System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
+			// System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
 
 			for (int i = 0; i < itemEntities.size(); i++) {
 				// itemEntities.get(i);
@@ -94,7 +102,7 @@ public class Level implements Serializable, CustomEventClassListener {
 				}
 			}
 		case "item:furnitureentities":
-			//System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
+			// System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
 
 			for (int i = 0; i < furnitureEntities.size(); i++) {
 				furnitureEntities.get(i);
@@ -140,7 +148,7 @@ public class Level implements Serializable, CustomEventClassListener {
 			if (e.subCommand.toLowerCase().equals("targettable")) {
 				int temp = 0;
 				for (int i = 0; i < itemEntities.size(); i++) {
-					if(!itemEntities.get(i).targetted)
+					if (!itemEntities.get(i).targetted)
 						temp++;
 				}
 				return temp;
@@ -154,23 +162,32 @@ public class Level implements Serializable, CustomEventClassListener {
 		return 0;
 	}
 
-	
 	@Override
 	public synchronized int[] handleGetAdjacentTileLocation(EntityEvent e) {
 		int[] tileLocation = map.getTileAtLocation(e.entity.getX(), e.entity.getY());
-		int[] temp = {-1, -1};
-		
-		while(temp[0] == -1){
+		int[] temp = { -1, -1 };
+
+		while (temp[0] == -1) {
 			int x1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[0];
 			int y1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[1];
 			int x = x1 + tileLocation[0];
 			int y = y1 + tileLocation[1];
-			
-			if(!map.blocked(e.entity, x, y)){
+
+			if (!map.blocked(e.entity, x, y)) {
 				temp = map.getLocationAtTile(x, y);
 			}
 		}
-		
+
+		return temp;
+	}
+	
+	public synchronized Map handleGetMap(){
+		return map;
+	}
+
+	public synchronized Location handleGetTileAtLocation(Location inTileLoc){
+		int[] tempugh = map.getTileAtLocation(inTileLoc);
+		Location temp = new Location(tempugh[0] * 16 + 8, tempugh[1] * 16 + 8);
 		return temp;
 	}
 }

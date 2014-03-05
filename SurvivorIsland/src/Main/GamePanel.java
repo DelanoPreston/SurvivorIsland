@@ -76,7 +76,7 @@ public class GamePanel extends JPanel {
 
 		// makes the file io class, and gets the map data
 		iostuff = new IOClass();
-		level.map = iostuff.ReadMap();
+		level.setMap(iostuff.ReadMap());
 
 		// timer for updating game every 10 miliseconds
 		mainTimer = new Timer(10, new TimerListener());
@@ -218,9 +218,7 @@ public class GamePanel extends JPanel {
 			int key = arg0.getKeyCode();
 
 			if (key == KeyEvent.VK_SPACE) {
-				
-				level.testingAddDestination();
-				
+				System.out.println("nothing");
 			}
 		}
 
@@ -253,19 +251,22 @@ public class GamePanel extends JPanel {
 		public void actionPerformed(ActionEvent arg0) {
 
 			if (arg0.paramString().contains("new survivor")) {
-				double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+				Location loc = ref.source.getTileAtLocation(tempLoc);
 				Survivor survivor = new Survivor("Rob", loc, 150, true, ref.source);
-				level.humans.add(survivor);
+				level.addHuman(survivor);
 			} else if (arg0.paramString().contains("new axe")) {
-				double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+				Location loc = ref.source.getTileAtLocation(tempLoc);
 				Tool axe = new Tool("axe", 2.5, 100, ToolType.AXE, 100);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
-				level.itemEntities.add(axeEntity);
+				level.addItem(axeEntity);
 			} else if (arg0.paramString().contains("new chest")) {
-				double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+				Location loc = ref.source.getTileAtLocation(tempLoc);
 				Furniture chest = new Furniture("Chest", 3.4, 100);
 				FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
-				level.furnitureEntities.add(fEntity);
+				level.addFurniture(fEntity);
 			} else if (arg0.paramString().contains("Save")) {
 				ref.iostuff.saveLevel(ref.level, "name");
 			} else if (arg0.paramString().contains("Load")) {
@@ -366,11 +367,12 @@ public class GamePanel extends JPanel {
 			// this is clicking with no movement
 			// System.out.println("mouse clicked");
 //			double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
-			double[] loc = { e.getX(), e.getY() };
+			Location loc = new Location(e.getX(), e.getY());
 			Entity temp = new Entity("mouse", loc, 0.0);
-			reference.level.selectedEntity = reference.source.findEntityEvent(temp, "humans");
-			if (reference.level.selectedEntity != null && bgf.getDistance(loc, reference.level.selectedEntity.location) < 25)
-				System.out.println("you found: " + reference.level.selectedEntity.name);
+			Entity tempSel = reference.level.getSelectedEntity();
+			tempSel = reference.source.findEntityEvent(temp, "humans");
+			if (tempSel != null && bgf.getDistance(loc, tempSel.location) < 25)
+				System.out.println("you found: " + tempSel.name);
 			else
 				System.out.println("no one is there");
 		}

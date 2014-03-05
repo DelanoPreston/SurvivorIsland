@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import Entity.Entity;
+import Main.Location;
+import Maps.Map;
 
 public class CustomEventSource implements Serializable{
 	private static final long serialVersionUID = 1515868116459166516L;
@@ -49,6 +51,20 @@ public class CustomEventSource implements Serializable{
 		Iterator<CustomEventClassListener> i = _listeners.iterator();
 		while (i.hasNext()) {
 			return ((CustomEventClassListener) i.next()).handleGetAdjacentTileLocation(event);
+		}
+		return null;
+	}
+	public synchronized Map getMap(){
+		Iterator<CustomEventClassListener> i = _listeners.iterator();
+		while (i.hasNext()) {
+			return ((CustomEventClassListener) i.next()).handleGetMap();
+		}
+		return null;
+	}
+	public synchronized Location getTileAtLocation(Location inLoc){
+		Iterator<CustomEventClassListener> i = _listeners.iterator();
+		while (i.hasNext()) {
+			return ((CustomEventClassListener) i.next()).handleGetTileAtLocation(inLoc);
 		}
 		return null;
 	}

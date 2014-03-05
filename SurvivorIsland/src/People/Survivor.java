@@ -2,6 +2,7 @@ package People;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import Entity.ItemEntity;
 import Event.CustomEventSource;
 import Items.Item;
 import Main.ContentBank;
+import Main.Location;
 
 public class Survivor extends Human {
 	private static final long serialVersionUID = 8276603702773051758L;
@@ -19,7 +21,7 @@ public class Survivor extends Human {
 	Job job = Job.GATHER;
 	List<Item> inventory = new ArrayList<>();
 
-	public Survivor(String inName, double[] inLocation, int inWeight, boolean inSolid, CustomEventSource inSource) {
+	public Survivor(String inName, Location inLocation, int inWeight, boolean inSolid, CustomEventSource inSource) {
 		super(inName, inLocation, inWeight, inSolid, inSource);
 		wStats = new WorkingStats();
 	}
@@ -31,10 +33,15 @@ public class Survivor extends Human {
 
 	@Override
 	public void paintComponent(Graphics2D g2D) {
+		AffineTransform at = g2D.getTransform();
 		g2D.setColor(new Color(0, 0, 0, 96));
-//		drawPath(g2D);
+		drawPath(g2D);
 		g2D.setColor(new Color(0, 0, 0, 255));
-		g2D.drawImage(ContentBank.survivorM1, (int) location[0], (int) location[1], null);
+		AffineTransform humanAT = at;
+		humanAT.translate(-8, -32);
+		g2D.setTransform(humanAT);
+		g2D.drawImage(ContentBank.survivorM1, location.getMapX(), location.getMapY(), null);
+		g2D.setTransform(at);
 	}
 
 	@Override
@@ -58,7 +65,8 @@ public class Survivor extends Human {
 		if (targetItem == null && source.getEntityCountEvent("itementities", "targettable") > 0) {
 			targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
 			targetItem.targetted = true;
-			destination.add(targetItem.location);
+			destination = findClosestPath(targetItem.location).changePathToDoubleList();
+			//destination.add(targetItem.location);
 		} else if (targetItem != null) {
 			double tempdist = bgf.getDistance(location, targetItem.location);
 			if (tempdist < 5) {

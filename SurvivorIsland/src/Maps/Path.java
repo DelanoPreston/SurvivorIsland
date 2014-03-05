@@ -1,5 +1,8 @@
 package Maps;
 import java.util.ArrayList;
+import java.util.List;
+
+import Main.Location;
 
 public class Path {
 	/** The list of steps building up this path */
@@ -91,7 +94,18 @@ public class Path {
 	public boolean contains(int x, int y) {
 		return steps.contains(new Step(x, y));
 	}
-
+	
+	public List<Location> changePathToDoubleList(){
+		List<Location> temp = new ArrayList<>();
+		for(int i = 0; i < steps.size(); i++){
+			Location tempLoc = new Location(steps.get(i).getX() * 16 + 8, steps.get(i).getY() * 16 + 8);
+//			tempdoub[0] = steps.get(i).getX() * 16 + 8;
+//			tempdoub[1] = steps.get(i).getY() * 16 + 8;
+			temp.add(tempLoc);
+		}
+		return temp;
+	}
+	
 	/**
 	 * A single step within the path
 	 * 
