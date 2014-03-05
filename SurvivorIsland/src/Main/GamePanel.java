@@ -14,6 +14,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.util.Random;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -46,6 +47,7 @@ public class GamePanel extends JPanel {
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
+	public static Random random;
 
 	// public List<Human> humans = new ArrayList<>();
 	// public static List<ItemEntity> itemEntities = new ArrayList<>();
@@ -54,6 +56,7 @@ public class GamePanel extends JPanel {
 	 * Constructor for the GamePanel class that extends JPanel
 	 */
 	public GamePanel() {
+		random = new Random();
 		setFocusable(true);
 
 		level = new Level();

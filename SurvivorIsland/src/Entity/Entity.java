@@ -1,6 +1,6 @@
 package Entity;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
@@ -16,6 +16,12 @@ public class Entity extends JComponent{
 	public double weight;
 	public EntityType type;
 	
+	public int getX(){
+		return (int)location[0];
+	}
+	public int getY(){
+		return (int)location[1];
+	}
 	
 	public Entity(String inName, double[] inLocation, double inWeight, boolean inSolid){
 		name = inName;
@@ -37,8 +43,7 @@ public class Entity extends JComponent{
 		
 	}
 	
-	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics2D g) {
 		// TODO Auto-generated method stub
 		
 	}

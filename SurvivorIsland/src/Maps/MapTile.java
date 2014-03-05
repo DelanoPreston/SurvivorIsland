@@ -7,12 +7,13 @@ public class MapTile extends JComponent {
 	private static final long serialVersionUID = -2832950817061632470L;
 	TileType type;
 	Covering covering;
+	double[] tileLocation;
 
 	public MapTile() {
 
 	}
 
-	public MapTile(char inType) {
+	public MapTile(char inType, double[] inLocation) {
 		setType(inType);
 		if (inType == 'j')
 			covering = Covering.JUNGLE;
@@ -20,7 +21,7 @@ public class MapTile extends JComponent {
 			covering = Covering.FOREST;
 		else
 			covering = Covering.NONE;
-
+		tileLocation = inLocation;
 	}
 
 	public TileType getType() {

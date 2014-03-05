@@ -55,10 +55,14 @@ public class ContentBank {
 		try {
 			bigImg = ImageIO.read(new File("Images/SurvivorTileMap1.png"));
 
-			sea = bigImg.getSubimage(0, 0, 64, 64);
-			beach = bigImg.getSubimage(64, 0, 64, 64);
-			forest = bigImg.getSubimage(0, 64, 64, 64);
-			jungle = bigImg.getSubimage(64, 64, 64, 64);
+			sea = bigImg.getSubimage(0, 0, 16, 16);
+			beach = bigImg.getSubimage(64, 0, 16, 16);
+			forest = bigImg.getSubimage(0, 64, 16, 16);
+			jungle = bigImg.getSubimage(64, 64, 16, 16);
+//			sea = bigImg.getSubimage(0, 0, 64, 64);
+//			beach = bigImg.getSubimage(64, 0, 64, 64);
+//			forest = bigImg.getSubimage(0, 64, 64, 64);
+//			jungle = bigImg.getSubimage(64, 64, 64, 64);
 
 			bigImg = ImageIO.read(new File("Images/oie_transparent.png"));
 

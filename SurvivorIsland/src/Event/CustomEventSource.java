@@ -44,4 +44,12 @@ public class CustomEventSource implements Serializable{
 		}
 		return 0;
 	}
+	public synchronized int[] getAdjacentTileLocation(Entity entity, String sType){
+		EntityEvent event = new EntityEvent(this, entity, sType);
+		Iterator<CustomEventClassListener> i = _listeners.iterator();
+		while (i.hasNext()) {
+			return ((CustomEventClassListener) i.next()).handleGetAdjacentTileLocation(event);
+		}
+		return null;
+	}
 }

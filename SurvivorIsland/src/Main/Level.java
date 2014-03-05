@@ -1,6 +1,7 @@
 package Main;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,6 @@ import Plants.Plant;
 public class Level implements Serializable, CustomEventClassListener {
 
 	private static final long serialVersionUID = -6787896202288628502L;
-
 	public static Map map;
 	public List<Human> humans = new ArrayList<>();
 	public List<ItemEntity> itemEntities = new ArrayList<>();
@@ -40,15 +40,26 @@ public class Level implements Serializable, CustomEventClassListener {
 
 	public void paintComponent(Graphics2D g2D) {
 		map.paintComponent(g2D);
-		for (int i = 0; i < humans.size(); i++) {
-			humans.get(i).paintComponent(g2D);
-			g2D.drawOval((int) humans.get(i).location[0] - 25, (int) humans.get(i).location[1] - 25, 50, 50);
+		
+		AffineTransform at = g2D.getTransform();
+		
+//		g2D.setTransform(at);
+		
+		for (int i = 0; i < furnitureEntities.size(); i++) {
+			furnitureEntities.get(i).paintComponent(g2D);
 		}
+		AffineTransform itemAT = at;
+		itemAT.translate(-8, -8);
+		g2D.setTransform(itemAT);
 		for (int i = 0; i < itemEntities.size(); i++) {
 			itemEntities.get(i).paintComponent(g2D);
 		}
-		for (int i = 0; i < furnitureEntities.size(); i++) {
-			furnitureEntities.get(i).paintComponent(g2D);
+		AffineTransform humanAT = at;
+		humanAT.translate(-8, -32);
+		g2D.setTransform(humanAT);
+		for (int i = 0; i < humans.size(); i++) {
+			humans.get(i).paintComponent(g2D);
+			//g2D.drawOval((int) humans.get(i).location[0] - 25, (int) humans.get(i).location[1] - 25, 50, 50);
 		}
 	}
 
@@ -70,7 +81,7 @@ public class Level implements Serializable, CustomEventClassListener {
 		Entity entity = null;
 		switch (e.entityType.toLowerCase()) {
 		case "item:itementities":
-			System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
+			//System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
 
 			for (int i = 0; i < itemEntities.size(); i++) {
 				// itemEntities.get(i);
@@ -83,7 +94,7 @@ public class Level implements Serializable, CustomEventClassListener {
 				}
 			}
 		case "item:furnitureentities":
-			System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
+			//System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
 
 			for (int i = 0; i < furnitureEntities.size(); i++) {
 				furnitureEntities.get(i);
@@ -108,7 +119,7 @@ public class Level implements Serializable, CustomEventClassListener {
 	}
 
 	@Override
-	public void handleRemoveEntityEvent(EntityEvent e) {
+	public synchronized void handleRemoveEntityEvent(EntityEvent e) {
 		switch (e.entityType.toLowerCase()) {
 		case "itementities":
 			itemEntities.remove(e.entity);
@@ -123,7 +134,7 @@ public class Level implements Serializable, CustomEventClassListener {
 	}
 
 	@Override
-	public int handleGetEntityCountEvent(StringEvent e) {
+	public synchronized int handleGetEntityCountEvent(StringEvent e) {
 		switch (e.command.toLowerCase()) {
 		case "itementities":
 			if (e.subCommand.toLowerCase().equals("targettable")) {
@@ -141,5 +152,25 @@ public class Level implements Serializable, CustomEventClassListener {
 			return humans.size();
 		}
 		return 0;
+	}
+
+	
+	@Override
+	public synchronized int[] handleGetAdjacentTileLocation(EntityEvent e) {
+		int[] tileLocation = map.getTileAtLocation(e.entity.getX(), e.entity.getY());
+		int[] temp = {-1, -1};
+		
+		while(temp[0] == -1){
+			int x1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[0];
+			int y1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[1];
+			int x = x1 + tileLocation[0];
+			int y = y1 + tileLocation[1];
+			
+			if(!map.blocked(e.entity, x, y)){
+				temp = map.getLocationAtTile(x, y);
+			}
+		}
+		
+		return temp;
 	}
 }

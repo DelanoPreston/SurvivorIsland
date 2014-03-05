@@ -8,5 +8,5 @@ public interface CustomEventClassListener extends EventListener{
 	public Entity handleFindEntityEvent(EntityEvent e);
 	public void handleRemoveEntityEvent(EntityEvent e);
 	public int handleGetEntityCountEvent(StringEvent e);
-//	public void hangleMyOtherEventClass(EventObject e);
+	public int[] handleGetAdjacentTileLocation(EntityEvent e);
 }

@@ -1,7 +1,7 @@
 package People;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,16 +30,11 @@ public class Survivor extends Human {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		g.setColor(new Color(0, 0, 0, 96));
-		for (int i = 0; i < destination.size(); i++) {
-			if (i == 0)
-				g.drawLine((int) location[0], (int) location[1], (int) destination.get(i)[0], (int) destination.get(i)[1]);
-			else
-				g.drawLine((int) destination.get(i - 1)[0], (int) destination.get(i - 1)[1], (int) destination.get(i)[0], (int) destination.get(i)[1]);
-		}
-		g.setColor(new Color(0, 0, 0, 255));
-		g.drawImage(ContentBank.survivorM1, (int) location[0], (int) location[1], null);
+	public void paintComponent(Graphics2D g2D) {
+		g2D.setColor(new Color(0, 0, 0, 96));
+//		drawPath(g2D);
+		g2D.setColor(new Color(0, 0, 0, 255));
+		g2D.drawImage(ContentBank.survivorM1, (int) location[0], (int) location[1], null);
 	}
 
 	@Override
@@ -80,5 +75,16 @@ public class Survivor extends Human {
 			setDestination(32);
 			timer = 0;
 		}
+	}
+	
+	protected void setDestination(int range) {
+		// double[] temp = new double[2];
+		// temp[0] = location[0] + bgf.random.nextInt(range * 2) - range;
+		// temp[1] = location[1] + bgf.random.nextInt(range * 2) - range;
+		int[] temp = new int[2];
+		temp = source.getAdjacentTileLocation(this, Integer.toString(range));
+		addDestination(temp);
+		// destination.get(destinationIndex)[0] = location[0] + bgf.random.nextInt(range * 2) - range;
+		// destination.get(destinationIndex)[1] = location[1] + bgf.random.nextInt(range * 2) - range;
 	}
 }

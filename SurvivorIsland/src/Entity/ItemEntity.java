@@ -1,6 +1,6 @@
 package Entity;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import Items.Item;
 import Main.ContentBank;
@@ -27,7 +27,7 @@ public class ItemEntity extends Entity {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics2D g) {
 
 		g.drawImage(ContentBank.woodenAxe, (int) location[0], (int) location[1], null);
 	}

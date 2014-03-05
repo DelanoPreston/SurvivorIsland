@@ -32,9 +32,10 @@ public class AStarPathFinder implements PathFinder{
 	 * @param allowDiagMovement
 	 *            True if the search should try diaganol movement
 	 */
-	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement) {
+	public AStarPathFinder(Map map, int maxSearchDistance, boolean allowDiagMovement) {
 		this(map, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
 //		this(map, maxSearchDistance, false, new ClosestHeuristic());
+		
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class AStarPathFinder implements PathFinder{
 	 * @param allowDiagMovement
 	 *            True if the search should try diaganol movement
 	 */
-	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement, AStarHeuristic heuristic) {
+	public AStarPathFinder(Map map, int maxSearchDistance, boolean allowDiagMovement, AStarHeuristic heuristic) {
 		this.heuristic = heuristic;
 		this.map = map;
 		this.maxSearchDistance = maxSearchDistance;
