@@ -198,7 +198,7 @@ public class Map extends JComponent implements TileBasedMap {
 
 	@Override
 	public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
-		double tempCost = map[tx][ty].landTileCost;
+		double tempCost = Math.max(map[tx][ty].landTileCost, map[sx][sy].landTileCost);
 		if (Math.abs(sx - tx) == 1 && Math.abs(sy - ty) == 1)
 			return (float) Math.sqrt(tempCost + tempCost);
 		return (float)tempCost;
