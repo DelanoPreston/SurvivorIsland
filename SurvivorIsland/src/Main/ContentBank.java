@@ -11,10 +11,7 @@ import javax.imageio.ImageIO;
 import Items.Item;
 
 public class ContentBank {
-	public static Image beach;
-	public static Image sea;
-	public static Image forest;
-	public static Image jungle;
+	public static int tileSize = 16;
 	public static Image survivorM1;
 	public static Image survivorM2;
 	public static Image survivorM3;
@@ -23,6 +20,7 @@ public class ContentBank {
 	public static Image survivorW3;
 
 	public static Image[] woodenWalls;
+	public static Image[] landTiles;
 
 	public static Image woodenAxe;
 
@@ -57,11 +55,20 @@ public class ContentBank {
 
 		try {
 			bigImg = ImageIO.read(new File("Images/SurvivorTileMap1.png"));
+			index = 0;
+			landTiles = new Image[4];
 
-			sea = bigImg.getSubimage(0, 0, 16, 16);
-			beach = bigImg.getSubimage(64, 0, 16, 16);
-			forest = bigImg.getSubimage(0, 64, 16, 16);
-			jungle = bigImg.getSubimage(64, 64, 16, 16);
+			for (int y = 0; y < 2; y++) {
+				for (int x = 0; x < 2; x++) {
+					landTiles[index] = bigImg.getSubimage(x * 64, y * 64, 16, 16);
+					index++;
+				}
+			}
+
+			// sea = bigImg.getSubimage(0, 0, 16, 16);
+			// beach = bigImg.getSubimage(64, 0, 16, 16);
+			// forest = bigImg.getSubimage(0, 64, 16, 16);
+			// jungle = bigImg.getSubimage(64, 64, 16, 16);
 			// sea = bigImg.getSubimage(0, 0, 64, 64);
 			// beach = bigImg.getSubimage(64, 0, 64, 64);
 			// forest = bigImg.getSubimage(0, 64, 64, 64);
@@ -77,7 +84,7 @@ public class ContentBank {
 			survivorW3 = bigImg.getSubimage(0, 160, 16, 32);
 
 			bigImg = ImageIO.read(new File("Images/Tools1.png"));
-
+			index = 0;
 			woodenAxe = bigImg.getSubimage(0, 0, 16, 16);
 
 			woodenWalls = new Image[15];

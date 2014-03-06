@@ -12,7 +12,17 @@ public class TileBoard {
 	}
 
 	public MapTile getTile(int x, int y) {
-		return tiles[y][x];
+		try{
+			return tiles[y][x];	
+		}
+		catch(Exception e){
+			int i = 0;
+			
+			if(i == 0){
+				
+			}
+		}
+		return null;
 	}
 
 	public TileBoard(MapTile[][] inMap) {

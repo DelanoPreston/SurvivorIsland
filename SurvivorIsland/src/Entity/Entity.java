@@ -9,7 +9,7 @@ import Main.Location;
 public class Entity extends JComponent{
 	private static final long serialVersionUID = 723472537018845637L;
 	public String name;
-	public Location location;
+	protected Location location;
 	public boolean solid;
 	public double weight;
 	public EntityType type;
@@ -17,8 +17,21 @@ public class Entity extends JComponent{
 	public int getX(){
 		return location.getMapX();
 	}
+	
 	public int getY(){
 		return location.getMapY();
+	}
+	
+	public int getTileX(){
+		return location.getTileX();
+	}
+	
+	public int getTileY(){
+		return location.getTileY();
+	}
+	
+	public Location getMapLocation(){
+		return location;
 	}
 	
 	public Entity(String inName, Location inLocation, double inWeight, boolean inSolid){

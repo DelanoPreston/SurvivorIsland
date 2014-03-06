@@ -25,7 +25,7 @@ public class Survivor extends Human {
 	}
 
 	public Survivor(Survivor dad, Survivor mom, CustomEventSource inSource) {
-		super(dad.name, dad.location, 3.6, false, inSource);
+		super(dad.name, dad.getMapLocation(), 3.6, false, inSource);
 
 	}
 
@@ -62,10 +62,10 @@ public class Survivor extends Human {
 		if (targetItem == null && source.getEntityCountEvent("itementities", "targettable") > 0) {
 			targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
 			targetItem.targetted = true;
-			destination = findClosestPath(targetItem.location).changePathToDoubleList();
+			destination = findClosestPath(targetItem.getMapLocation()).changePathToDoubleList();
 			//destination.add(targetItem.location);
 		} else if (targetItem != null) {
-			double tempdist = bgf.getDistance(location, targetItem.location);
+			double tempdist = bgf.getDistance(location, targetItem.getMapLocation());
 			if (tempdist <= 5) {
 				inventory.add(targetItem.item);
 				source.removeEntityEvent(targetItem, "itementities");

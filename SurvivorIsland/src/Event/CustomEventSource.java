@@ -8,6 +8,7 @@ import java.util.List;
 import Entity.Entity;
 import Main.Location;
 import Maps.Map;
+import People.Human;
 
 public class CustomEventSource implements Serializable{
 	private static final long serialVersionUID = 1515868116459166516L;
@@ -23,8 +24,8 @@ public class CustomEventSource implements Serializable{
 
 	// call this method whenever you want to notify
 	// the event listeners of the particular event
-	public synchronized Entity findEntityEvent(Entity entity, String sType) {
-		EntityEvent event = new EntityEvent(this, entity, sType);
+	public synchronized Entity findEntityEvent(Human entity, String sType) {
+		HumanEntityEvent event = new HumanEntityEvent(this, entity, sType);
 		Iterator<CustomEventClassListener> i = _listeners.iterator();
 		while (i.hasNext()) {
 			return ((CustomEventClassListener) i.next()).handleFindEntityEvent(event);

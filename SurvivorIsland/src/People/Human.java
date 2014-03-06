@@ -22,7 +22,11 @@ public class Human extends Entity {
 	int hunger = 20;
 	CustomEventSource source;
 	BaseGameFunctions bgf = new BaseGameFunctions();
-
+	
+	public CustomEventSource getSource(){
+		return source;
+	}
+	
 	public Human(String inName, Location inLocation, double inWeight, boolean inSolid, CustomEventSource inSource) {
 		super(inName, inLocation, inWeight, inSolid);
 		cStats = new CommonStats(bgf.random.nextInt(1), bgf.random.nextInt(3));

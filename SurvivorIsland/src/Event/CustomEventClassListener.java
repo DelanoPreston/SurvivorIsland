@@ -7,7 +7,7 @@ import Main.Location;
 import Maps.Map;
 
 public interface CustomEventClassListener extends EventListener{
-	public Entity handleFindEntityEvent(EntityEvent e);
+	public Entity handleFindEntityEvent(HumanEntityEvent e);
 	public void handleRemoveEntityEvent(EntityEvent e);
 	public int handleGetEntityCountEvent(StringEvent e);
 	public int[] handleGetAdjacentTileLocation(EntityEvent e);

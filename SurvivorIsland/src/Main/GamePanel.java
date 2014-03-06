@@ -24,12 +24,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
 import Entity.Entity;
-import Entity.FurnitureEntity;
 import Entity.ItemEntity;
 import Entity.StructureEntity;
 import Event.CustomEventSource;
 import Items.Tool;
 import Items.ToolType;
+import People.Human;
 import People.Survivor;
 
 /**
@@ -265,7 +265,8 @@ public class GamePanel extends JPanel {
 			} else if (arg0.paramString().contains("new wall")) {
 				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
 				Location loc = ref.source.getTileAtLocation(tempLoc);
-				StructureEntity wall = new StructureEntity("Chest", loc, 3.4, true);
+				System.out.println("GamePanel: " + loc.getMapX() + "," + loc.getMapY());
+				StructureEntity wall = new StructureEntity("Wall", loc, 3.4, true);
 //				FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
 				level.addStructure(wall);
 			} else if (arg0.paramString().contains("Save")) {
@@ -273,7 +274,7 @@ public class GamePanel extends JPanel {
 			} else if (arg0.paramString().contains("Load")) {
 				level = ref.iostuff.loadLevel("name");
 			} else if (arg0.paramString().contains("Exit")) {
-				System.exit(0);
+				System.exit(-1);
 			}
 			// else if(arg0.paramString().contains("Poison")){
 			// NewTower(ContentBank.TowerType.Poison);
@@ -303,6 +304,7 @@ public class GamePanel extends JPanel {
 		}
 
 		public Point2D GetPopupLocation() {
+			System.out.println("PopupLocation:" + location.getX() + "," + location.getY());
 			return location;
 		}
 
@@ -345,8 +347,7 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			System.out.println("Mouse Location:" + e.getX() + "," + e.getY());
 		}
 
 		@Override
@@ -369,10 +370,10 @@ public class GamePanel extends JPanel {
 			// System.out.println("mouse clicked");
 //			double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
 			Location loc = new Location(e.getX(), e.getY());
-			Entity temp = new Entity("mouse", loc, 0.0);
+			Human temp = new Human("mouse", loc, 0.0, false, reference.source);
 			Entity tempSel = reference.level.getSelectedEntity();
 			tempSel = reference.source.findEntityEvent(temp, "humans");
-			if (tempSel != null && bgf.getDistance(loc, tempSel.location) < 25)
+			if (tempSel != null && bgf.getDistance(loc, tempSel.getMapLocation()) < 25)
 				System.out.println("you found: " + tempSel.name);
 			else
 				System.out.println("no one is there");

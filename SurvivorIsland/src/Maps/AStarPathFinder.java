@@ -23,6 +23,13 @@ public class AStarPathFinder implements PathFinder {
 	/** The heuristic we're applying to determine which nodes to search first */
 	private AStarHeuristic heuristic;
 
+	/**	total cost of the path */
+	float totalPathCost;
+	
+	public float getTotalCost(){
+		return totalPathCost;
+	}
+	
 	/**
 	 * Create a path finder with the default heuristic - closest to target.
 	 * 
@@ -194,13 +201,16 @@ public class AStarPathFinder implements PathFinder {
 		Path path = new Path();
 		Node target = nodes[targetX][targetY];
 		while (target != nodes[startX][startY]) {
+			totalPathCost += target.cost;
 			path.prependStep(target.x, target.y);
 			target = target.parent;
 		}
 		path.prependStep(startX, startY);
-
+		
+		path.setTotalCost(totalPathCost);
+		System.out.println("AStarPathFinder: cost: " + totalPathCost);
+		
 		// thats it, we have our path
-
 		return path;
 	}
 

@@ -14,20 +14,20 @@ public class Location {
 
 	public int getTileX() {
 		double temp = 0;
-		if (x % 16 > 8)
-			temp = x - 8;
+		if (x % ContentBank.tileSize > ContentBank.tileSize / 2)
+			temp = x - ContentBank.tileSize / 2;
 
-		temp = x / 16;
+		temp = x / ContentBank.tileSize;
 
 		return (int) temp;
 	}
 
 	public int getTileY() {
 		double temp = 0;
-		if (y % 16 > 8)
-			temp = y - 8;
+		if (y % ContentBank.tileSize > ContentBank.tileSize / 2)
+			temp = y - ContentBank.tileSize / 2;
 
-		temp = y / 16;
+		temp = y / ContentBank.tileSize;
 
 		return (int) temp;
 	}

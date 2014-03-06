@@ -14,11 +14,14 @@ import Entity.ItemEntity;
 import Entity.StructureEntity;
 import Event.CustomEventClassListener;
 import Event.EntityEvent;
+import Event.HumanEntityEvent;
 import Event.StringEvent;
 import Maps.Map;
 import People.Human;
 import People.Survivor;
 import Plants.Plant;
+
+
 
 public class Level implements Serializable, CustomEventClassListener {
 
@@ -28,7 +31,7 @@ public class Level implements Serializable, CustomEventClassListener {
 	private List<ItemEntity> itemEntities = new ArrayList<>();
 	private List<FurnitureEntity> furnitureEntities = new ArrayList<>();
 	private List<ConstructionEntity> constructionEntities = new ArrayList<>();
-	private List<StructureEntity> structureEntities = new ArrayList<>();
+//	private List<StructureEntity> structureEntities = new ArrayList<>();
 	private List<Plant> plants = new ArrayList<>();
 	private BaseGameFunctions bgf = new BaseGameFunctions();
 	private Entity selectedEntity = null;
@@ -46,7 +49,8 @@ public class Level implements Serializable, CustomEventClassListener {
 	}
 
 	public void addStructure(StructureEntity structure) {
-		structureEntities.add(structure);
+		map.placeWall(structure);
+//		structureEntities.add(structure);
 	}
 
 	public Entity getSelectedEntity() {
@@ -58,10 +62,10 @@ public class Level implements Serializable, CustomEventClassListener {
 	}
 
 	public void paintComponent(Graphics2D g2D) {
-		map.paintComponent(g2D);
-
 		AffineTransform at = g2D.getTransform();
-
+		
+		map.paintComponent(g2D);
+		
 		// draw lines that show path of humans
 		g2D.setColor(new Color(0, 0, 0, 96));
 		for (int i = 0; i < humans.size(); i++) {
@@ -72,6 +76,7 @@ public class Level implements Serializable, CustomEventClassListener {
 
 		// draw furniture
 		
+		
 
 		// draw item entities
 		AffineTransform itemAT = at;
@@ -81,10 +86,10 @@ public class Level implements Serializable, CustomEventClassListener {
 			itemEntities.get(i).paintComponent(g2D);
 		}
 		
-		//same affine transform as items
-		for (int i = 0; i < structureEntities.size(); i++) {
-			structureEntities.get(i).paintComponent(g2D);
-		}
+//		//same affine transform as items
+//		for (int i = 0; i < structureEntities.size(); i++) {
+//			structureEntities.get(i).paintComponent(g2D);
+//		}
 		
 		// draw humans
 		AffineTransform humanAT = at;
@@ -113,18 +118,23 @@ public class Level implements Serializable, CustomEventClassListener {
 	}
 
 	@Override
-	public synchronized Entity handleFindEntityEvent(EntityEvent e) {
+	public synchronized Entity handleFindEntityEvent(HumanEntityEvent e) {
 		Entity entity = null;
 		switch (e.entityType.toLowerCase()) {
 		case "item:itementities":
 			// System.out.println(e.entity.location[0] + "," + e.entity.location[1]);
-
+			float currentPathCost = 0f;
 			for (int i = 0; i < itemEntities.size(); i++) {
 				// itemEntities.get(i);
+//				if (!itemEntities.get(i).targetted
+//						&& (entity == null || bgf.getDistance(itemEntities.get(i).location, e.entity.location) < bgf.getDistance(entity.location,
+//								e.entity.location))) {
+//
+//					entity = itemEntities.get(i);
+//
+//				}
 				if (!itemEntities.get(i).targetted
-						&& (entity == null || bgf.getDistance(itemEntities.get(i).location, e.entity.location) < bgf.getDistance(entity.location,
-								e.entity.location))) {
-
+						&& (entity == null || e.entity.findClosestPath(itemEntities.get(i).getMapLocation()).getTotalCost()  < currentPathCost)){
 					entity = itemEntities.get(i);
 
 				}
@@ -135,7 +145,7 @@ public class Level implements Serializable, CustomEventClassListener {
 			for (int i = 0; i < furnitureEntities.size(); i++) {
 				furnitureEntities.get(i);
 				if (entity == null
-						|| bgf.getDistance(furnitureEntities.get(i).location, e.entity.location) < bgf.getDistance(entity.location, e.entity.location)) {
+						|| bgf.getDistance(furnitureEntities.get(i).getMapLocation(), e.entity.getMapLocation()) < bgf.getDistance(entity.getMapLocation(), e.entity.getMapLocation())) {
 					entity = itemEntities.get(i);
 				}
 			}
@@ -145,7 +155,7 @@ public class Level implements Serializable, CustomEventClassListener {
 		case "humans":
 			for (int i = 0; i < humans.size(); i++) {
 				humans.get(i);
-				if (entity == null || bgf.getDistance(humans.get(i).location, e.entity.location) < bgf.getDistance(entity.location, e.entity.location)) {
+				if (entity == null || bgf.getDistance(humans.get(i).getMapLocation(), e.entity.getMapLocation()) < bgf.getDistance(entity.getMapLocation(), e.entity.getMapLocation())) {
 					entity = humans.get(i);
 				}
 			}
@@ -221,7 +231,8 @@ public class Level implements Serializable, CustomEventClassListener {
 
 	@Override
 	public void handleCreateStructure(EntityEvent e) {
-		structureEntities.add((StructureEntity) e.entity);
+		addStructure((StructureEntity)e.entity);
+//		structureEntities.add((StructureEntity) e.entity);
 	}
 
 }

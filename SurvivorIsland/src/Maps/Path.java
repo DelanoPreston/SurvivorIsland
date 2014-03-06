@@ -7,7 +7,19 @@ import Main.Location;
 public class Path {
 	/** The list of steps building up this path */
 	private ArrayList<Step> steps = new ArrayList<>();
-
+	
+	/**	total cost of the path */
+	float totalPathCost;
+	
+	public float getTotalCost(){
+		System.out.println("Path: cost: " + totalPathCost);
+		return totalPathCost;
+	}
+	
+	public void setTotalCost(float in){
+		totalPathCost = in;
+	}
+	
 	/**
 	 * Create an empty path
 	 */
