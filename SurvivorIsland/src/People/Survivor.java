@@ -1,8 +1,6 @@
 package People;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,15 +31,7 @@ public class Survivor extends Human {
 
 	@Override
 	public void paintComponent(Graphics2D g2D) {
-		AffineTransform at = g2D.getTransform();
-		g2D.setColor(new Color(0, 0, 0, 96));
-		drawPath(g2D);
-		g2D.setColor(new Color(0, 0, 0, 255));
-		AffineTransform humanAT = at;
-		humanAT.translate(-8, -32);
-		g2D.setTransform(humanAT);
 		g2D.drawImage(ContentBank.survivorM1, location.getMapX(), location.getMapY(), null);
-		g2D.setTransform(at);
 	}
 
 	@Override
@@ -49,6 +39,9 @@ public class Survivor extends Human {
 		moveToAndRemoveDest();
 
 		switch (job) {
+		case CONSTRUCT:
+			construct();
+			break;
 		case GATHER:
 			gather();
 			break;
@@ -61,7 +54,11 @@ public class Survivor extends Human {
 
 	}
 	
-	public void gather() {
+	private void construct(){
+		
+	}
+	
+	private void gather() {
 		if (targetItem == null && source.getEntityCountEvent("itementities", "targettable") > 0) {
 			targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
 			targetItem.targetted = true;
@@ -69,7 +66,7 @@ public class Survivor extends Human {
 			//destination.add(targetItem.location);
 		} else if (targetItem != null) {
 			double tempdist = bgf.getDistance(location, targetItem.location);
-			if (tempdist < 5) {
+			if (tempdist <= 5) {
 				inventory.add(targetItem.item);
 				source.removeEntityEvent(targetItem, "itementities");
 				targetItem = null;
@@ -77,7 +74,7 @@ public class Survivor extends Human {
 		}
 	}
 
-	public void wander() {
+	private void wander() {
 		timer++;
 		if (timer >= 100) {
 			setDestination(32);

@@ -1,14 +1,17 @@
 package Main;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import Entity.ConstructionEntity;
 import Entity.Entity;
 import Entity.FurnitureEntity;
 import Entity.ItemEntity;
+import Entity.StructureEntity;
 import Event.CustomEventClassListener;
 import Event.EntityEvent;
 import Event.StringEvent;
@@ -24,6 +27,8 @@ public class Level implements Serializable, CustomEventClassListener {
 	private List<Human> humans = new ArrayList<>();
 	private List<ItemEntity> itemEntities = new ArrayList<>();
 	private List<FurnitureEntity> furnitureEntities = new ArrayList<>();
+	private List<ConstructionEntity> constructionEntities = new ArrayList<>();
+	private List<StructureEntity> structureEntities = new ArrayList<>();
 	private List<Plant> plants = new ArrayList<>();
 	private BaseGameFunctions bgf = new BaseGameFunctions();
 	private Entity selectedEntity = null;
@@ -39,25 +44,36 @@ public class Level implements Serializable, CustomEventClassListener {
 	public void addFurniture(FurnitureEntity fEntity) {
 		furnitureEntities.add(fEntity);
 	}
-	
-	public Entity getSelectedEntity(){
+
+	public void addStructure(StructureEntity structure) {
+		structureEntities.add(structure);
+	}
+
+	public Entity getSelectedEntity() {
 		return selectedEntity;
 	}
-	
-	public void setMap(Map inMap){
+
+	public void setMap(Map inMap) {
 		map = inMap;
 	}
-	
+
 	public void paintComponent(Graphics2D g2D) {
 		map.paintComponent(g2D);
 
 		AffineTransform at = g2D.getTransform();
 
-		// g2D.setTransform(at);
+		// draw lines that show path of humans
+		g2D.setColor(new Color(0, 0, 0, 96));
+		for (int i = 0; i < humans.size(); i++) {
 
-		for (int i = 0; i < furnitureEntities.size(); i++) {
-			furnitureEntities.get(i).paintComponent(g2D);
+			humans.get(i).drawPath(g2D);
 		}
+		g2D.setColor(new Color(0, 0, 0, 255));
+
+		// draw furniture
+		
+
+		// draw item entities
 		AffineTransform itemAT = at;
 		itemAT.translate(-8, -8);
 		g2D.setTransform(itemAT);
@@ -65,6 +81,15 @@ public class Level implements Serializable, CustomEventClassListener {
 			itemEntities.get(i).paintComponent(g2D);
 		}
 		
+		//same affine transform as items
+		for (int i = 0; i < structureEntities.size(); i++) {
+			structureEntities.get(i).paintComponent(g2D);
+		}
+		
+		// draw humans
+		AffineTransform humanAT = at;
+		itemAT.translate(0, -16);
+		g2D.setTransform(humanAT);
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).paintComponent(g2D);
 			// g2D.drawOval((int) humans.get(i).location[0] - 25, (int) humans.get(i).location[1] - 25, 50, 50);
@@ -81,6 +106,9 @@ public class Level implements Serializable, CustomEventClassListener {
 		}
 		for (int i = 0; i < furnitureEntities.size(); i++) {
 			furnitureEntities.get(i).update();
+		}
+		for (int i = 0; i < constructionEntities.size(); i++) {
+			constructionEntities.get(i).update();
 		}
 	}
 
@@ -180,14 +208,20 @@ public class Level implements Serializable, CustomEventClassListener {
 
 		return temp;
 	}
-	
-	public synchronized Map handleGetMap(){
+
+	public synchronized Map handleGetMap() {
 		return map;
 	}
 
-	public synchronized Location handleGetTileAtLocation(Location inTileLoc){
+	public synchronized Location handleGetTileAtLocation(Location inTileLoc) {
 		int[] tempugh = map.getTileAtLocation(inTileLoc);
 		Location temp = new Location(tempugh[0] * 16 + 8, tempugh[1] * 16 + 8);
 		return temp;
 	}
+
+	@Override
+	public void handleCreateStructure(EntityEvent e) {
+		structureEntities.add((StructureEntity) e.entity);
+	}
+
 }

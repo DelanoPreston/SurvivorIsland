@@ -1,5 +1,5 @@
 package People;
 
 public enum Job {
-	GATHER, FIGHT, NONE;
+	CONSTRUCT, GATHER, FIGHT, NONE;
 }

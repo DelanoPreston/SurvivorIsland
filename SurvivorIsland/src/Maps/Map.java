@@ -2,7 +2,6 @@ package Maps;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.util.Random;
 
 import javax.swing.JComponent;
 
@@ -12,36 +11,15 @@ import Main.Location;
 
 @SuppressWarnings("serial")
 public class Map extends JComponent implements TileBasedMap {
-	MapTile[][] map;
-	Random random;
-//	public int[][] intMap;
+//	MapTile[][] map;
+	TileBoard map;
 	int tileSize;
-	// /** The terrain settings for each tile in the map */
-	// private int[][] terrain = new int[map.length][map[0].length];
-	// /** The unit in each tile of the map */
-	// private int[][] units = new int[map.length][map[0].length];
-	/** Indicator if a given tile has been visited during the search */
-	private boolean[][] visited;// = new boolean[map.length][map[0].length];
+	private boolean[][] visited;
 	
 	public Map(char[][] mapKey) {
 		tileSize = 16;
 		map = createMap(mapKey);
-		visited = new boolean[map.length][map[0].length];
-//		intMap = new int[map.length * 4][map[0].length * 4];
-//		for (int y = 0; y < mapKey.length; y++) {
-//			for (int x = 0; x < mapKey[0].length; x++) {
-//				if (mapKey[x][y] == 's')
-//					intMap[x][y] = 0;
-//				else
-//					intMap[x][y] = 1;
-//			}
-//		}
-//		for (int y = 0; y < mapKey.length; y++) {
-//			for (int x = 0; x < mapKey[0].length; x++) {
-//				System.out.print(intMap[x][y]);
-//			}
-//			System.out.print("\r\n");
-//		}
+		visited = new boolean[map.getHeight()][map.getWidth()];
 	}
 
 	public void update() {
@@ -49,13 +27,13 @@ public class Map extends JComponent implements TileBasedMap {
 	}
 
 	public void paintComponent(Graphics2D g) {
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[0].length; j++) {
+		for (int y = 0; y < map.getHeight(); y++) {
+			for (int x = 0; x < map.getWidth(); x++) {
 				// map[i][j].
 				// drawTile(g, map[i][j].getType(), i * 64, j * 64);
-				drawTile(g, map[i][j].getType(), i * tileSize, j * tileSize);
-				int[] loc = getLocationAtTile(i, j);
-				g.drawRect(loc[0] - 1, loc[1] - 1, 2, 2);
+				drawTile(g, map.getTile(x, y).getType(), x * tileSize, y * tileSize);
+				int[] loc = getLocationAtTile(x, y);
+				g.drawRect(loc[0] - 8, loc[1] - 8, 16, 16);
 			}
 		}
 	}
@@ -82,38 +60,46 @@ public class Map extends JComponent implements TileBasedMap {
 		g.drawImage(temp, xPos, yPos, null);
 	}
 
-	private MapTile[][] createMap(char[][] mapKey) {
+	private TileBoard createMap(char[][] mapKey) {
 		MapTile[][] temp = new MapTile[mapKey.length][mapKey[0].length];
 		double[] tempLocation = new double[2];
 		double seaCost = 1000;
-		double landCost = 1000;
+		double landCost = 15;
 		for (int y = 0; y < mapKey.length; y++) {
-			for (int x = 0; x < mapKey[y].length; x++) {
+			for (int x = 0; x < mapKey[0].length; x++) {
 				tempLocation[0] = (x * tileSize) + 8;
 				tempLocation[1] = (y * tileSize) + 8;
-				if(mapKey[x][y] == 's')
+				if(mapKey[y][x] == 's')
 					seaCost = 1;
 				else
 					seaCost = 1000;
-				switch(mapKey[x][y]){
+				switch(mapKey[y][x]){
 				case 's':
-					landCost = 1000;
+					landCost = 15.0;
 					break;
 				case 'j':
-					landCost = 2;
+					landCost = 2.0;
 					break;
 				case 'f':
-					landCost = 1;
+					landCost = 1.0;
 					break;
 				case 'b':
 					landCost = 1.2;
 					break;
 				}
 				
-				temp[x][y] = new MapTile(mapKey[x][y], tempLocation, landCost, seaCost);
+				temp[y][x] = new MapTile(mapKey[y][x], tempLocation, landCost, seaCost);
 			}
 		}
-		return temp;
+		
+		for(int y = 0; y < temp.length; y++){
+			for(int x = 0; x < temp[0].length; x++){
+				System.out.print(mapKey[y][x]);
+			}
+			System.out.println();
+		}
+		TileBoard tempOut = new TileBoard(temp);
+		return tempOut;
 	}
 
 	public int[] getLocationAtTile(int x, int y) {
@@ -154,13 +140,14 @@ public class Map extends JComponent implements TileBasedMap {
 	@Override
 	public int getWidthInTiles() {
 		// TODO Auto-generated method stub
-		return map[0].length;
+		int temp = map.getWidth();
+		return temp;
 	}
 
 	@Override
 	public int getHeightInTiles() {
 		// TODO Auto-generated method stub
-		return map.length;
+		return map.getHeight();
 	}
 
 	@Override
@@ -171,34 +158,14 @@ public class Map extends JComponent implements TileBasedMap {
 
 	@Override
 	public boolean blocked(Entity entity, int x, int y) {
-//		int[] tile = getTileAtLocation(x, y);
-//		if (map[tile[0]][tile[1]].type == TileType.SEA)
-//			return true;
-		if (map[x][y].type == TileType.SEA)
+		if (map.getTile(x, y).entity != null && map.getTile(x, y).entity.solid)
 			return true;
 		return false;
-
-		// // TODO Auto-generated method stub
-		// switch (entity.type) {
-		// case LAND:
-		// if (map[x][y].equals('s'))
-		// return true;
-		// else
-		// return false;
-		// case SEA:
-		// if (map[x][y].equals('s'))
-		// return false;
-		// else
-		// return true;
-		// case AIR:
-		// return false;
-		// }
-		// return false;
 	}
 
 	@Override
 	public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
-		double tempCost = Math.max(map[tx][ty].landTileCost, map[sx][sy].landTileCost);
+		double tempCost = Math.max(map.getTile(tx, ty).landTileCost, map.getTile(sx, sy).landTileCost);
 		if (Math.abs(sx - tx) == 1 && Math.abs(sy - ty) == 1)
 			return (float) Math.sqrt(tempCost + tempCost);
 		return (float)tempCost;

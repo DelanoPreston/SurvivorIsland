@@ -8,6 +8,10 @@ public class ConstructionEntity extends Entity {
 	private double progress;
 	//needed materials
 	
+	public double getProgress(){
+		return progress;
+	}
+	
 	public ConstructionEntity(String inName, StructureEntity inStructure, Location inLocation, double inWeight, boolean inSolid) {
 		super(inName, inLocation, inWeight, inSolid);
 		structure = inStructure;
@@ -22,5 +26,6 @@ public class ConstructionEntity extends Entity {
 
 	private void buildStructure() {
 		//some event placing the structure here
+		
 	}
 }

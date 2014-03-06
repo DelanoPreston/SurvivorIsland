@@ -21,7 +21,7 @@ public class MapTile extends JComponent {
 	public MapTile() {
 
 	}
-
+	
 	public MapTile(char inType, double[] inLocation, double inLandCost, double inSeaCost) {
 		setType(inType);
 		if (inType == 'j')
@@ -34,7 +34,9 @@ public class MapTile extends JComponent {
 		landTileCost = inLandCost;
 		seaTileCost = inSeaCost;
 	}
-
+	
+	
+	
 	public TileType getType() {
 		return type;
 	}

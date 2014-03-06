@@ -26,8 +26,8 @@ import javax.swing.Timer;
 import Entity.Entity;
 import Entity.FurnitureEntity;
 import Entity.ItemEntity;
+import Entity.StructureEntity;
 import Event.CustomEventSource;
-import Items.Furniture;
 import Items.Tool;
 import Items.ToolType;
 import People.Survivor;
@@ -39,8 +39,8 @@ import People.Survivor;
 public class GamePanel extends JPanel {
 	int timer = 0;//if I load a game, this will be reset to 0 causing problems with crops and other timed things
 	Timer mainTimer;
-	transient PopupListener popupListener;
-	transient IOClass iostuff;
+	PopupListener popupListener;
+	IOClass iostuff;
 	// Map map;
 	public Level level;
 	CustomEventSource source;
@@ -48,7 +48,8 @@ public class GamePanel extends JPanel {
 	double translateY = 0;
 	double scale = 1.0;
 	public static Random random;
-
+	AffineTransform holder;
+	
 	// public List<Human> humans = new ArrayList<>();
 	// public static List<ItemEntity> itemEntities = new ArrayList<>();
 
@@ -100,7 +101,7 @@ public class GamePanel extends JPanel {
 		menuItem = new JMenuItem("new axe");
 		menuItem.addActionListener(menuListener);
 		popup.add(menuItem);
-		menuItem = new JMenuItem("new chest");
+		menuItem = new JMenuItem("new wall");
 		menuItem.addActionListener(menuListener);
 		popup.add(menuItem);
 		// menuItem = new JMenuItem("Tower:Poison");
@@ -167,21 +168,21 @@ public class GamePanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		AffineTransform at = new AffineTransform();
+		AffineTransform holder = new AffineTransform();
+		
+		holder.translate(getWidth() / 2, getHeight() / 2);
+		holder.scale(scale, scale);
+		holder.translate(-getWidth() / 2, -getHeight() / 2);
 
-		at.translate(getWidth() / 2, getHeight() / 2);
-		at.scale(scale, scale);
-		at.translate(-getWidth() / 2, -getHeight() / 2);
-
-		at.translate(translateX, translateY);
+		holder.translate(translateX, translateY);
 		Graphics2D g2D = (Graphics2D) g;
-		g2D.setTransform(at);
+		g2D.setTransform(holder);
 
 		if (level != null)
 			level.paintComponent(g2D);
 		
 		//this resets the at for the j components to draw normally
-		at = new AffineTransform();
+		AffineTransform at = new AffineTransform();
 		g2D.setTransform(at);
 	}
 
@@ -261,12 +262,12 @@ public class GamePanel extends JPanel {
 				Tool axe = new Tool("axe", 2.5, 100, ToolType.AXE, 100);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
 				level.addItem(axeEntity);
-			} else if (arg0.paramString().contains("new chest")) {
+			} else if (arg0.paramString().contains("new wall")) {
 				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
 				Location loc = ref.source.getTileAtLocation(tempLoc);
-				Furniture chest = new Furniture("Chest", 3.4, 100);
-				FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
-				level.addFurniture(fEntity);
+				StructureEntity wall = new StructureEntity("Chest", loc, 3.4, true);
+//				FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
+				level.addStructure(wall);
 			} else if (arg0.paramString().contains("Save")) {
 				ref.iostuff.saveLevel(ref.level, "name");
 			} else if (arg0.paramString().contains("Load")) {

@@ -22,6 +22,8 @@ public class ContentBank {
 	public static Image survivorW2;
 	public static Image survivorW3;
 
+	public static Image[] woodenWalls;
+
 	public static Image woodenAxe;
 
 	public static HashMap<String, Item> items = new HashMap<>();
@@ -29,9 +31,9 @@ public class ContentBank {
 	public static HashMap<String, Item> food = new HashMap<>();
 	public static HashMap<String, Item> furniture = new HashMap<>();
 
-	public static String[] boySurviorNames = {"Rob", "Jared", "Doug", "Rufus", "Royce"};
-	public static String[] girlSurviorNames = {"Sara", "Casandra", "Elizabeth", "Susan", "Erica"};
-	
+	public static String[] boySurviorNames = { "Rob", "Jared", "Doug", "Rufus", "Royce" };
+	public static String[] girlSurviorNames = { "Sara", "Casandra", "Elizabeth", "Susan", "Erica" };
+
 	public static void ContentLoader() {
 		loadImages();
 		loadItems();
@@ -51,6 +53,7 @@ public class ContentBank {
 
 	private static void loadImages() {
 		BufferedImage bigImg = null;
+		int index = 0;
 
 		try {
 			bigImg = ImageIO.read(new File("Images/SurvivorTileMap1.png"));
@@ -59,10 +62,10 @@ public class ContentBank {
 			beach = bigImg.getSubimage(64, 0, 16, 16);
 			forest = bigImg.getSubimage(0, 64, 16, 16);
 			jungle = bigImg.getSubimage(64, 64, 16, 16);
-//			sea = bigImg.getSubimage(0, 0, 64, 64);
-//			beach = bigImg.getSubimage(64, 0, 64, 64);
-//			forest = bigImg.getSubimage(0, 64, 64, 64);
-//			jungle = bigImg.getSubimage(64, 64, 64, 64);
+			// sea = bigImg.getSubimage(0, 0, 64, 64);
+			// beach = bigImg.getSubimage(64, 0, 64, 64);
+			// forest = bigImg.getSubimage(0, 64, 64, 64);
+			// jungle = bigImg.getSubimage(64, 64, 64, 64);
 
 			bigImg = ImageIO.read(new File("Images/oie_transparent.png"));
 
@@ -73,9 +76,17 @@ public class ContentBank {
 			survivorW2 = bigImg.getSubimage(0, 128, 16, 32);
 			survivorW3 = bigImg.getSubimage(0, 160, 16, 32);
 
-			bigImg = ImageIO.read(new File("Images/tools1.png"));
+			bigImg = ImageIO.read(new File("Images/Tools1.png"));
 
 			woodenAxe = bigImg.getSubimage(0, 0, 16, 16);
+
+			woodenWalls = new Image[15];
+			for (int y = 0; y < 3; y++) {
+				for (int x = 0; x < 5; x++) {
+					woodenWalls[index] = bigImg.getSubimage((x + 11) * 16, (y + 13) * 16, 16, 16);
+					index++;
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

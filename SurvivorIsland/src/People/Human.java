@@ -31,13 +31,7 @@ public class Human extends Entity {
 	}
 
 	public void update() {
-		double dist = bgf.getDistance(location, destination.get(destinationIndex));
-		if (dist < 5) {
-			// setDestination(32);
-		}
 		location.addMovement(bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level));
-//		location[0] -= bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[0];
-//		location[1] -= bgf.getComponentLengths(location, destination.get(destinationIndex), cStats.stats.get("speed").level)[1];
 	}
 
 	@Override
@@ -82,34 +76,9 @@ public class Human extends Entity {
 
 	public Path findClosestPath(Location destination) {
 		Path path;
-		AStarPathFinder finder = new AStarPathFinder(source.getMap(), 5000, true);
+		AStarPathFinder finder = new AStarPathFinder(source.getMap(), 500, true);
 		// the locations need to be changed so that the entities walk on tiles, not pixels
 		path = finder.findPath(this, location.getTileX(), location.getTileY(), destination.getTileX(), destination.getTileY());
 		return path;
-	}
-
-	// redundant - remove asap - method already in map class, just using for testing
-	public int[] getTileAtLocation(int[] destination) {
-		double[] ugh = new double[2];
-		ugh[0] = destination[0];
-		ugh[1] = destination[1];
-		return getTileAtLocation(ugh);
-	}
-
-	public int[] getTileAtLocation(double[] destination) {
-		int x = (int) destination[0];
-		int y = (int) destination[1];
-		int tileSize = 16;
-		int[] temp = new int[2];
-
-		if (x % tileSize > 8)
-			temp[0] = x - 8;
-		if (y % tileSize > 8)
-			temp[1] = y - 8;
-
-		temp[0] = x / tileSize;
-		temp[1] = y / tileSize;
-
-		return temp;
 	}
 }
