@@ -10,18 +10,19 @@ import Entity.StructureEntity;
 import Main.ContentBank;
 import Main.Location;
 
-@SuppressWarnings("serial")
 public class Map extends JComponent implements TileBasedMap {
-//	MapTile[][] map;
+	private static final long serialVersionUID = -1719918279039504911L;
+	char[][] charMap;
 	TileBoard map;
 	private boolean[][] visited;
-	
-	public void placeWall(StructureEntity structure){
+
+	public void placeWall(StructureEntity structure) {
 		map.tiles[structure.getTileX()][structure.getTileY()].entity = structure;
 	}
-	
+
 	public Map(char[][] mapKey) {
-		map = createMap(mapKey);
+//		map = createMap(mapKey);
+		map = createMap(createLargeTestMap());
 		visited = new boolean[map.getHeight()][map.getWidth()];
 	}
 
@@ -30,43 +31,72 @@ public class Map extends JComponent implements TileBasedMap {
 	}
 
 	public void paintComponent(Graphics2D g2D) {
+		int imageKey = 0;
 		for (int y = 0; y < map.getHeight(); y++) {
 			for (int x = 0; x < map.getWidth(); x++) {
-				// map[i][j].
-				// drawTile(g, map[i][j].getType(), i * 64, j * 64);
-				map.getTile(x, y).paintComponent(g2D);
-//				drawTile(g, map.getTile(x, y).getType(), x * ContentBank.tileSize, y * ContentBank.tileSize);
-//				int[] loc = getLocationAtTile(x, y);
-//				g.drawRect(loc[0] - 8, loc[1] - 8, 16, 16);
+				switch(charMap[y][x]){
+				case 's':
+					imageKey = 0;
+					break;
+				case 'b':
+					imageKey = 1;
+					break;
+				case 'f':
+					imageKey = 2;
+					break;
+				case 'j':
+					imageKey = 3;
+					break;
+				}
+				
+				g2D.drawImage(ContentBank.landTiles[imageKey], x * 16, y * 16, null);
+				
+//				map.getTile(x, y).paintComponent(g2D);
 			}
 		}
 	}
 
-//	private void drawTile(Graphics2D g, TileType tileType, int xPos, int yPos) {
-//		Image temp = null;
-//		switch (tileType) {
-//		case SEA:
-//			temp = ContentBank.sea;
-//			break;
-//		case BEACH:
-//			temp = ContentBank.beach;
-//			break;
-//		case FOREST:
-//			temp = ContentBank.forest;
-//			break;
-//		case JUNGLE:
-//			temp = ContentBank.jungle;
-//			break;
-//		default:
-//			temp = ContentBank.sea;
-//			break;
-//		}
-//		g.drawImage(temp, xPos, yPos, null);
-//	}
+	// private void drawTile(Graphics2D g, TileType tileType, int xPos, int yPos) {
+	// Image temp = null;
+	// switch (tileType) {
+	// case SEA:
+	// temp = ContentBank.sea;
+	// break;
+	// case BEACH:
+	// temp = ContentBank.beach;
+	// break;
+	// case FOREST:
+	// temp = ContentBank.forest;
+	// break;
+	// case JUNGLE:
+	// temp = ContentBank.jungle;
+	// break;
+	// default:
+	// temp = ContentBank.sea;
+	// break;
+	// }
+	// g.drawImage(temp, xPos, yPos, null);
+	// }
+
+	private char[][] createLargeTestMap() {
+		char[][] temp = new char[256][256];
+
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp.length; j++) {
+				if (i > 64 && i < 196 && j > 64 && j < 196)
+					temp[i][j] = 'b';
+				else
+					temp[i][j] = 's';
+			}
+		}
+		charMap = temp;
+		return temp;
+	}
 
 	private TileBoard createMap(char[][] mapKey) {
+		charMap = mapKey;
 		MapTile[][] temp = new MapTile[mapKey.length][mapKey[0].length];
-		
+
 		double seaCost = 1000;
 		double landCost = 15;
 		for (int y = 0; y < mapKey.length; y++) {
@@ -74,11 +104,11 @@ public class Map extends JComponent implements TileBasedMap {
 				double[] tempLocation = new double[2];
 				tempLocation[0] = (x * ContentBank.tileSize);
 				tempLocation[1] = (y * ContentBank.tileSize);
-				if(mapKey[y][x] == 's')
+				if (mapKey[y][x] == 's')
 					seaCost = 1;
 				else
 					seaCost = 1000;
-				switch(mapKey[y][x]){
+				switch (mapKey[y][x]) {
 				case 's':
 					landCost = 35.0;
 					break;
@@ -92,13 +122,13 @@ public class Map extends JComponent implements TileBasedMap {
 					landCost = 1.2;
 					break;
 				}
-				
+
 				temp[y][x] = new MapTile(mapKey[y][x], tempLocation, landCost, seaCost);
 			}
 		}
-		
-		for(int y = 0; y < temp.length; y++){
-			for(int x = 0; x < temp[0].length; x++){
+
+		for (int y = 0; y < temp.length; y++) {
+			for (int x = 0; x < temp[0].length; x++) {
 				System.out.print(mapKey[y][x]);
 			}
 			System.out.println();
@@ -115,27 +145,27 @@ public class Map extends JComponent implements TileBasedMap {
 
 		return temp;
 	}
-	
-	public int[] getTileAtLocation(int[] inLoc){
+
+	public int[] getTileAtLocation(int[] inLoc) {
 		return getTileAtLocation(inLoc[0], inLoc[1]);
 	}
-	
-	public int[] getTileAtLocation(Location inLoc){
+
+	public int[] getTileAtLocation(Location inLoc) {
 		return getTileAtLocation(inLoc.getMapX(), inLoc.getMapY());
 	}
-	
-	public int[] getTileAtLocation(double[] inLoc){
-		return getTileAtLocation((int)inLoc[0], (int)inLoc[1]);
+
+	public int[] getTileAtLocation(double[] inLoc) {
+		return getTileAtLocation((int) inLoc[0], (int) inLoc[1]);
 	}
-	
+
 	public int[] getTileAtLocation(int x, int y) {
 		int[] temp = new int[2];
-		
-		if(x % ContentBank.tileSize > 8)
+
+		if (x % ContentBank.tileSize > 8)
 			temp[0] = x - 8;
-		if(y % ContentBank.tileSize > 8)
+		if (y % ContentBank.tileSize > 8)
 			temp[1] = y - 8;
-		
+
 		temp[0] = x / ContentBank.tileSize;
 		temp[1] = y / ContentBank.tileSize;
 
@@ -173,6 +203,6 @@ public class Map extends JComponent implements TileBasedMap {
 		double tempCost = Math.max(map.getTile(tx, ty).landTileCost, map.getTile(sx, sy).landTileCost);
 		if (Math.abs(sx - tx) == 1 && Math.abs(sy - ty) == 1)
 			return (float) Math.sqrt(tempCost + tempCost);
-		return (float)tempCost;
+		return (float) tempCost;
 	}
 }
