@@ -37,7 +37,7 @@ import People.Survivor;
  */
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
-	int timer = 0;//if I load a game, this will be reset to 0 causing problems with crops and other timed things
+	int timer = 0;// if I load a game, this will be reset to 0 causing problems with crops and other timed things
 	Timer mainTimer;
 	PopupListener popupListener;
 	IOClass iostuff;
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel {
 	double scale = 1.0;
 	public static Random random;
 	AffineTransform holder;
-	
+
 	// public List<Human> humans = new ArrayList<>();
 	// public static List<ItemEntity> itemEntities = new ArrayList<>();
 
@@ -169,7 +169,7 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g);
 
 		AffineTransform holder = new AffineTransform();
-		
+
 		holder.translate(getWidth() / 2, getHeight() / 2);
 		holder.scale(scale, scale);
 		holder.translate(-getWidth() / 2, -getHeight() / 2);
@@ -180,8 +180,8 @@ public class GamePanel extends JPanel {
 
 		if (level != null)
 			level.paintComponent(g2D);
-		
-		//this resets the at for the j components to draw normally
+
+		// this resets the at for the j components to draw normally
 		AffineTransform at = new AffineTransform();
 		g2D.setTransform(at);
 	}
@@ -267,7 +267,7 @@ public class GamePanel extends JPanel {
 				Location loc = ref.source.getTileAtLocation(tempLoc);
 				System.out.println("GamePanel: " + loc.getMapX() + "," + loc.getMapY());
 				StructureEntity wall = new StructureEntity("Wall", loc, 3.4, true);
-//				FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
+				// FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
 				level.addStructure(wall);
 			} else if (arg0.paramString().contains("Save")) {
 				ref.iostuff.saveLevel(ref.level, "name");
@@ -296,11 +296,13 @@ public class GamePanel extends JPanel {
 		private int lastOffsetX;
 		private int lastOffsetY;
 		Point2D location = null;
+		boolean showPopup;
 		BaseGameFunctions bgf = new BaseGameFunctions();
 
 		PopupListener(JPopupMenu popupMenu, GamePanel inGamePanel) {
 			reference = inGamePanel;
 			popup = popupMenu;
+			showPopup = true;
 		}
 
 		public Point2D GetPopupLocation() {
@@ -315,7 +317,11 @@ public class GamePanel extends JPanel {
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			ShowPopup(e);
+			// System.out.println(e.getButton());
+			if (showPopup)
+				ShowPopup(e);
+			else
+				showPopup = true;
 		}
 
 		private void ShowPopup(MouseEvent e) {
@@ -328,26 +334,30 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			// new x and y are defined by current mouse location subtracted
-			// by previously processed mouse location
-			int newX = e.getX() - lastOffsetX;
-			int newY = e.getY() - lastOffsetY;
+			// System.out.println(e.getModifiersEx());
+			if (e.getModifiersEx() == 4096) {// right click
+				showPopup = false;
+				// new x and y are defined by current mouse location subtracted
+				// by previously processed mouse location
+				int newX = e.getX() - lastOffsetX;
+				int newY = e.getY() - lastOffsetY;
 
-			// increment last offset to last processed by drag event.
-			lastOffsetX += newX;
-			lastOffsetY += newY;
+				// increment last offset to last processed by drag event.
+				lastOffsetX += newX;
+				lastOffsetY += newY;
 
-			// update the canvas locations
-			reference.translateX += newX;
-			reference.translateY += newY;
+				// update the canvas locations
+				reference.translateX += newX;
+				reference.translateY += newY;
 
-			// schedule a repaint.
-			reference.repaint();
+				// schedule a repaint.
+				reference.repaint();
+			}
 		}
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-//			System.out.println("Mouse Location:" + e.getX() + "," + e.getY());
+			// System.out.println("Mouse Location:" + e.getX() + "," + e.getY());
 		}
 
 		@Override
@@ -368,7 +378,7 @@ public class GamePanel extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// this is clicking with no movement
 			// System.out.println("mouse clicked");
-//			double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
+			// double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
 			Location loc = new Location(e.getX(), e.getY());
 			Human temp = new Human("mouse", loc, 0.0, false, reference.source);
 			Entity tempSel = reference.level.getSelectedEntity();
