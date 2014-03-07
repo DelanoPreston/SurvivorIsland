@@ -21,8 +21,8 @@ public class Map extends JComponent implements TileBasedMap {
 	}
 
 	public Map(char[][] mapKey) {
-//		map = createMap(mapKey);
-		map = createMap(createLargeTestMap());
+		map = createMap(mapKey);
+//		map = createMap(createLargeTestMap());
 		visited = new boolean[map.getHeight()][map.getWidth()];
 	}
 

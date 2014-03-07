@@ -29,7 +29,7 @@ public class IOClass {
 	public Map ReadMap() {
 		String[] mapFileData = null;
 		try {
-			mapFileData = OpenFile("testmap.txt");
+			mapFileData = OpenFile("16x16SeaMap.txt");
 
 			char[][] tempMap = new char[mapFileData.length][mapFileData[0].length()];
 
