@@ -60,7 +60,7 @@ public class ContentBank {
 
 			for (int y = 0; y < 2; y++) {
 				for (int x = 0; x < 2; x++) {
-					landTiles[index] = bigImg.getSubimage(x * 64, y * 64, 16, 16);
+					landTiles[index] = (Image)bigImg.getSubimage(x * 64, y * 64, 16, 16);
 					index++;
 				}
 			}

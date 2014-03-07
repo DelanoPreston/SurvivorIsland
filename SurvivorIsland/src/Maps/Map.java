@@ -1,7 +1,6 @@
 package Maps;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 
 import javax.swing.JComponent;
 
@@ -12,6 +11,7 @@ import Main.Location;
 
 public class Map extends JComponent implements TileBasedMap {
 	private static final long serialVersionUID = -1719918279039504911L;
+	TileChunk[][] chunks;
 	char[][] charMap;
 	TileBoard map;
 	private boolean[][] visited;
@@ -22,61 +22,49 @@ public class Map extends JComponent implements TileBasedMap {
 
 	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
-//		map = createMap(createLargeTestMap());
+		chunks = createMapChunks(map.tiles);
+//		chunks = new TileChunk[mapKey.length][mapKey[0].length];
+//		chunks[0][0] = new TileChunk(map.tiles, new Location(0, 0));
+		// map = createMap(createLargeTestMap());
 		visited = new boolean[map.getHeight()][map.getWidth()];
 	}
 
 	public void update() {
-
+		// set any of the tile chunks to update
 	}
 
 	public void paintComponent(Graphics2D g2D) {
-		int imageKey = 0;
-		for (int y = 0; y < map.getHeight(); y++) {
-			for (int x = 0; x < map.getWidth(); x++) {
-				switch(charMap[y][x]){
-				case 's':
-					imageKey = 0;
-					break;
-				case 'b':
-					imageKey = 1;
-					break;
-				case 'f':
-					imageKey = 2;
-					break;
-				case 'j':
-					imageKey = 3;
-					break;
-				}
-				
-				g2D.drawImage(ContentBank.landTiles[imageKey], x * 16, y * 16, null);
-				
-//				map.getTile(x, y).paintComponent(g2D);
+		for (int y = 0; y < chunks.length; y++) {
+			for (int x = 0; x < chunks[0].length; x++) {
+//				if (chunks[x][y] != null)
+					chunks[x][y].paintComponent(g2D);
 			}
 		}
-	}
 
-	// private void drawTile(Graphics2D g, TileType tileType, int xPos, int yPos) {
-	// Image temp = null;
-	// switch (tileType) {
-	// case SEA:
-	// temp = ContentBank.sea;
-	// break;
-	// case BEACH:
-	// temp = ContentBank.beach;
-	// break;
-	// case FOREST:
-	// temp = ContentBank.forest;
-	// break;
-	// case JUNGLE:
-	// temp = ContentBank.jungle;
-	// break;
-	// default:
-	// temp = ContentBank.sea;
-	// break;
-	// }
-	// g.drawImage(temp, xPos, yPos, null);
-	// }
+		// int imageKey = 0;
+		// for (int y = 0; y < map.getHeight(); y++) {
+		// for (int x = 0; x < map.getWidth(); x++) {
+		// switch(charMap[y][x]){
+		// case 's':
+		// imageKey = 0;
+		// break;
+		// case 'b':
+		// imageKey = 1;
+		// break;
+		// case 'f':
+		// imageKey = 2;
+		// break;
+		// case 'j':
+		// imageKey = 3;
+		// break;
+		// }
+		//
+		// g2D.drawImage(ContentBank.landTiles[imageKey], x * 16, y * 16, null);
+		//
+		// // map.getTile(x, y).paintComponent(g2D);
+		// }
+		// }
+	}
 
 	private char[][] createLargeTestMap() {
 		char[][] temp = new char[256][256];
@@ -90,6 +78,27 @@ public class Map extends JComponent implements TileBasedMap {
 			}
 		}
 		charMap = temp;
+		return temp;
+	}
+
+	private TileChunk[][] createMapChunks(MapTile[][] mapKey) {
+		TileChunk[][] temp = new TileChunk[mapKey.length/16][mapKey[0].length/16];
+
+		for (int yStart = 0; yStart < mapKey.length / 16; yStart++) {
+			for (int xStart = 0; xStart < mapKey[0].length / 16; xStart++) {
+				MapTile[][] tempMapTile = new MapTile[16][16];
+				for (int y = yStart * 16; y < (yStart + 1) * 16; y++) {
+					for (int x = xStart * 16; x < (xStart + 1) * 16; x++) {
+						try {
+							tempMapTile[y % 16][x % 16] = mapKey[y][x];
+						} catch (IndexOutOfBoundsException e) {
+							tempMapTile[y % 16][x % 16] = null;
+						}
+					}
+				}
+				temp[yStart][xStart] = new TileChunk(tempMapTile, new Location(xStart * 256, yStart * 256));
+			}
+		}
 		return temp;
 	}
 
@@ -127,12 +136,12 @@ public class Map extends JComponent implements TileBasedMap {
 			}
 		}
 
-		for (int y = 0; y < temp.length; y++) {
-			for (int x = 0; x < temp[0].length; x++) {
-				System.out.print(mapKey[y][x]);
-			}
-			System.out.println();
-		}
+		// for (int y = 0; y < temp.length; y++) {
+		// for (int x = 0; x < temp[0].length; x++) {
+		// System.out.print(mapKey[y][x]);
+		// }
+		// System.out.println();
+		// }
 		TileBoard tempOut = new TileBoard(temp);
 		return tempOut;
 	}

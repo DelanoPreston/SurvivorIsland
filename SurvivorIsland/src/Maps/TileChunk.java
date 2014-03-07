@@ -55,7 +55,13 @@ public class TileChunk {
 	}
 	
 	public void paintComponent(Graphics2D g2D){
-		g2D.drawImage(chunkImage, null, chunkLoc.getMapX(), chunkLoc.getMapY());
+//		g2D.drawImage(chunkImage, null, chunkLoc.getMapX(), chunkLoc.getMapY());
+		
+		g2D.drawImage(chunkImage, chunkLoc.getMapX(), chunkLoc.getMapY(), null);
+		
+		
+//		System.out.println(chunkImage.getHeight() + "," + chunkImage.getWidth());
+//		System.out.println(getWidth() * ContentBank.tileSize + "," + getHeight() * ContentBank.tileSize);
 	}
 	
 	public BufferedImage toBufferedImage(MapTile[][] chunkTiles){
@@ -64,9 +70,9 @@ public class TileChunk {
 			for(int x = 0; x < chunkTiles[0].length; x++){
 				Image image = ContentBank.landTiles[chunkTiles[y][x].imageKey];
 				
-				if (image instanceof BufferedImage) {
-			        return (BufferedImage)image;
-			    }
+//				if (image instanceof BufferedImage) {
+//			        return (BufferedImage)image;
+//			    }
 
 			    // This code ensures that all the pixels in the image are loaded
 			    image = new ImageIcon(image).getImage();
@@ -77,22 +83,22 @@ public class TileChunk {
 
 			    // Create a buffered image with a format that's compatible with the screen
 //			    BufferedImage tempBImage = null;
-			    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			    try {
-			        // Determine the type of transparency of the new buffered image
-			        int transparency = Transparency.OPAQUE;
-			        if (hasAlpha) {
-			            transparency = Transparency.BITMASK;
-			        }
-
-			        // Create the buffered image
-			        GraphicsDevice gs = ge.getDefaultScreenDevice();
-			        GraphicsConfiguration gc = gs.getDefaultConfiguration();
-			        tempBImage = gc.createCompatibleImage(
-			            image.getWidth(null), image.getHeight(null), transparency);
-			    } catch (HeadlessException e) {
-			        // The system does not have a screen
-			    }
+//			    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//			    try {
+//			        // Determine the type of transparency of the new buffered image
+//			        int transparency = Transparency.OPAQUE;
+//			        if (hasAlpha) {
+//			            transparency = Transparency.BITMASK;
+//			        }
+//
+//			        // Create the buffered image
+//			        GraphicsDevice gs = ge.getDefaultScreenDevice();
+//			        GraphicsConfiguration gc = gs.getDefaultConfiguration();
+//			        tempBImage = gc.createCompatibleImage(
+//			            image.getWidth(null), image.getHeight(null), transparency);
+//			    } catch (HeadlessException e) {
+//			        // The system does not have a screen
+//			    }
 
 			    if (tempBImage == null) {
 			        // Create a buffered image using the default color model
@@ -100,7 +106,7 @@ public class TileChunk {
 			        if (hasAlpha) {
 			            type = BufferedImage.TYPE_INT_ARGB;
 			        }
-			        tempBImage = new BufferedImage(getWidth() * ContentBank.tileSize, getHeight() * ContentBank.tileSize, type);
+			        tempBImage = new BufferedImage(256,256,type);//getWidth() * ContentBank.tileSize, getHeight() * ContentBank.tileSize, type);
 			    }
 
 			    // Copy image to buffered image
@@ -112,7 +118,7 @@ public class TileChunk {
 			}
 		}
 		
-		
+		System.out.println(tempBImage.getHeight() + "," + tempBImage.getWidth());
 
 	    return tempBImage;
 	}

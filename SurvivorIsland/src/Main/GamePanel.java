@@ -347,7 +347,7 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			System.out.println("Mouse Location:" + e.getX() + "," + e.getY());
+//			System.out.println("Mouse Location:" + e.getX() + "," + e.getY());
 		}
 
 		@Override
