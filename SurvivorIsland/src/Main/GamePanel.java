@@ -252,19 +252,19 @@ public class GamePanel extends JPanel {
 		public void actionPerformed(ActionEvent arg0) {
 
 			if (arg0.paramString().contains("new survivor")) {
-				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
-				Location loc = ref.source.getTileAtLocation(tempLoc);
+				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+//				Location loc = ref.source.getTileAtLocation(tempLoc);
 				Survivor survivor = new Survivor("Rob", loc, 150, true, ref.source);
 				level.addHuman(survivor);
 			} else if (arg0.paramString().contains("new axe")) {
-				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
-				Location loc = ref.source.getTileAtLocation(tempLoc);
+				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+//				Location loc = ref.source.getTileAtLocation(tempLoc);
 				Tool axe = new Tool("axe", 2.5, 100, ToolType.AXE, 100);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
 				level.addItem(axeEntity);
 			} else if (arg0.paramString().contains("new wall")) {
-				Location tempLoc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
-				Location loc = ref.source.getTileAtLocation(tempLoc);
+				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+//				Location loc = ref.source.getTileAtLocation(tempLoc);
 				System.out.println("GamePanel: " + loc.getMapX() + "," + loc.getMapY());
 				StructureEntity wall = new StructureEntity("Wall", loc, 3.4, true);
 				// FurnitureEntity fEntity = new FurnitureEntity(chest, loc);

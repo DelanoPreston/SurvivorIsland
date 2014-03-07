@@ -12,6 +12,6 @@ public interface CustomEventClassListener extends EventListener{
 	public int handleGetEntityCountEvent(StringEvent e);
 	public int[] handleGetAdjacentTileLocation(EntityEvent e);
 	public Map handleGetMap();
-	public Location handleGetTileAtLocation(Location e);
+//	public Location handleGetTileAtLocation(Location e);
 	public void handleCreateStructure(EntityEvent e);
 }

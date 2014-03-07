@@ -62,13 +62,13 @@ public class CustomEventSource implements Serializable{
 		}
 		return null;
 	}
-	public synchronized Location getTileAtLocation(Location inLoc){
-		Iterator<CustomEventClassListener> i = _listeners.iterator();
-		while (i.hasNext()) {
-			return ((CustomEventClassListener) i.next()).handleGetTileAtLocation(inLoc);
-		}
-		return null;
-	}
+//	public synchronized Location getTileAtLocation(Location inLoc){
+//		Iterator<CustomEventClassListener> i = _listeners.iterator();
+//		while (i.hasNext()) {
+//			return ((CustomEventClassListener) i.next()).handleGetTileAtLocation(inLoc);
+//		}
+//		return null;
+//	}
 	public synchronized void createStructure(Entity entity, String subS){
 		EntityEvent event = new EntityEvent(this, entity, subS);
 		Iterator<CustomEventClassListener> i = _listeners.iterator();

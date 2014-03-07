@@ -202,17 +202,20 @@ public class Level implements Serializable, CustomEventClassListener {
 
 	@Override
 	public synchronized int[] handleGetAdjacentTileLocation(EntityEvent e) {
-		int[] tileLocation = map.getTileAtLocation(e.entity.getX(), e.entity.getY());
+//		int[] tileLocation = map.getTileAtLocation(e.entity.getX(), e.entity.getY());
+		Location tileLocation = new Location(e.entity.getMapLocation());
+		tileLocation.setLocationAtTile();
 		int[] temp = { -1, -1 };
 
 		while (temp[0] == -1) {
 			int x1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[0];
 			int y1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[1];
-			int x = x1 + tileLocation[0];
-			int y = y1 + tileLocation[1];
+			int x = x1 + tileLocation.getTileX();
+			int y = y1 + tileLocation.getTileY();
 
 			if (!map.blocked(e.entity, x, y)) {
-				temp = map.getLocationAtTile(x, y);
+				temp[0] = tileLocation.getMapX();
+				temp[1] = tileLocation.getMapY();
 			}
 		}
 
@@ -222,12 +225,12 @@ public class Level implements Serializable, CustomEventClassListener {
 	public synchronized Map handleGetMap() {
 		return map;
 	}
-
-	public synchronized Location handleGetTileAtLocation(Location inTileLoc) {
-		int[] tempugh = map.getTileAtLocation(inTileLoc);
-		Location temp = new Location(tempugh[0] * 16 + 8, tempugh[1] * 16 + 8);
-		return temp;
-	}
+//
+//	public synchronized Location handleGetTileAtLocation(Location inTileLoc) {
+//		int[] tempugh = map.getTileAtLocation(inTileLoc);
+//		Location temp = new Location(tempugh[0] * 16 + 8, tempugh[1] * 16 + 8);
+//		return temp;
+//	}
 
 	@Override
 	public void handleCreateStructure(EntityEvent e) {

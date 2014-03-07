@@ -31,7 +31,12 @@ public class Location {
 
 		return (int) temp;
 	}
-
+	
+	public void setLocationAtTile(){
+		x = getTileX();
+		y = getTileY();
+	}
+	
 	public Location(double inX, double inY) {
 		x = inX;
 		y = inY;
@@ -40,6 +45,11 @@ public class Location {
 	public Location(int inX, int inY) {
 		x = inX;
 		y = inY;
+	}
+
+	public Location(Location mapLocation) {
+		x = mapLocation.getMapX();
+		y = mapLocation.getMapY();
 	}
 
 	public void addMovement(double[] inChange) {
