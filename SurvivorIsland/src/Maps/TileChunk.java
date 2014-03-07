@@ -22,6 +22,8 @@ public class TileChunk {
 	BufferedImage chunkImage;
 	Location chunkLoc;
 	boolean updateChunk;
+//	public static int tileWidth = 16;
+//	public static int tileHeight = 16;
 	
 	public int getWidth(){
 		return tiles[0].length;
@@ -41,6 +43,10 @@ public class TileChunk {
 	
 	public MapTile getTileFromChunk(int x, int y){
 		return tiles[x][y];
+	}
+	
+	public void setStructure(int x, int y){
+		
 	}
 	
 	public TileChunk(MapTile[][] mapChunk, Location chunkLocation){
