@@ -8,7 +8,7 @@ import Main.Location;
 
 public class StructureEntity extends Entity {
 	private static final long serialVersionUID = 641474344878015532L;
-	int imageKey;
+//	int imageKey;
 	int timer;
 	
 	public StructureEntity(String inName, Location inLocation, double inWeight, boolean inSolid) {

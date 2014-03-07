@@ -2,7 +2,12 @@ package Maps;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -25,41 +30,21 @@ public class Map extends JComponent implements TileBasedMap {
 	int tileWidth = 16;
 	int tileHeight = 16;
 
-	public int getWidth() {
-		return map[0].length;
-	}
-
-	public int getHeight() {
-		return map.length;
-	}
-
-	public MapTile getTile(int x, int y) {
-		try {
-			return map[y][x];
-		} catch (Exception e) {
-			int i = 0;
-
-			if (i == 0) {
-
-			}
-		}
-		return null;
-	}
-
-	public void placeWall(StructureEntity structure) {
-		map[structure.getTileX()][structure.getTileY()].entity = structure;
-	}
-
 	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
 		chunkImages = createChunkImages(map);
 		visited = new boolean[getHeight()][getWidth()];
 	}
 
+	public void placeWall(StructureEntity structure) {
+		map[structure.getTileY()][structure.getTileX()].entity = structure;
+		setChunkImageUpdate(structure.getTileX(), structure.getTileY());
+	}
+
 	public void update() {
 		for (int y = 0; y < chunkImages.length; y++) {
 			for (int x = 0; x < chunkImages[0].length; x++) {
-				if (chunkImages[y][x].update)
+				if (chunkImages[y][x].getUpdate())
 					chunkImages[y][x].setImage(toBufferedImage(x, y));
 			}
 		}
@@ -143,6 +128,7 @@ public class Map extends JComponent implements TileBasedMap {
 	public BufferedImage toBufferedImage(int xLoc, int yLoc) {
 		// Create a buffered image with a format that's compatible with the screen
 		BufferedImage tempBImage = null;
+		Image tempEntImg = null;
 		for (int y = yLoc; y < yLoc + tileHeight; y++) {
 			for (int x = xLoc; x < xLoc + tileWidth; x++) {
 				Image image = ContentBank.landTiles[map[y][x].imageKey];
@@ -158,22 +144,33 @@ public class Map extends JComponent implements TileBasedMap {
 				// implementation, see Determining If an Image Has Transparent Pixels
 				boolean hasAlpha = hasAlpha(image);
 
-				// GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-				// try {
-				// // Determine the type of transparency of the new buffered image
-				// int transparency = Transparency.OPAQUE;
-				// if (hasAlpha) {
-				// transparency = Transparency.BITMASK;
-				// }
-				//
-				// // Create the buffered image
-				// GraphicsDevice gs = ge.getDefaultScreenDevice();
-				// GraphicsConfiguration gc = gs.getDefaultConfiguration();
-				// tempBImage = gc.createCompatibleImage(
-				// image.getWidth(null), image.getHeight(null), transparency);
-				// } catch (HeadlessException e) {
-				// // The system does not have a screen
-				// }
+//				if (map[y][x].getEntity() != null) {
+//					BufferedImage tempTestImg = null;
+//					GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//					try {
+//						// Determine the type of transparency of the new buffered image
+//						int transparency = Transparency.OPAQUE;
+//						if (hasAlpha) {
+//							transparency = Transparency.BITMASK;
+//						}
+//
+//						// Create the buffered image
+//						GraphicsDevice gs = ge.getDefaultScreenDevice();
+//						GraphicsConfiguration gc = gs.getDefaultConfiguration();
+//						tempTestImg = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
+//					} catch (HeadlessException e) {
+//						// The system does not have a screen
+//					}
+//					
+//					Graphics gTemp = tempTestImg.createGraphics();
+//					
+//					gTemp.drawImage(image, (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+//					gTemp.drawImage(ContentBank.woodenWalls[map[y][x].getEntity().getImageKey()], (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+//					
+//					gTemp.dispose();
+//					
+//					image = tempTestImg;
+//				}
 
 				if (tempBImage == null) {
 					// Create a buffered image using the default color model
@@ -189,6 +186,11 @@ public class Map extends JComponent implements TileBasedMap {
 
 				// Paint the image onto the buffered image
 				g.drawImage(image, (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+				
+				if(map[y][x].getEntity() != null){//tempEntImg != null){
+					g.drawImage(ContentBank.woodenWalls[map[y][x].getEntity().getImageKey()], (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+				}
+				
 				g.dispose();
 			}
 		}
@@ -217,6 +219,31 @@ public class Map extends JComponent implements TileBasedMap {
 		// Get the image's color model
 		ColorModel cm = pg.getColorModel();
 		return cm.hasAlpha();
+	}
+
+	@Override
+	public void pathFinderVisited(int x, int y) {
+		visited[x][y] = true;
+	}
+
+	@Override
+	public boolean blocked(Entity entity, int x, int y) {
+		if (getTile(x, y).entity != null && getTile(x, y).entity.solid)
+			return true;
+		return false;
+	}
+
+	public MapTile getTile(int x, int y) {
+		try {
+			return map[y][x];
+		} catch (Exception e) {
+			int i = 0;
+
+			if (i == 0) {
+
+			}
+		}
+		return null;
 	}
 
 	public int[] getLocationAtTile(int x, int y) {
@@ -265,16 +292,12 @@ public class Map extends JComponent implements TileBasedMap {
 		return getHeight();
 	}
 
-	@Override
-	public void pathFinderVisited(int x, int y) {
-		visited[x][y] = true;
+	public int getWidth() {
+		return map[0].length;
 	}
 
-	@Override
-	public boolean blocked(Entity entity, int x, int y) {
-		if (getTile(x, y).entity != null && getTile(x, y).entity.solid)
-			return true;
-		return false;
+	public int getHeight() {
+		return map.length;
 	}
 
 	@Override
@@ -283,5 +306,9 @@ public class Map extends JComponent implements TileBasedMap {
 		if (Math.abs(sx - tx) == 1 && Math.abs(sy - ty) == 1)
 			return (float) Math.sqrt(tempCost + tempCost);
 		return (float) tempCost;
+	}
+
+	public void setChunkImageUpdate(int x, int y) {
+		chunkImages[y / tileHeight][x / tileWidth].setUpdate(true);
 	}
 }
