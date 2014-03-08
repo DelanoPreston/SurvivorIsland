@@ -12,6 +12,7 @@ import Entity.Entity;
 import Entity.FurnitureEntity;
 import Entity.ItemEntity;
 import Entity.StructureEntity;
+import Entity.WallEntity;
 import Event.CustomEventClassListener;
 import Event.EntityEvent;
 import Event.HumanEntityEvent;
@@ -48,7 +49,7 @@ public class Level implements Serializable, CustomEventClassListener {
 		furnitureEntities.add(fEntity);
 	}
 
-	public void addStructure(StructureEntity structure) {
+	public void addStructure(WallEntity structure) {
 		map.placeWall(structure);
 //		structureEntities.add(structure);
 	}
@@ -234,7 +235,7 @@ public class Level implements Serializable, CustomEventClassListener {
 
 	@Override
 	public void handleCreateStructure(EntityEvent e) {
-		addStructure((StructureEntity)e.entity);
+		addStructure((WallEntity)e.entity);
 //		structureEntities.add((StructureEntity) e.entity);
 	}
 

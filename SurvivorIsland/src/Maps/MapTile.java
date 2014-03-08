@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 import Entity.Entity;
-import Main.ContentBank;
 
 public class MapTile extends JComponent {
 
@@ -36,10 +35,7 @@ public class MapTile extends JComponent {
 	}
 	
 	public void paintComponent(Graphics2D g2D){
-//		g2D.drawImage(ContentBank.landTiles[imageKey], (int)tileLocation[0], (int)tileLocation[1], null);
-//		if(entity != null){
-//			entity.paintComponent(g2D);
-//		}
+		
 	}
 	
 	public TileType getType() {

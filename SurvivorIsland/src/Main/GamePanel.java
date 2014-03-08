@@ -25,7 +25,7 @@ import javax.swing.Timer;
 
 import Entity.Entity;
 import Entity.ItemEntity;
-import Entity.StructureEntity;
+import Entity.WallEntity;
 import Event.CustomEventSource;
 import Items.Tool;
 import Items.ToolType;
@@ -266,7 +266,7 @@ public class GamePanel extends JPanel {
 				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
 //				Location loc = ref.source.getTileAtLocation(tempLoc);
 				System.out.println("GamePanel: " + loc.getMapX() + "," + loc.getMapY());
-				StructureEntity wall = new StructureEntity("Wall", loc, 3.4, true);
+				WallEntity wall = new WallEntity("Wall", loc, 3.4, true);
 				// FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
 				level.addStructure(wall);
 			} else if (arg0.paramString().contains("Save")) {

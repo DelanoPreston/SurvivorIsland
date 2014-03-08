@@ -60,7 +60,7 @@ public class ContentBank {
 
 			for (int y = 0; y < 2; y++) {
 				for (int x = 0; x < 2; x++) {
-					landTiles[index] = (Image)bigImg.getSubimage(x * 64, y * 64, 16, 16);
+					landTiles[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 16, 16);
 					index++;
 				}
 			}
@@ -87,12 +87,10 @@ public class ContentBank {
 			index = 0;
 			woodenAxe = bigImg.getSubimage(0, 0, 16, 16);
 
-			woodenWalls = new Image[15];
-			for (int y = 0; y < 3; y++) {
-				for (int x = 0; x < 5; x++) {
-					woodenWalls[index] = bigImg.getSubimage((x + 11) * 16, (y + 13) * 16, 16, 16);
-					index++;
-				}
+			woodenWalls = new Image[16];
+			for (int x = 0; x < 16; x++) {
+				woodenWalls[index] = bigImg.getSubimage(x * 16, 15 * 16, 16, 16);
+				index++;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

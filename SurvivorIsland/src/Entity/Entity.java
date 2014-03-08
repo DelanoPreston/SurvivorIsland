@@ -13,7 +13,7 @@ public class Entity extends JComponent{
 	public boolean solid;
 	public double weight;
 	public EntityType type;
-	protected int imageKey;
+	protected int imageKey = 0;;
 	
 	public int getX(){
 		return location.getMapX();
@@ -33,6 +33,10 @@ public class Entity extends JComponent{
 	
 	public Location getMapLocation(){
 		return location;
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	public int getImageKey(){

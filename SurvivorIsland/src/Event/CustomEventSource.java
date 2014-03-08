@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import Entity.Entity;
-import Main.Location;
 import Maps.Map;
 import People.Human;
 

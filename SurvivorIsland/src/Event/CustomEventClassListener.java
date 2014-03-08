@@ -3,7 +3,6 @@ package Event;
 import java.util.EventListener;
 
 import Entity.Entity;
-import Main.Location;
 import Maps.Map;
 
 public interface CustomEventClassListener extends EventListener{

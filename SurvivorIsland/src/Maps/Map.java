@@ -2,12 +2,7 @@ package Maps;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Image;
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -16,9 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import Entity.Entity;
-import Entity.StructureEntity;
+import Entity.WallEntity;
 import Main.ContentBank;
-import Main.Location;
 
 public class Map extends JComponent implements TileBasedMap {
 	private static final long serialVersionUID = -1719918279039504911L;
@@ -36,9 +30,43 @@ public class Map extends JComponent implements TileBasedMap {
 		visited = new boolean[getHeight()][getWidth()];
 	}
 
-	public void placeWall(StructureEntity structure) {
-		map[structure.getTileY()][structure.getTileX()].entity = structure;
-		setChunkImageUpdate(structure.getTileX(), structure.getTileY());
+	public void placeWall(WallEntity wall) {
+		int x = wall.getTileX();
+		int y = wall.getTileY();
+		map[y][x].setEntity(wall);
+
+		updateWall(wall);
+		if (map[y - 1][x].getEntity() != null)
+			updateWall((WallEntity) map[y - 1][x].getEntity());
+		if (map[y][x + 1].getEntity() != null)
+			updateWall((WallEntity) map[y][x + 1].getEntity());
+		if (map[y + 1][x].getEntity() != null)
+			updateWall((WallEntity) map[y + 1][x].getEntity());
+		if (map[y][x - 1].getEntity() != null)
+			updateWall((WallEntity) map[y][x - 1].getEntity());
+
+		setChunkImageUpdate(wall.getTileX(), wall.getTileY());
+	}
+
+	public void updateWall(WallEntity wall) {
+		int x = wall.getTileX();
+		int y = wall.getTileY();
+		boolean[] wallCheck = new boolean[4];
+
+		if (map[y - 1][x].getEntity() != null)
+			if (map[y - 1][x].getEntity().getName().equalsIgnoreCase("wall"))
+				wallCheck[0] = true;
+		if (map[y][x + 1].getEntity() != null)
+			if (map[y][x + 1].getEntity().getName().equalsIgnoreCase("wall"))
+				wallCheck[1] = true;
+		if (map[y + 1][x].getEntity() != null)
+			if (map[y + 1][x].getEntity().getName().equalsIgnoreCase("wall"))
+				wallCheck[2] = true;
+		if (map[y][x - 1].getEntity() != null)
+			if (map[y][x - 1].getEntity().getName().equalsIgnoreCase("wall"))
+				wallCheck[3] = true;
+
+		wall.updateKey(wallCheck);
 	}
 
 	public void update() {
