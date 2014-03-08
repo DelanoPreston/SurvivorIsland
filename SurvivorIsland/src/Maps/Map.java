@@ -35,17 +35,36 @@ public class Map extends JComponent implements TileBasedMap {
 		int y = wall.getTileY();
 		map[y][x].setEntity(wall);
 
-		updateWall(wall);
-		if (map[y - 1][x].getEntity() != null)
-			updateWall((WallEntity) map[y - 1][x].getEntity());
-		if (map[y][x + 1].getEntity() != null)
-			updateWall((WallEntity) map[y][x + 1].getEntity());
-		if (map[y + 1][x].getEntity() != null)
-			updateWall((WallEntity) map[y + 1][x].getEntity());
-		if (map[y][x - 1].getEntity() != null)
-			updateWall((WallEntity) map[y][x - 1].getEntity());
-
+		// tells the chunkImage that this wall piece is placed in to update
 		setChunkImageUpdate(wall.getTileX(), wall.getTileY());
+
+		// updates the wall that was just placed (image update)
+		updateWall(wall);
+
+		if (map[y - 1][x].getEntity() != null) {
+			// updates the wall that is above the one that was just placed (image update)
+			updateWall((WallEntity) map[y - 1][x].getEntity());
+			if((wall.getY() - ContentBank.tileSize) - 1 != y)
+				setChunkImageUpdate(wall.getTileX(), wall.getTileY() - 1);
+		}
+		if (map[y][x + 1].getEntity() != null) {
+			// updates the wall that is above the one that was just placed (image update)
+			updateWall((WallEntity) map[y][x + 1].getEntity());
+			if((wall.getX() - ContentBank.tileSize) + 1 != y)
+				setChunkImageUpdate(wall.getTileX() + 1, wall.getTileY());
+		}
+		if (map[y + 1][x].getEntity() != null) {
+			// updates the wall that is above the one that was just placed (image update)
+			updateWall((WallEntity) map[y + 1][x].getEntity());
+			if((wall.getY() - ContentBank.tileSize) + 1 != y)
+				setChunkImageUpdate(wall.getTileX(), wall.getTileY() + 1);
+		}
+		if (map[y][x - 1].getEntity() != null) {
+			// updates the wall that is above the one that was just placed (image update)
+			updateWall((WallEntity) map[y][x - 1].getEntity());
+			if((wall.getX() - ContentBank.tileSize) - 1 != y)
+				setChunkImageUpdate(wall.getTileX() - 1, wall.getTileY());
+		}
 	}
 
 	public void updateWall(WallEntity wall) {
@@ -73,7 +92,7 @@ public class Map extends JComponent implements TileBasedMap {
 		for (int y = 0; y < chunkImages.length; y++) {
 			for (int x = 0; x < chunkImages[0].length; x++) {
 				if (chunkImages[y][x].getUpdate())
-					chunkImages[y][x].setImage(toBufferedImage(x * 16, y * 16));
+					chunkImages[y][x].setImage(toBufferedImage(x * ContentBank.tileSize, y * ContentBank.tileSize));
 			}
 		}
 	}

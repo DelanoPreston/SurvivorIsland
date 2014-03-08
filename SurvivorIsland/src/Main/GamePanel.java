@@ -67,7 +67,7 @@ public class GamePanel extends JPanel {
 		// creates the popup menu
 		CreatePopupMenu();
 
-		createLayout();
+//		createLayout();
 
 		// adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
@@ -80,7 +80,7 @@ public class GamePanel extends JPanel {
 		level.setMap(iostuff.ReadMap());
 
 		// timer for updating game every 10 miliseconds
-		mainTimer = new Timer(10, new TimerListener());
+		mainTimer = new Timer(16, new TimerListener());
 		mainTimer.start();
 	}
 
