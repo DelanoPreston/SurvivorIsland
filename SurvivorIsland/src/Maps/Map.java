@@ -73,7 +73,7 @@ public class Map extends JComponent implements TileBasedMap {
 		for (int y = 0; y < chunkImages.length; y++) {
 			for (int x = 0; x < chunkImages[0].length; x++) {
 				if (chunkImages[y][x].getUpdate())
-					chunkImages[y][x].setImage(toBufferedImage(x, y));
+					chunkImages[y][x].setImage(toBufferedImage(x * 16, y * 16));
 			}
 		}
 	}
@@ -156,14 +156,9 @@ public class Map extends JComponent implements TileBasedMap {
 	public BufferedImage toBufferedImage(int xLoc, int yLoc) {
 		// Create a buffered image with a format that's compatible with the screen
 		BufferedImage tempBImage = null;
-		Image tempEntImg = null;
 		for (int y = yLoc; y < yLoc + tileHeight; y++) {
 			for (int x = xLoc; x < xLoc + tileWidth; x++) {
 				Image image = ContentBank.landTiles[map[y][x].imageKey];
-
-				// if (image instanceof BufferedImage) {
-				// return (BufferedImage)image;
-				// }
 
 				// This code ensures that all the pixels in the image are loaded
 				image = new ImageIcon(image).getImage();
@@ -171,35 +166,6 @@ public class Map extends JComponent implements TileBasedMap {
 				// Determine if the image has transparent pixels; for this method's
 				// implementation, see Determining If an Image Has Transparent Pixels
 				boolean hasAlpha = hasAlpha(image);
-
-				// if (map[y][x].getEntity() != null) {
-				// BufferedImage tempTestImg = null;
-				// GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-				// try {
-				// // Determine the type of transparency of the new buffered image
-				// int transparency = Transparency.OPAQUE;
-				// if (hasAlpha) {
-				// transparency = Transparency.BITMASK;
-				// }
-				//
-				// // Create the buffered image
-				// GraphicsDevice gs = ge.getDefaultScreenDevice();
-				// GraphicsConfiguration gc = gs.getDefaultConfiguration();
-				// tempTestImg = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
-				// } catch (HeadlessException e) {
-				// // The system does not have a screen
-				// }
-				//
-				// Graphics gTemp = tempTestImg.createGraphics();
-				//
-				// gTemp.drawImage(image, (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
-				// gTemp.drawImage(ContentBank.woodenWalls[map[y][x].getEntity().getImageKey()], (x - xLoc) * ContentBank.tileSize, (y - yLoc) *
-				// ContentBank.tileSize, null);
-				//
-				// gTemp.dispose();
-				//
-				// image = tempTestImg;
-				// }
 
 				if (tempBImage == null) {
 					// Create a buffered image using the default color model
@@ -215,6 +181,9 @@ public class Map extends JComponent implements TileBasedMap {
 
 				// Paint the image onto the buffered image
 				g.drawImage(image, (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+
+				// g.drawRect((x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, (x - xLoc + 1) * ContentBank.tileSize, (y - yLoc + 1) *
+				// ContentBank.tileSize);
 
 				if (map[y][x].getEntity() != null) {// tempEntImg != null){
 					g.drawImage(ContentBank.woodenWalls[map[y][x].getEntity().getImageKey()], (x - xLoc) * ContentBank.tileSize, (y - yLoc)
@@ -276,41 +245,6 @@ public class Map extends JComponent implements TileBasedMap {
 		return null;
 	}
 
-	// public int[] getLocationAtTile(int x, int y) {
-	// int[] temp = new int[2];
-	//
-	// temp[0] = (x * ContentBank.tileSize) + (ContentBank.tileSize / 2);
-	// temp[1] = (y * ContentBank.tileSize) + (ContentBank.tileSize / 2);
-	//
-	// return temp;
-	// }
-	//
-	// public int[] getTileAtLocation(int[] inLoc) {
-	// return getTileAtLocation(inLoc[0], inLoc[1]);
-	// }
-	//
-	// public int[] getTileAtLocation(Location inLoc) {
-	// return getTileAtLocation(inLoc.getMapX(), inLoc.getMapY());
-	// }
-	//
-	// public int[] getTileAtLocation(double[] inLoc) {
-	// return getTileAtLocation((int) inLoc[0], (int) inLoc[1]);
-	// }
-	//
-	// public int[] getTileAtLocation(int x, int y) {
-	// int[] temp = new int[2];
-	//
-	// if (x % ContentBank.tileSize > 8)
-	// temp[0] = x - 8;
-	// if (y % ContentBank.tileSize > 8)
-	// temp[1] = y - 8;
-	//
-	// temp[0] = x / ContentBank.tileSize;
-	// temp[1] = y / ContentBank.tileSize;
-	//
-	// return temp;
-	// }
-
 	@Override
 	public int getWidthInTiles() {
 		int temp = getWidth();
@@ -342,3 +276,75 @@ public class Map extends JComponent implements TileBasedMap {
 		chunkImages[y / tileHeight][x / tileWidth].setUpdate(true);
 	}
 }
+
+// public BufferedImage toBufferedImage(int xLoc, int yLoc) {
+// // Create a buffered image with a format that's compatible with the screen
+// BufferedImage tempBImage = null;
+// for (int y = yLoc; y < yLoc + tileHeight; y++) {
+// for (int x = xLoc; x < xLoc + tileWidth; x++) {
+// Image image = ContentBank.landTiles[map[y][x].imageKey];
+//
+// // This code ensures that all the pixels in the image are loaded
+// image = new ImageIcon(image).getImage();
+//
+// // Determine if the image has transparent pixels; for this method's
+// // implementation, see Determining If an Image Has Transparent Pixels
+// boolean hasAlpha = hasAlpha(image);
+//
+// // if (map[y][x].getEntity() != null) {
+// // BufferedImage tempTestImg = null;
+// // GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+// // try {
+// // // Determine the type of transparency of the new buffered image
+// // int transparency = Transparency.OPAQUE;
+// // if (hasAlpha) {
+// // transparency = Transparency.BITMASK;
+// // }
+// //
+// // // Create the buffered image
+// // GraphicsDevice gs = ge.getDefaultScreenDevice();
+// // GraphicsConfiguration gc = gs.getDefaultConfiguration();
+// // tempTestImg = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
+// // } catch (HeadlessException e) {
+// // // The system does not have a screen
+// // }
+// //
+// // Graphics gTemp = tempTestImg.createGraphics();
+// //
+// // gTemp.drawImage(image, (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+// // gTemp.drawImage(ContentBank.woodenWalls[map[y][x].getEntity().getImageKey()], (x - xLoc) * ContentBank.tileSize, (y - yLoc) *
+// // ContentBank.tileSize, null);
+// //
+// // gTemp.dispose();
+// //
+// // image = tempTestImg;
+// // }
+//
+// if (tempBImage == null) {
+// // Create a buffered image using the default color model
+// int type = BufferedImage.TYPE_INT_RGB;
+// if (hasAlpha) {
+// type = BufferedImage.TYPE_INT_ARGB;
+// }
+// tempBImage = new BufferedImage(tileWidth * ContentBank.tileSize, tileHeight * ContentBank.tileSize, type);
+// }
+//
+// // Copy image to buffered image
+// Graphics g = tempBImage.createGraphics();
+//
+// // Paint the image onto the buffered image
+// g.drawImage(image, (x - xLoc) * ContentBank.tileSize, (y - yLoc) * ContentBank.tileSize, null);
+//
+// if (map[y][x].getEntity() != null) {// tempEntImg != null){
+// g.drawImage(ContentBank.woodenWalls[map[y][x].getEntity().getImageKey()], (x - xLoc) * ContentBank.tileSize, (y - yLoc)
+// * ContentBank.tileSize, null);
+// }
+//
+// g.dispose();
+// }
+// }
+//
+// System.out.println(tempBImage.getHeight() + "," + tempBImage.getWidth());
+//
+// return tempBImage;
+// }

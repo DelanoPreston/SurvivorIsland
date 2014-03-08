@@ -46,6 +46,7 @@ public class Entity extends JComponent{
 	public Entity(String inName, Location inLocation, double inWeight, boolean inSolid){
 		name = inName;
 		location = inLocation;
+		location.setLocationAtTile();
 		weight = inWeight;
 		solid = inSolid;
 		type = EntityType.LAND;
@@ -54,6 +55,7 @@ public class Entity extends JComponent{
 	public Entity(String inName, Location inLocation, double inWeight){
 		name = inName;
 		location = inLocation;
+		location.setLocationAtTile();
 		weight = inWeight;
 		type = EntityType.LAND;
 	}

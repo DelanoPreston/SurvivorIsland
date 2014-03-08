@@ -33,8 +33,12 @@ public class Location {
 	}
 	
 	public void setLocationAtTile(){
-		x = getTileX();
-		y = getTileY();
+		x = getTileX() * ContentBank.tileSize + (ContentBank.tileSize / 2);
+		y = getTileY() * ContentBank.tileSize + (ContentBank.tileSize / 2);
+		int i = 0;
+		if (i ==0){
+			
+		}
 	}
 	
 	public Location(double inX, double inY) {
