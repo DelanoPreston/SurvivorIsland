@@ -89,7 +89,7 @@ public class GamePanel extends JPanel {
 		iostuff = new IOClass();
 		level.setMap(iostuff.ReadMap());
 
-		// timer for updating game every 10 miliseconds
+		// timer for updating game every 17 miliseconds
 		mainTimer = new Timer(17, new TimerListener());
 		mainTimer.start();
 	}
@@ -164,12 +164,20 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
+			int key = arg0.getKeyCode();
 
+			if (key == KeyEvent.VK_SPACE) {
+				System.out.println("nothing");
+			}
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
+			int key = arg0.getKeyCode();
 
+			if (key == KeyEvent.VK_SPACE) {
+				System.out.println("nothing");
+			}
 		}
 	}
 
