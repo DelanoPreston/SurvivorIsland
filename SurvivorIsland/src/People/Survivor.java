@@ -61,6 +61,7 @@ public class Survivor extends Human {
 	private void gather() {
 		if (targetItem == null && source.getEntityCountEvent("itementities", "targettable") > 0) {
 			targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
+			
 			targetItem.targetted = true;
 			destination = findClosestPath(targetItem.getMapLocation()).changePathToDoubleList();
 			//destination.add(targetItem.location);

@@ -5,12 +5,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import Items.Item;
 
 public class ContentBank {
+	public static Random random;
 	public static int tileSize = 16;
 	public static Image survivorM1;
 	public static Image survivorM2;
@@ -21,6 +23,7 @@ public class ContentBank {
 
 	public static Image[] woodenWalls;
 	public static Image[] landTiles;
+	public static Image[] buttonIcons;
 
 	public static Image woodenAxe;
 
@@ -33,6 +36,7 @@ public class ContentBank {
 	public static String[] girlSurviorNames = { "Sara", "Casandra", "Elizabeth", "Susan", "Erica" };
 
 	public static void ContentLoader() {
+		random = new Random();
 		loadImages();
 		loadItems();
 		loadAnimals();
@@ -64,7 +68,18 @@ public class ContentBank {
 					index++;
 				}
 			}
+			
+			bigImg = ImageIO.read(new File("Images/ButtonIcons1.png"));
+			index = 0;
+			buttonIcons = new Image[2];
 
+			for (int y = 0; y < 1; y++) {
+				for (int x = 0; x < 2; x++) {
+					buttonIcons[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 64, 64);
+					index++;
+				}
+			}
+			
 			// sea = bigImg.getSubimage(0, 0, 16, 16);
 			// beach = bigImg.getSubimage(64, 0, 16, 16);
 			// forest = bigImg.getSubimage(0, 64, 16, 16);

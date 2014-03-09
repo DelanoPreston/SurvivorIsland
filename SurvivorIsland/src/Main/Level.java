@@ -209,8 +209,8 @@ public class Level implements Serializable, CustomEventClassListener {
 		int[] temp = { -1, -1 };
 
 		while (temp[0] == -1) {
-			int x1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[0];
-			int y1 = GamePanel.random.nextInt(5) - 2;// + tileLocation[1];
+			int x1 = ContentBank.random.nextInt(5) - 2;// + tileLocation[0];
+			int y1 = ContentBank.random.nextInt(5) - 2;// + tileLocation[1];
 			int x = x1 + tileLocation.getTileX();
 			int y = y1 + tileLocation.getTileY();
 

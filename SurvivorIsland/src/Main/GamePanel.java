@@ -1,6 +1,9 @@
 package Main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -14,8 +17,12 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.Random;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -41,23 +48,20 @@ public class GamePanel extends JPanel {
 	Timer mainTimer;
 	PopupListener popupListener;
 	IOClass iostuff;
-	// Map map;
 	public Level level;
 	CustomEventSource source;
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
-	public static Random random;
-	AffineTransform holder;
-
-	// public List<Human> humans = new ArrayList<>();
-	// public static List<ItemEntity> itemEntities = new ArrayList<>();
+	
+//	public static Random random;
+//	AffineTransform holder;
 
 	/**
 	 * Constructor for the GamePanel class that extends JPanel
 	 */
 	public GamePanel() {
-		random = new Random();
+//		random = new Random();
 		setFocusable(true);
 
 		level = new Level();
@@ -65,9 +69,15 @@ public class GamePanel extends JPanel {
 		source.addEventListener(level);
 
 		// creates the popup menu
-		CreatePopupMenu();
+		createPopupMenu();
 
-//		createLayout();
+		// creates the menu layout
+		createLayout();
+
+		// creates the button layout
+		createButtonLayout();
+		
+		
 
 		// adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
@@ -80,78 +90,8 @@ public class GamePanel extends JPanel {
 		level.setMap(iostuff.ReadMap());
 
 		// timer for updating game every 10 miliseconds
-		mainTimer = new Timer(16, new TimerListener());
+		mainTimer = new Timer(17, new TimerListener());
 		mainTimer.start();
-	}
-
-	/**
-	 * CreatePopupMenu class is only called when the gamePanel is created to
-	 * instantiate the popup menu
-	 */
-	public void CreatePopupMenu() {
-		JMenuItem menuItem;
-
-		MenuListener menuListener = new MenuListener(this);
-
-		// Create the popup menu.
-		JPopupMenu popup = new JPopupMenu();
-		menuItem = new JMenuItem("new survivor");
-		menuItem.addActionListener(menuListener);
-		popup.add(menuItem);
-		menuItem = new JMenuItem("new axe");
-		menuItem.addActionListener(menuListener);
-		popup.add(menuItem);
-		menuItem = new JMenuItem("new wall");
-		menuItem.addActionListener(menuListener);
-		popup.add(menuItem);
-		// menuItem = new JMenuItem("Tower:Poison");
-		// menuItem.addActionListener(menuListener);
-		// popup.add(menuItem);
-
-		// Add listener to the text area so the popup menu can come up.
-		popupListener = new PopupListener(popup, this);
-
-	}
-
-	public void createLayout() {
-		this.setLayout(new BorderLayout());
-
-		/**
-		 * menu Creation
-		 */
-		JMenuBar menuBar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
-		// JMenu editMenu = new JMenu("Edit");
-		// JMenu helpMenu = new JMenu("Help");
-		JMenuItem tempMI;
-		MenuListener menuListener = new MenuListener(this);
-
-		/**
-		 * file menu item creation
-		 */
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.getAccessibleContext().setAccessibleDescription("The File Menu Item");
-		menuBar.add(fileMenu);
-
-		tempMI = new JMenuItem("Save");
-		tempMI.getAccessibleContext().setAccessibleDescription("The Save File Menu Item");
-		tempMI.addActionListener(menuListener);
-		fileMenu.add(tempMI);
-
-		tempMI = new JMenuItem("Load");
-		tempMI.getAccessibleContext().setAccessibleDescription("The Load File Menu Item");
-		tempMI.addActionListener(menuListener);
-		fileMenu.add(tempMI);
-
-		tempMI = new JMenuItem("Exit");
-		tempMI.getAccessibleContext().setAccessibleDescription("The Exit File Menu Item");
-		tempMI.addActionListener(menuListener);
-		fileMenu.add(tempMI);
-
-		/**
-		 * adding menu bar to panel
-		 */
-		this.add(menuBar, BorderLayout.PAGE_START);
 	}
 
 	/**
@@ -165,6 +105,7 @@ public class GamePanel extends JPanel {
 	/**
 	 * Paint Method, Action performed repaint to paint the game
 	 */
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -187,8 +128,7 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * TimerListener class, implements ActionListener, this class only calls the
-	 * update methods that run for every cycle/scene of the game
+	 * TimerListener class, implements ActionListener, this class only calls the update methods that run for every cycle/scene of the game
 	 * 
 	 * @author Preston Delano
 	 */
@@ -206,8 +146,7 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * KeyboardListener class, implements ActionListener, this class is used
-	 * when there is a key press, release, or type
+	 * KeyboardListener class, implements ActionListener, this class is used when there is a key press, release, or type
 	 * 
 	 * @author Preston Delano
 	 * 
@@ -235,8 +174,7 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * MenuListener class, implements ActionListener, this class is used when a
-	 * menu item is selected, clicked or other things
+	 * MenuListener class, implements ActionListener, this class is used when a menu item is selected, clicked or other things
 	 * 
 	 * @author Preston Delano
 	 * 
@@ -253,18 +191,18 @@ public class GamePanel extends JPanel {
 
 			if (arg0.paramString().contains("new survivor")) {
 				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
-//				Location loc = ref.source.getTileAtLocation(tempLoc);
+				// Location loc = ref.source.getTileAtLocation(tempLoc);
 				Survivor survivor = new Survivor("Rob", loc, 150, true, ref.source);
 				level.addHuman(survivor);
 			} else if (arg0.paramString().contains("new axe")) {
 				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
-//				Location loc = ref.source.getTileAtLocation(tempLoc);
+				// Location loc = ref.source.getTileAtLocation(tempLoc);
 				Tool axe = new Tool("axe", 2.5, 100, ToolType.AXE, 100);
 				ItemEntity axeEntity = new ItemEntity(axe, loc);
 				level.addItem(axeEntity);
 			} else if (arg0.paramString().contains("new wall")) {
 				Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
-//				Location loc = ref.source.getTileAtLocation(tempLoc);
+				// Location loc = ref.source.getTileAtLocation(tempLoc);
 				System.out.println("GamePanel: " + loc.getMapX() + "," + loc.getMapY());
 				WallEntity wall = new WallEntity("Wall", loc, 3.4, true);
 				// FurnitureEntity fEntity = new FurnitureEntity(chest, loc);
@@ -283,9 +221,105 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * PopupListener class, implements ActionListener, this is called when the
-	 * user clicks anywhere, this is only used for right click for the popup at
-	 * the momment
+	 * ButtonListener class, implements ActionListener, this class is used when a button is clicked
+	 * 
+	 * @author Preston Delano
+	 * 
+	 */
+	private class ButtonListener implements ActionListener {
+		// ItemCreatorPanel ref;
+
+		public ButtonListener() {// ItemCreatorPanel inRef) {
+			// ref = inRef;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			 if (arg0.getActionCommand().equals("structure")) {
+				 JButton tempButton = (JButton)arg0.getSource();
+				 tempButton.setVisible(false);
+			 } //else if (arg0.getActionCommand().equals("Add")) {
+			// if (!nameTA.getText().equals("") && !nameTA.getText().equals(null)) {
+			// String tempName = nameTA.getText();
+			// if (!weightTA.getText().equals("") && !weightTA.getText().equals(null)) {
+			// double tempWeight = Double.parseDouble(weightTA.getText());
+			// if (!conditionTA.getText().equals("") && !conditionTA.getText().equals(null)) {
+			// int tempCondition = Integer.parseInt(conditionTA.getText());
+			// switch (itemType) {
+			// case "Item":
+			// Item tempItem = new Item(tempName, tempWeight, tempCondition);
+			// items.add(tempItem);
+			// break;
+			// case "Food":
+			// if (!replenishmentTA.getText().equals("") && !replenishmentTA.getText().equals(null)) {
+			// int tempReplen = Integer.parseInt(replenishmentTA.getText());
+			// Food tempFood = new Food(tempName, tempWeight, tempCondition, tempReplen);
+			// items.add(tempFood);
+			// }
+			// break;
+			// case "Furniture":
+			// Furniture tempFurniture = new Furniture(tempName, tempWeight, tempCondition);
+			// items.add(tempFurniture);
+			// break;
+			// case "Tool":
+			// if (!durabilityTA.getText().equals("") && !durabilityTA.getText().equals(null)) {
+			// int tempDura = Integer.parseInt(durabilityTA.getText());
+			// Tool tempTool = new Tool(tempName, tempWeight, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
+			// items.add(tempTool);
+			// }
+			// break;
+			// }
+			// }
+			// }
+			// }
+			//
+			// // setTextArea();
+			// } else if (arg0.getActionCommand().equals("Edit")) {
+			// //durabilityL, replenishmentL, toolTypeL; durabilityTA, replenishmentTA;
+			// } else if (arg0.getSource().toString().contains("Plain Item")) {
+			// // durabilityL.setVisible(false);
+			// // durabilityTA.setVisible(false);
+			// // replenishmentL.setVisible(false);
+			// // replenishmentTA.setVisible(false);
+			// // toolTypeL.setVisible(false);
+			// // toolTypeCB.setVisible(false);
+			// //paintImmediately(0,0,600,600);
+			// isPaintingOrigin();
+			// // itemType = "Item";
+			// } else if (arg0.getSource().toString().contains("Tool Item")) {
+			// // durabilityL.setVisible(true);
+			// // durabilityTA.setVisible(true);
+			// // replenishmentL.setVisible(false);
+			// // replenishmentTA.setVisible(false);
+			// // toolTypeL.setVisible(true);
+			// // toolTypeCB.setVisible(true);
+			// isPaintingOrigin();
+			// // itemType = "Tool";
+			// } else if (arg0.getSource().toString().contains("Food Item")) {
+			// // durabilityL.setVisible(false);
+			// // durabilityTA.setVisible(false);
+			// // replenishmentL.setVisible(true);
+			// // replenishmentTA.setVisible(true);
+			// // toolTypeL.setVisible(false);
+			// // toolTypeCB.setVisible(false);
+			// isPaintingOrigin();
+			// // itemType = "Food";
+			// } else if (arg0.getSource().toString().contains("Furniture Item")) {
+			// // durabilityL.setVisible(true);
+			// // durabilityTA.setVisible(true);
+			// // replenishmentL.setVisible(false);
+			// // replenishmentTA.setVisible(false);
+			// // toolTypeL.setVisible(false);
+			// // toolTypeCB.setVisible(false);
+			// isPaintingOrigin();
+			// // itemType = "Furniture";
+			// }
+		}
+	}
+
+	/**
+	 * PopupListener class, implements ActionListener, this is called when the user clicks anywhere, this is only used for right click for the popup at the
+	 * momment
 	 * 
 	 * @author Preston Delano
 	 * 
@@ -400,5 +434,123 @@ public class GamePanel extends JPanel {
 			// this is when the mouse exits the jpanel i think
 			// System.out.println("mouse exited");
 		}
+	}
+
+	/**
+	 * CreatePopupMenu class is only called when the gamePanel is created to instantiate the popup menu
+	 */
+	public void createPopupMenu() {
+		JMenuItem menuItem;
+
+		MenuListener menuListener = new MenuListener(this);
+
+		// Create the popup menu.
+		JPopupMenu popup = new JPopupMenu();
+		menuItem = new JMenuItem("new survivor");
+		menuItem.addActionListener(menuListener);
+		popup.add(menuItem);
+		menuItem = new JMenuItem("new axe");
+		menuItem.addActionListener(menuListener);
+		popup.add(menuItem);
+		menuItem = new JMenuItem("new wall");
+		menuItem.addActionListener(menuListener);
+		popup.add(menuItem);
+		// menuItem = new JMenuItem("Tower:Poison");
+		// menuItem.addActionListener(menuListener);
+		// popup.add(menuItem);
+
+		// Add listener to the text area so the popup menu can come up.
+		popupListener = new PopupListener(popup, this);
+
+	}
+
+	/**
+	 * createLayout class is called to create the menu panel
+	 */
+	public void createLayout() {
+		this.setLayout(new BorderLayout());
+
+		/**
+		 * menu Creation
+		 */
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		// JMenu editMenu = new JMenu("Edit");
+		// JMenu helpMenu = new JMenu("Help");
+		JMenuItem tempMI;
+		MenuListener menuListener = new MenuListener(this);
+
+		/**
+		 * file menu item creation
+		 */
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription("The File Menu Item");
+		menuBar.add(fileMenu);
+
+		tempMI = new JMenuItem("Save");
+		tempMI.getAccessibleContext().setAccessibleDescription("The Save File Menu Item");
+		tempMI.addActionListener(menuListener);
+		fileMenu.add(tempMI);
+
+		tempMI = new JMenuItem("Load");
+		tempMI.getAccessibleContext().setAccessibleDescription("The Load File Menu Item");
+		tempMI.addActionListener(menuListener);
+		fileMenu.add(tempMI);
+
+		tempMI = new JMenuItem("Exit");
+		tempMI.getAccessibleContext().setAccessibleDescription("The Exit File Menu Item");
+		tempMI.addActionListener(menuListener);
+		fileMenu.add(tempMI);
+
+		/**
+		 * adding menu bar to panel
+		 */
+		this.add(menuBar, BorderLayout.PAGE_START);
+	}
+
+	/**
+	 * createButtonLayout class creates buttons for the screen
+	 */
+	private void createButtonLayout() {
+		/*
+		 * Button Panel creation
+		 */
+		Container buttonPane = new Container();
+//		Container container = new Container();
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
+//		buttonPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		buttonPane.setBackground(new Color(0,0,0,0));//sets the portion of the panel to transparent, so I can see the map
+		
+		ButtonListener btnListener = new ButtonListener();
+		
+		buttonPane.add(Box.createVerticalGlue());
+		
+		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
+//		btnBuildStructure.setSize(64, 64);
+//		btnBuildStructure.setMaximumSize(new Dimension(64, 64));
+		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
+		btnBuildStructure.setActionCommand("structure");
+//		btnBuildStructure.setBorder(BorderFactory.createEmptyBorder());//this removes the border around the button
+		btnBuildStructure.setBackground(new Color(0,96,0,255));
+//		btnBuildStructure.setContentAreaFilled(false);//new Color(0,0,0,0));//this removes the gray background of the button
+		btnBuildStructure.addActionListener(btnListener);
+		
+		buttonPane.add(btnBuildStructure);
+		buttonPane.add(Box.createRigidArea(new Dimension(0, 3)));
+//		buttonPane.add(Box.createVerticalGlue());
+		
+		JButton btnRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
+//		btnRoster.setSize(64, 64);
+//		btnRoster.setMaximumSize(new Dimension(64, 64));
+		btnRoster.setPreferredSize(new Dimension(64, 64));
+		btnRoster.setActionCommand("roster");
+		btnRoster.setBackground(new Color(0,96,0,255));
+//		btnRoster.setIcon(new ImageIcon(ContentBank.buttonIcons[1]));
+		btnRoster.addActionListener(btnListener);
+		
+		buttonPane.add(btnRoster);
+		
+		this.add(buttonPane, BorderLayout.AFTER_LINE_ENDS);
+		
 	}
 }
