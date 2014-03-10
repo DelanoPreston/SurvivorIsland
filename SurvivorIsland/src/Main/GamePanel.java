@@ -246,88 +246,14 @@ public class GamePanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (arg0.getActionCommand().equals("structure")) {
-				JButton tempButton = (JButton) arg0.getSource();
-				tempButton.setVisible(false);
-				CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.show(cards, "Structure Buttons");
-			} 
-			
-			// else if (arg0.getActionCommand().equals("Add")) {
-				// if (!nameTA.getText().equals("") && !nameTA.getText().equals(null)) {
-				// String tempName = nameTA.getText();
-				// if (!weightTA.getText().equals("") && !weightTA.getText().equals(null)) {
-				// double tempWeight = Double.parseDouble(weightTA.getText());
-				// if (!conditionTA.getText().equals("") && !conditionTA.getText().equals(null)) {
-				// int tempCondition = Integer.parseInt(conditionTA.getText());
-				// switch (itemType) {
-				// case "Item":
-				// Item tempItem = new Item(tempName, tempWeight, tempCondition);
-				// items.add(tempItem);
-				// break;
-				// case "Food":
-				// if (!replenishmentTA.getText().equals("") && !replenishmentTA.getText().equals(null)) {
-				// int tempReplen = Integer.parseInt(replenishmentTA.getText());
-				// Food tempFood = new Food(tempName, tempWeight, tempCondition, tempReplen);
-				// items.add(tempFood);
-				// }
-				// break;
-				// case "Furniture":
-				// Furniture tempFurniture = new Furniture(tempName, tempWeight, tempCondition);
-				// items.add(tempFurniture);
-				// break;
-				// case "Tool":
-				// if (!durabilityTA.getText().equals("") && !durabilityTA.getText().equals(null)) {
-				// int tempDura = Integer.parseInt(durabilityTA.getText());
-				// Tool tempTool = new Tool(tempName, tempWeight, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
-				// items.add(tempTool);
-				// }
-				// break;
-				// }
-				// }
-				// }
-				// }
-				//
-				// // setTextArea();
-				// } else if (arg0.getActionCommand().equals("Edit")) {
-				// //durabilityL, replenishmentL, toolTypeL; durabilityTA, replenishmentTA;
-				// } else if (arg0.getSource().toString().contains("Plain Item")) {
-				// // durabilityL.setVisible(false);
-				// // durabilityTA.setVisible(false);
-				// // replenishmentL.setVisible(false);
-				// // replenishmentTA.setVisible(false);
-				// // toolTypeL.setVisible(false);
-				// // toolTypeCB.setVisible(false);
-				// //paintImmediately(0,0,600,600);
-				// isPaintingOrigin();
-				// // itemType = "Item";
-				// } else if (arg0.getSource().toString().contains("Tool Item")) {
-				// // durabilityL.setVisible(true);
-				// // durabilityTA.setVisible(true);
-				// // replenishmentL.setVisible(false);
-				// // replenishmentTA.setVisible(false);
-				// // toolTypeL.setVisible(true);
-				// // toolTypeCB.setVisible(true);
-				// isPaintingOrigin();
-				// // itemType = "Tool";
-				// } else if (arg0.getSource().toString().contains("Food Item")) {
-				// // durabilityL.setVisible(false);
-				// // durabilityTA.setVisible(false);
-				// // replenishmentL.setVisible(true);
-				// // replenishmentTA.setVisible(true);
-				// // toolTypeL.setVisible(false);
-				// // toolTypeCB.setVisible(false);
-				// isPaintingOrigin();
-				// // itemType = "Food";
-				// } else if (arg0.getSource().toString().contains("Furniture Item")) {
-				// // durabilityL.setVisible(true);
-				// // durabilityTA.setVisible(true);
-				// // replenishmentL.setVisible(false);
-				// // replenishmentTA.setVisible(false);
-				// // toolTypeL.setVisible(false);
-				// // toolTypeCB.setVisible(false);
-				// isPaintingOrigin();
-				// // itemType = "Furniture";
-				// }
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "Structure Buttons");
+			} else if (arg0.getActionCommand().equals("bm build wall")) {
+				System.out.println("oh ya");
+			}else if (arg0.getActionCommand().equals("bm cancel")) {
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "Main Buttons");
+			}
 		}
 	}
 
@@ -540,65 +466,30 @@ public class GamePanel extends JPanel {
 		/*
 		 * Button Panel creation////////////////////////////////////possibly use cardlayout to show different buttons
 		 */
-		JPanel mainButtonsCard = createCard1();
+		JPanel mainButtonsCard = createMainButtons();
 		cards.add(mainButtonsCard, "Main Buttons");// I think the "Main Buttons" is the identifier for this card
 
-		 JPanel StructureButtonsCard = createCard2();
-		 cards.add(StructureButtonsCard, "Structure Buttons");
-		
-		 JPanel RosterButtonsCard = createCard3();
-		 cards.add(RosterButtonsCard, "Roster Buttons");
+		JPanel StructureButtonsCard = createBuildingButtons();
+		cards.add(StructureButtonsCard, "Structure Buttons");
+
+		JPanel RosterButtonsCard = createRosterViewer();
+		cards.add(RosterButtonsCard, "Roster Buttons");
 
 		// adds button pane to cards
 		this.add(cards, BorderLayout.AFTER_LINE_ENDS);
-		
-		
-		//this stuff is for button creation
+
+		// this stuff is for button creation
 		// btnBuildStructure.setBorder(BorderFactory.createEmptyBorder());//this removes the border around the button
 		// btnBuildStructure.setContentAreaFilled(false);//new Color(0,0,0,0));//this removes the gray background of the button
 	}
 
-	private JPanel createCard1() {
-		JPanel buttonPane1 = new JPanel();
-		// Container container = new Container();
-		buttonPane1.setLayout(new BoxLayout(buttonPane1, BoxLayout.PAGE_AXIS));
-		buttonPane1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		buttonPane1.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
-
-		ButtonListener btnListener = new ButtonListener();
-
-		// makes buttons stick to the bottom right
-		buttonPane1.add(Box.createVerticalGlue());
-
-		// this is the build structure button
-		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
-		btnBuildStructure.setActionCommand("structure");
-		btnBuildStructure.setBackground(new Color(0, 96, 0, 255));
-		btnBuildStructure.addActionListener(btnListener);
-		buttonPane1.add(btnBuildStructure);
-
-		// space
-		buttonPane1.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the roster button
-		JButton btnRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
-		btnRoster.setPreferredSize(new Dimension(64, 64));
-		btnRoster.setActionCommand("roster");
-		btnRoster.setBackground(new Color(0, 96, 0, 255));
-		btnRoster.addActionListener(btnListener);
-		buttonPane1.add(btnRoster);
-
-		return buttonPane1;
-	}
-
-	private JPanel createCard2() {
+	private JPanel createMainButtons() {
 		JPanel temp = new JPanel();
-		
+		// Container container = new Container();
 		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
-		
+
 		ButtonListener btnListener = new ButtonListener();
 
 		// makes buttons stick to the bottom right
@@ -607,15 +498,60 @@ public class GamePanel extends JPanel {
 		// this is the build structure button
 		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
 		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
-		btnBuildStructure.setActionCommand("build wall");
+		btnBuildStructure.setActionCommand("structure");
 		btnBuildStructure.setBackground(new Color(0, 96, 0, 255));
 		btnBuildStructure.addActionListener(btnListener);
 		temp.add(btnBuildStructure);
-		
+
+		// space
+		temp.add(Box.createRigidArea(new Dimension(0, 3)));
+
+		// this is the roster button
+		JButton btnRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
+		btnRoster.setPreferredSize(new Dimension(64, 64));
+		btnRoster.setActionCommand("roster");
+		btnRoster.setBackground(new Color(0, 96, 0, 255));
+		btnRoster.addActionListener(btnListener);
+		temp.add(btnRoster);
+
 		return temp;
 	}
 
-	private JPanel createCard3() {
+	private JPanel createBuildingButtons() {
+		JPanel temp = new JPanel();
+
+		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
+		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
+
+		ButtonListener btnListener = new ButtonListener();
+
+		// makes buttons stick to the bottom right
+		temp.add(Box.createVerticalGlue());
+
+		// this is the build structure button
+		JButton btnBMBuildWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
+		btnBMBuildWall.setPreferredSize(new Dimension(64, 64));
+		btnBMBuildWall.setActionCommand("bm build wall");
+		btnBMBuildWall.setBackground(new Color(0, 96, 0, 255));
+		btnBMBuildWall.addActionListener(btnListener);
+		temp.add(btnBMBuildWall);
+
+		// space
+		temp.add(Box.createRigidArea(new Dimension(0, 3)));
+
+		// this is the build menu cancel button
+		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
+		btnBMCancel.setPreferredSize(new Dimension(64, 64));
+		btnBMCancel.setActionCommand("bm cancel");
+		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
+		btnBMCancel.addActionListener(btnListener);
+		temp.add(btnBMCancel);
+
+		return temp;
+	}
+
+	private JPanel createRosterViewer() {
 		JPanel temp = new JPanel();
 
 		return temp;
