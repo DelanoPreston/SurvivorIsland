@@ -84,7 +84,7 @@ public class GamePanel extends JPanel {
 		// makes the file io class, and gets the map data
 		// iostuff = new IOClass();
 		// level.setMap(iostuff.ReadMap());
-		int size = 256;
+		int size = 128;
 		IslandGenerator iGen = new IslandGenerator(size, size);
 		iGen.generateIsland(size, size, 1, 16);
 		level.setMap(new Map(iGen.getCharMap()));
@@ -401,10 +401,10 @@ public class GamePanel extends JPanel {
 
 				// make it a reasonable amount of zoom
 				// .1 gives a nice slow transition
-				reference.scale -= (.1 * e.getWheelRotation());
+				reference.scale -= (.01 * e.getWheelRotation());
 				// don't cross negative threshold.
 				// also, setting scale to 0 has bad effects
-				reference.scale = Math.max(0.0625, reference.scale);
+				reference.scale = Math.max(0.03125, reference.scale);
 				reference.repaint();
 			}
 		}

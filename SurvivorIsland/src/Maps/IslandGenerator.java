@@ -17,35 +17,33 @@ public class IslandGenerator {
 	}
 
 	public char[][] getCharMap() {
-
-		int size = 256;
-		char[][] temp = new char[size][size];
+		char[][] temp = new char[height][width];
 		char[] chars = { 's', 'b', 'f', 'j', 'm' };
 		int[] charKey = { 0, 0, 0, 0 };
 		int[] counter = new int[256];
 		for (int i = 0; i < counter.length; i++) {// sets counter to 0
 			counter[i] = 0;
 		}
-		for (int i = 0; i < size; i++) {// counts values
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < height; i++) {// counts values
+			for (int j = 0; j < width; j++) {
 				counter[(int) particleMap[i][j]]++;
 			}
 		}
 
-		int totalValues = size * size;
+		int totalValues = height * width;
 		int tempInt = 0;
 
 		for (int i = 0; i < counter.length; i++) {// sets counter to 0
 			tempInt += counter[i];
-			if (tempInt >= totalValues * .65 && charKey[0] == 0) {
+			if (tempInt >= totalValues * .5 && charKey[0] == 0) {
 				charKey[0] = i;
 				tempInt = 0;
 			}
-			if (tempInt >= totalValues * .1 && charKey[1] == 0 && charKey[0] != 0) {
+			if (tempInt >= totalValues * .15 && charKey[1] == 0 && charKey[0] != 0) {
 				charKey[1] = i;
 				tempInt = 0;
 			}
-			if (tempInt >= totalValues * .1 && charKey[2] == 0 && charKey[1] != 0) {
+			if (tempInt >= totalValues * .2 && charKey[2] == 0 && charKey[1] != 0) {
 				charKey[2] = i;
 				tempInt = 0;
 			}
@@ -55,8 +53,8 @@ public class IslandGenerator {
 			}
 		}
 
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
 				double tempVal = particleMap[i][j];
 
 				if (tempVal >= 0 && tempVal <= charKey[0] - 1) {
@@ -183,14 +181,35 @@ public class IslandGenerator {
 				map[y][x] *= ((particleMap[y][x]) / 255.0);
 			}
 		}
-
-		for (int y = 0; y < 4; y++) {
+		
+		particleMap = doubleSize(particleMap);
+		height *= 2;
+		width *= 2;
+//		particleMap = doubleSize(particleMap);
+//		height *= 2;
+//		width *= 2;
+		
+		for (int y = 0; y < 2; y++) {
 			smoothen();
 		}
 
 		return map;
 	}
 
+	private double[][] doubleSize(double[][] inMap){
+		double[][] temp = new double[inMap.length * 2][inMap[0].length * 2];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				temp[y * 2][x * 2] = inMap[y][x];
+				temp[(y * 2) + 1][x * 2] = inMap[y][x];
+				temp[y * 2][(x * 2) + 1] = inMap[y][x];
+				temp[(y * 2) + 1][(x * 2) + 1] = inMap[y][x];
+			}
+		}
+		
+		return temp;
+	}
+	
 	private void smoothen() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {

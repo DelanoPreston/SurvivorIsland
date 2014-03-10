@@ -92,7 +92,7 @@ public class Map extends JComponent implements TileBasedMap {
 		for (int y = 0; y < chunkImages.length; y++) {
 			for (int x = 0; x < chunkImages[0].length; x++) {
 				if (chunkImages[y][x].getUpdate())
-					chunkImages[y][x].setImage(toBufferedImage(x * ContentBank.tileSize, y * ContentBank.tileSize));
+					chunkImages[y][x].setImage(toBufferedImage(x * tileWidth, y * tileHeight));
 			}
 		}
 	}
@@ -183,7 +183,8 @@ public class Map extends JComponent implements TileBasedMap {
 		BufferedImage tempBImage = null;
 		for (int y = yLoc; y < yLoc + tileHeight; y++) {
 			for (int x = xLoc; x < xLoc + tileWidth; x++) {
-				Image image = ContentBank.landTiles[map[y][x].imageKey];
+				int index = map[y][x].imageKey;
+				Image image = ContentBank.landTiles[index];
 
 				// This code ensures that all the pixels in the image are loaded
 				image = new ImageIcon(image).getImage();

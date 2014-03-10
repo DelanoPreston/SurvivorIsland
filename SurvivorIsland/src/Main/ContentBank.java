@@ -96,13 +96,13 @@ public class ContentBank {
 			survivorW2 = bigImg.getSubimage(0, 128, 16, 32);
 			survivorW3 = bigImg.getSubimage(0, 160, 16, 32);
 
-			bigImg = ImageIO.read(new File("Images/Tools1.png"));
+			bigImg = ImageIO.read(new File("Images/Tools164.png"));
 			index = 0;
 			woodenAxe = bigImg.getSubimage(0, 0, 16, 16);
 
 			woodenWalls = new Image[16];
 			for (int x = 0; x < 16; x++) {
-				woodenWalls[index] = bigImg.getSubimage(x * 16, 15 * 16, 16, 16);
+				woodenWalls[index] = bigImg.getSubimage(x * 64, 15 * 64, 64, 64);
 				index++;
 			}
 		} catch (IOException e) {
