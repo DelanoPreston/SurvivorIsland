@@ -1,8 +1,8 @@
 package Main;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -18,6 +18,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel {
 	double translateX = -6400;
 	double translateY = -6400;
 	double scale = 1.0;
+	JPanel cards;
 
 	/**
 	 * Constructor for the GamePanel class that extends JPanel
@@ -73,7 +75,7 @@ public class GamePanel extends JPanel {
 		createLayout();
 
 		// creates the button layout
-		//createButtonLayout();
+		createButtonLayout();
 
 		// adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
@@ -246,7 +248,11 @@ public class GamePanel extends JPanel {
 			if (arg0.getActionCommand().equals("structure")) {
 				JButton tempButton = (JButton) arg0.getSource();
 				tempButton.setVisible(false);
-			} // else if (arg0.getActionCommand().equals("Add")) {
+				CardLayout cl = (CardLayout)(cards.getLayout());
+		        cl.show(cards, "Structure Buttons");
+			} 
+			
+			// else if (arg0.getActionCommand().equals("Add")) {
 				// if (!nameTA.getText().equals("") && !nameTA.getText().equals(null)) {
 				// String tempName = nameTA.getText();
 				// if (!weightTA.getText().equals("") && !weightTA.getText().equals(null)) {
@@ -435,18 +441,18 @@ public class GamePanel extends JPanel {
 			// this is when the mouse exits the jpanel i think
 			// System.out.println("mouse exited");
 		}
-		
+
 		private void ShowPopup(MouseEvent e) {
 			if (e.isPopupTrigger()) {
 
 				popup.show(e.getComponent(), e.getX(), e.getY());
-				
+
 				getMousePosition(e);
 			}
 		}
 
-		public void getMousePosition(MouseEvent e){
-			//this gets the position on the map of the mouse, given the translation, and scale
+		public void getMousePosition(MouseEvent e) {
+			// this gets the position on the map of the mouse, given the translation, and scale
 			double x = ((reference.getWidth() / 2) - reference.translateX) - (((reference.getWidth() / 2) - e.getX()) / reference.scale);
 			double y = ((reference.getHeight() / 2) - reference.translateY) - (((reference.getHeight() / 2) - e.getY()) / reference.scale);
 			location = new Point2D.Double(x, y);
@@ -529,45 +535,89 @@ public class GamePanel extends JPanel {
 	 * createButtonLayout class creates buttons for the screen
 	 */
 	private void createButtonLayout() {
+		cards = new JPanel(new CardLayout());
+
 		/*
-		 * Button Panel creation
+		 * Button Panel creation////////////////////////////////////possibly use cardlayout to show different buttons
 		 */
-		Container buttonPane = new Container();
+		JPanel mainButtonsCard = createCard1();
+		cards.add(mainButtonsCard, "Main Buttons");// I think the "Main Buttons" is the identifier for this card
+
+		 JPanel StructureButtonsCard = createCard2();
+		 cards.add(StructureButtonsCard, "Structure Buttons");
+		
+		 JPanel RosterButtonsCard = createCard3();
+		 cards.add(RosterButtonsCard, "Roster Buttons");
+
+		// adds button pane to cards
+		this.add(cards, BorderLayout.AFTER_LINE_ENDS);
+		
+		
+		//this stuff is for button creation
+		// btnBuildStructure.setBorder(BorderFactory.createEmptyBorder());//this removes the border around the button
+		// btnBuildStructure.setContentAreaFilled(false);//new Color(0,0,0,0));//this removes the gray background of the button
+	}
+
+	private JPanel createCard1() {
+		JPanel buttonPane1 = new JPanel();
 		// Container container = new Container();
-		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
-		// buttonPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		buttonPane.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
+		buttonPane1.setLayout(new BoxLayout(buttonPane1, BoxLayout.PAGE_AXIS));
+		buttonPane1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		buttonPane1.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
 		ButtonListener btnListener = new ButtonListener();
 
-		buttonPane.add(Box.createVerticalGlue());
+		// makes buttons stick to the bottom right
+		buttonPane1.add(Box.createVerticalGlue());
 
+		// this is the build structure button
 		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		// btnBuildStructure.setSize(64, 64);
-		// btnBuildStructure.setMaximumSize(new Dimension(64, 64));
 		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
 		btnBuildStructure.setActionCommand("structure");
-		// btnBuildStructure.setBorder(BorderFactory.createEmptyBorder());//this removes the border around the button
 		btnBuildStructure.setBackground(new Color(0, 96, 0, 255));
-		// btnBuildStructure.setContentAreaFilled(false);//new Color(0,0,0,0));//this removes the gray background of the button
 		btnBuildStructure.addActionListener(btnListener);
+		buttonPane1.add(btnBuildStructure);
 
-		buttonPane.add(btnBuildStructure);
-		buttonPane.add(Box.createRigidArea(new Dimension(0, 3)));
-		// buttonPane.add(Box.createVerticalGlue());
+		// space
+		buttonPane1.add(Box.createRigidArea(new Dimension(0, 3)));
 
+		// this is the roster button
 		JButton btnRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
-		// btnRoster.setSize(64, 64);
-		// btnRoster.setMaximumSize(new Dimension(64, 64));
 		btnRoster.setPreferredSize(new Dimension(64, 64));
 		btnRoster.setActionCommand("roster");
 		btnRoster.setBackground(new Color(0, 96, 0, 255));
-		// btnRoster.setIcon(new ImageIcon(ContentBank.buttonIcons[1]));
 		btnRoster.addActionListener(btnListener);
+		buttonPane1.add(btnRoster);
 
-		buttonPane.add(btnRoster);
+		return buttonPane1;
+	}
 
-		this.add(buttonPane, BorderLayout.AFTER_LINE_ENDS);
+	private JPanel createCard2() {
+		JPanel temp = new JPanel();
+		
+		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
+		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
+		
+		ButtonListener btnListener = new ButtonListener();
 
+		// makes buttons stick to the bottom right
+		temp.add(Box.createVerticalGlue());
+
+		// this is the build structure button
+		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
+		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
+		btnBuildStructure.setActionCommand("build wall");
+		btnBuildStructure.setBackground(new Color(0, 96, 0, 255));
+		btnBuildStructure.addActionListener(btnListener);
+		temp.add(btnBuildStructure);
+		
+		return temp;
+	}
+
+	private JPanel createCard3() {
+		JPanel temp = new JPanel();
+
+		return temp;
 	}
 }

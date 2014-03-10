@@ -69,10 +69,10 @@ public class ContentBank {
 
 			bigImg = ImageIO.read(new File("Images/ButtonIcons1.png"));
 			index = 0;
-			buttonIcons = new Image[2];
+			buttonIcons = new Image[3];
 
 			for (int y = 0; y < 1; y++) {
-				for (int x = 0; x < 2; x++) {
+				for (int x = 0; x < 3; x++) {
 					buttonIcons[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 64, 64);
 					index++;
 				}
