@@ -13,7 +13,7 @@ import Items.Item;
 
 public class ContentBank {
 	public static Random random;
-	public static int tileSize = 16;
+	public static int tileSize = 64;
 	public static Image survivorM1;
 	public static Image survivorM2;
 	public static Image survivorM3;
@@ -60,15 +60,13 @@ public class ContentBank {
 		try {
 			bigImg = ImageIO.read(new File("Images/SurvivorTileMap1.png"));
 			index = 0;
-			landTiles = new Image[4];
+			landTiles = new Image[5];
 
-			for (int y = 0; y < 2; y++) {
-				for (int x = 0; x < 2; x++) {
-					landTiles[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 16, 16);
-					index++;
-				}
+			for (int x = 0; x < 5; x++) {
+				landTiles[index] = (Image) bigImg.getSubimage(x * 64, 0, 64, 64);
+				index++;
 			}
-			
+
 			bigImg = ImageIO.read(new File("Images/ButtonIcons1.png"));
 			index = 0;
 			buttonIcons = new Image[2];
@@ -79,7 +77,7 @@ public class ContentBank {
 					index++;
 				}
 			}
-			
+
 			// sea = bigImg.getSubimage(0, 0, 16, 16);
 			// beach = bigImg.getSubimage(64, 0, 16, 16);
 			// forest = bigImg.getSubimage(0, 64, 16, 16);

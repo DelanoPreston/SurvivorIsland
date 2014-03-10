@@ -16,7 +16,7 @@ public class IslandGenerator {
 		return particleMap;
 	}
 
-	public char[][] getCharmap() {
+	public char[][] getCharMap() {
 
 		int size = 256;
 		char[][] temp = new char[size][size];
@@ -60,15 +60,15 @@ public class IslandGenerator {
 				double tempVal = particleMap[i][j];
 
 				if (tempVal >= 0 && tempVal <= charKey[0] - 1) {
-					particleMap[i][j] = chars[0];
+					temp[i][j] = chars[0];
 				} else if (tempVal >= charKey[0] && tempVal <= charKey[1] - 1) {
-					particleMap[i][j] = chars[1];
+					temp[i][j] = chars[1];
 				} else if (tempVal >= charKey[1] && tempVal <= charKey[2] - 1) {
-					particleMap[i][j] = chars[2];
+					temp[i][j] = chars[2];
 				} else if (tempVal >= charKey[2] && tempVal <= charKey[3] - 1) {
-					particleMap[i][j] = chars[3];
+					temp[i][j] = chars[3];
 				} else if (tempVal >= charKey[3] && tempVal <= 255) {
-					particleMap[i][j] = chars[4];
+					temp[i][j] = chars[4];
 				}
 			}
 		}

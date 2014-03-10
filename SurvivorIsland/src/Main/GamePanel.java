@@ -18,7 +18,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -36,6 +35,8 @@ import Entity.WallEntity;
 import Event.CustomEventSource;
 import Items.Tool;
 import Items.ToolType;
+import Maps.IslandGenerator;
+import Maps.Map;
 import People.Human;
 import People.Survivor;
 
@@ -53,15 +54,12 @@ public class GamePanel extends JPanel {
 	double translateX = 0;
 	double translateY = 0;
 	double scale = 1.0;
-	
-//	public static Random random;
-//	AffineTransform holder;
 
 	/**
 	 * Constructor for the GamePanel class that extends JPanel
 	 */
 	public GamePanel() {
-//		random = new Random();
+		// random = new Random();
 		setFocusable(true);
 
 		level = new Level();
@@ -76,8 +74,6 @@ public class GamePanel extends JPanel {
 
 		// creates the button layout
 		createButtonLayout();
-		
-		
 
 		// adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
@@ -86,8 +82,12 @@ public class GamePanel extends JPanel {
 		this.addMouseWheelListener(popupListener);
 
 		// makes the file io class, and gets the map data
-		iostuff = new IOClass();
-		level.setMap(iostuff.ReadMap());
+		// iostuff = new IOClass();
+		// level.setMap(iostuff.ReadMap());
+		int size = 256;
+		IslandGenerator iGen = new IslandGenerator(size, size);
+		iGen.generateIsland(size, size, 1, 16);
+		level.setMap(new Map(iGen.getCharMap()));
 
 		// timer for updating game every 17 miliseconds
 		mainTimer = new Timer(17, new TimerListener());
@@ -243,85 +243,85 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			 if (arg0.getActionCommand().equals("structure")) {
-				 JButton tempButton = (JButton)arg0.getSource();
-				 tempButton.setVisible(false);
-			 } //else if (arg0.getActionCommand().equals("Add")) {
-			// if (!nameTA.getText().equals("") && !nameTA.getText().equals(null)) {
-			// String tempName = nameTA.getText();
-			// if (!weightTA.getText().equals("") && !weightTA.getText().equals(null)) {
-			// double tempWeight = Double.parseDouble(weightTA.getText());
-			// if (!conditionTA.getText().equals("") && !conditionTA.getText().equals(null)) {
-			// int tempCondition = Integer.parseInt(conditionTA.getText());
-			// switch (itemType) {
-			// case "Item":
-			// Item tempItem = new Item(tempName, tempWeight, tempCondition);
-			// items.add(tempItem);
-			// break;
-			// case "Food":
-			// if (!replenishmentTA.getText().equals("") && !replenishmentTA.getText().equals(null)) {
-			// int tempReplen = Integer.parseInt(replenishmentTA.getText());
-			// Food tempFood = new Food(tempName, tempWeight, tempCondition, tempReplen);
-			// items.add(tempFood);
-			// }
-			// break;
-			// case "Furniture":
-			// Furniture tempFurniture = new Furniture(tempName, tempWeight, tempCondition);
-			// items.add(tempFurniture);
-			// break;
-			// case "Tool":
-			// if (!durabilityTA.getText().equals("") && !durabilityTA.getText().equals(null)) {
-			// int tempDura = Integer.parseInt(durabilityTA.getText());
-			// Tool tempTool = new Tool(tempName, tempWeight, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
-			// items.add(tempTool);
-			// }
-			// break;
-			// }
-			// }
-			// }
-			// }
-			//
-			// // setTextArea();
-			// } else if (arg0.getActionCommand().equals("Edit")) {
-			// //durabilityL, replenishmentL, toolTypeL; durabilityTA, replenishmentTA;
-			// } else if (arg0.getSource().toString().contains("Plain Item")) {
-			// // durabilityL.setVisible(false);
-			// // durabilityTA.setVisible(false);
-			// // replenishmentL.setVisible(false);
-			// // replenishmentTA.setVisible(false);
-			// // toolTypeL.setVisible(false);
-			// // toolTypeCB.setVisible(false);
-			// //paintImmediately(0,0,600,600);
-			// isPaintingOrigin();
-			// // itemType = "Item";
-			// } else if (arg0.getSource().toString().contains("Tool Item")) {
-			// // durabilityL.setVisible(true);
-			// // durabilityTA.setVisible(true);
-			// // replenishmentL.setVisible(false);
-			// // replenishmentTA.setVisible(false);
-			// // toolTypeL.setVisible(true);
-			// // toolTypeCB.setVisible(true);
-			// isPaintingOrigin();
-			// // itemType = "Tool";
-			// } else if (arg0.getSource().toString().contains("Food Item")) {
-			// // durabilityL.setVisible(false);
-			// // durabilityTA.setVisible(false);
-			// // replenishmentL.setVisible(true);
-			// // replenishmentTA.setVisible(true);
-			// // toolTypeL.setVisible(false);
-			// // toolTypeCB.setVisible(false);
-			// isPaintingOrigin();
-			// // itemType = "Food";
-			// } else if (arg0.getSource().toString().contains("Furniture Item")) {
-			// // durabilityL.setVisible(true);
-			// // durabilityTA.setVisible(true);
-			// // replenishmentL.setVisible(false);
-			// // replenishmentTA.setVisible(false);
-			// // toolTypeL.setVisible(false);
-			// // toolTypeCB.setVisible(false);
-			// isPaintingOrigin();
-			// // itemType = "Furniture";
-			// }
+			if (arg0.getActionCommand().equals("structure")) {
+				JButton tempButton = (JButton) arg0.getSource();
+				tempButton.setVisible(false);
+			} // else if (arg0.getActionCommand().equals("Add")) {
+				// if (!nameTA.getText().equals("") && !nameTA.getText().equals(null)) {
+				// String tempName = nameTA.getText();
+				// if (!weightTA.getText().equals("") && !weightTA.getText().equals(null)) {
+				// double tempWeight = Double.parseDouble(weightTA.getText());
+				// if (!conditionTA.getText().equals("") && !conditionTA.getText().equals(null)) {
+				// int tempCondition = Integer.parseInt(conditionTA.getText());
+				// switch (itemType) {
+				// case "Item":
+				// Item tempItem = new Item(tempName, tempWeight, tempCondition);
+				// items.add(tempItem);
+				// break;
+				// case "Food":
+				// if (!replenishmentTA.getText().equals("") && !replenishmentTA.getText().equals(null)) {
+				// int tempReplen = Integer.parseInt(replenishmentTA.getText());
+				// Food tempFood = new Food(tempName, tempWeight, tempCondition, tempReplen);
+				// items.add(tempFood);
+				// }
+				// break;
+				// case "Furniture":
+				// Furniture tempFurniture = new Furniture(tempName, tempWeight, tempCondition);
+				// items.add(tempFurniture);
+				// break;
+				// case "Tool":
+				// if (!durabilityTA.getText().equals("") && !durabilityTA.getText().equals(null)) {
+				// int tempDura = Integer.parseInt(durabilityTA.getText());
+				// Tool tempTool = new Tool(tempName, tempWeight, tempCondition, ToolType.valueOf(toolTypeArray[toolTypeCB.getSelectedIndex()]), tempDura);
+				// items.add(tempTool);
+				// }
+				// break;
+				// }
+				// }
+				// }
+				// }
+				//
+				// // setTextArea();
+				// } else if (arg0.getActionCommand().equals("Edit")) {
+				// //durabilityL, replenishmentL, toolTypeL; durabilityTA, replenishmentTA;
+				// } else if (arg0.getSource().toString().contains("Plain Item")) {
+				// // durabilityL.setVisible(false);
+				// // durabilityTA.setVisible(false);
+				// // replenishmentL.setVisible(false);
+				// // replenishmentTA.setVisible(false);
+				// // toolTypeL.setVisible(false);
+				// // toolTypeCB.setVisible(false);
+				// //paintImmediately(0,0,600,600);
+				// isPaintingOrigin();
+				// // itemType = "Item";
+				// } else if (arg0.getSource().toString().contains("Tool Item")) {
+				// // durabilityL.setVisible(true);
+				// // durabilityTA.setVisible(true);
+				// // replenishmentL.setVisible(false);
+				// // replenishmentTA.setVisible(false);
+				// // toolTypeL.setVisible(true);
+				// // toolTypeCB.setVisible(true);
+				// isPaintingOrigin();
+				// // itemType = "Tool";
+				// } else if (arg0.getSource().toString().contains("Food Item")) {
+				// // durabilityL.setVisible(false);
+				// // durabilityTA.setVisible(false);
+				// // replenishmentL.setVisible(true);
+				// // replenishmentTA.setVisible(true);
+				// // toolTypeL.setVisible(false);
+				// // toolTypeCB.setVisible(false);
+				// isPaintingOrigin();
+				// // itemType = "Food";
+				// } else if (arg0.getSource().toString().contains("Furniture Item")) {
+				// // durabilityL.setVisible(true);
+				// // durabilityTA.setVisible(true);
+				// // replenishmentL.setVisible(false);
+				// // replenishmentTA.setVisible(false);
+				// // toolTypeL.setVisible(false);
+				// // toolTypeCB.setVisible(false);
+				// isPaintingOrigin();
+				// // itemType = "Furniture";
+				// }
 		}
 	}
 
@@ -354,8 +354,8 @@ public class GamePanel extends JPanel {
 
 		public void mousePressed(MouseEvent e) {
 			// capture starting point
-			lastOffsetX = e.getX();
-			lastOffsetY = e.getY();
+			lastOffsetX = (int) (e.getX() / reference.scale);
+			lastOffsetY = (int) (e.getY() / reference.scale);
 		}
 
 		public void mouseReleased(MouseEvent e) {
@@ -366,14 +366,6 @@ public class GamePanel extends JPanel {
 				showPopup = true;
 		}
 
-		private void ShowPopup(MouseEvent e) {
-			if (e.isPopupTrigger()) {
-
-				popup.show(e.getComponent(), e.getX(), e.getY());
-				location = new Point2D.Double(e.getX() - reference.translateX, e.getY() - reference.translateY);
-			}
-		}
-
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			// System.out.println(e.getModifiersEx());
@@ -381,8 +373,9 @@ public class GamePanel extends JPanel {
 				showPopup = false;
 				// new x and y are defined by current mouse location subtracted
 				// by previously processed mouse location
-				int newX = e.getX() - lastOffsetX;
-				int newY = e.getY() - lastOffsetY;
+				getMousePosition(e);
+				int newX = (int) (e.getX() / reference.scale) - lastOffsetX;
+				int newY = (int) (e.getY() / reference.scale) - lastOffsetY;
 
 				// increment last offset to last processed by drag event.
 				lastOffsetX += newX;
@@ -411,7 +404,7 @@ public class GamePanel extends JPanel {
 				reference.scale -= (.1 * e.getWheelRotation());
 				// don't cross negative threshold.
 				// also, setting scale to 0 has bad effects
-				reference.scale = Math.max(1.0, reference.scale);
+				reference.scale = Math.max(0.0625, reference.scale);
 				reference.repaint();
 			}
 		}
@@ -441,6 +434,22 @@ public class GamePanel extends JPanel {
 		public void mouseExited(MouseEvent e) {
 			// this is when the mouse exits the jpanel i think
 			// System.out.println("mouse exited");
+		}
+		
+		private void ShowPopup(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+
+				popup.show(e.getComponent(), e.getX(), e.getY());
+				
+				getMousePosition(e);
+			}
+		}
+
+		public void getMousePosition(MouseEvent e){
+			//this gets the position on the map of the mouse, given the translation, and scale
+			double x = ((reference.getWidth() / 2) - reference.translateX) - (((reference.getWidth() / 2) - e.getX()) / reference.scale);
+			double y = ((reference.getHeight() / 2) - reference.translateY) - (((reference.getHeight() / 2) - e.getY()) / reference.scale);
+			location = new Point2D.Double(x, y);
 		}
 	}
 
@@ -524,41 +533,41 @@ public class GamePanel extends JPanel {
 		 * Button Panel creation
 		 */
 		Container buttonPane = new Container();
-//		Container container = new Container();
+		// Container container = new Container();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
-//		buttonPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		buttonPane.setBackground(new Color(0,0,0,0));//sets the portion of the panel to transparent, so I can see the map
-		
+		// buttonPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		buttonPane.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
+
 		ButtonListener btnListener = new ButtonListener();
-		
+
 		buttonPane.add(Box.createVerticalGlue());
-		
+
 		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-//		btnBuildStructure.setSize(64, 64);
-//		btnBuildStructure.setMaximumSize(new Dimension(64, 64));
+		// btnBuildStructure.setSize(64, 64);
+		// btnBuildStructure.setMaximumSize(new Dimension(64, 64));
 		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
 		btnBuildStructure.setActionCommand("structure");
-//		btnBuildStructure.setBorder(BorderFactory.createEmptyBorder());//this removes the border around the button
-		btnBuildStructure.setBackground(new Color(0,96,0,255));
-//		btnBuildStructure.setContentAreaFilled(false);//new Color(0,0,0,0));//this removes the gray background of the button
+		// btnBuildStructure.setBorder(BorderFactory.createEmptyBorder());//this removes the border around the button
+		btnBuildStructure.setBackground(new Color(0, 96, 0, 255));
+		// btnBuildStructure.setContentAreaFilled(false);//new Color(0,0,0,0));//this removes the gray background of the button
 		btnBuildStructure.addActionListener(btnListener);
-		
+
 		buttonPane.add(btnBuildStructure);
 		buttonPane.add(Box.createRigidArea(new Dimension(0, 3)));
-//		buttonPane.add(Box.createVerticalGlue());
-		
+		// buttonPane.add(Box.createVerticalGlue());
+
 		JButton btnRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
-//		btnRoster.setSize(64, 64);
-//		btnRoster.setMaximumSize(new Dimension(64, 64));
+		// btnRoster.setSize(64, 64);
+		// btnRoster.setMaximumSize(new Dimension(64, 64));
 		btnRoster.setPreferredSize(new Dimension(64, 64));
 		btnRoster.setActionCommand("roster");
-		btnRoster.setBackground(new Color(0,96,0,255));
-//		btnRoster.setIcon(new ImageIcon(ContentBank.buttonIcons[1]));
+		btnRoster.setBackground(new Color(0, 96, 0, 255));
+		// btnRoster.setIcon(new ImageIcon(ContentBank.buttonIcons[1]));
 		btnRoster.addActionListener(btnListener);
-		
+
 		buttonPane.add(btnRoster);
-		
+
 		this.add(buttonPane, BorderLayout.AFTER_LINE_ENDS);
-		
+
 	}
 }

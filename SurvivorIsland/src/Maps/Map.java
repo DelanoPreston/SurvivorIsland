@@ -44,25 +44,25 @@ public class Map extends JComponent implements TileBasedMap {
 		if (map[y - 1][x].getEntity() != null) {
 			// updates the wall that is above the one that was just placed (image update)
 			updateWall((WallEntity) map[y - 1][x].getEntity());
-			if((wall.getY() - ContentBank.tileSize) - 1 != y)
+			if ((wall.getY() - ContentBank.tileSize) - 1 != y)
 				setChunkImageUpdate(wall.getTileX(), wall.getTileY() - 1);
 		}
 		if (map[y][x + 1].getEntity() != null) {
 			// updates the wall that is above the one that was just placed (image update)
 			updateWall((WallEntity) map[y][x + 1].getEntity());
-			if((wall.getX() - ContentBank.tileSize) + 1 != y)
+			if ((wall.getX() - ContentBank.tileSize) + 1 != y)
 				setChunkImageUpdate(wall.getTileX() + 1, wall.getTileY());
 		}
 		if (map[y + 1][x].getEntity() != null) {
 			// updates the wall that is above the one that was just placed (image update)
 			updateWall((WallEntity) map[y + 1][x].getEntity());
-			if((wall.getY() - ContentBank.tileSize) + 1 != y)
+			if ((wall.getY() - ContentBank.tileSize) + 1 != y)
 				setChunkImageUpdate(wall.getTileX(), wall.getTileY() + 1);
 		}
 		if (map[y][x - 1].getEntity() != null) {
 			// updates the wall that is above the one that was just placed (image update)
 			updateWall((WallEntity) map[y][x - 1].getEntity());
-			if((wall.getX() - ContentBank.tileSize) - 1 != y)
+			if ((wall.getX() - ContentBank.tileSize) - 1 != y)
 				setChunkImageUpdate(wall.getTileX() - 1, wall.getTileY());
 		}
 	}
@@ -156,6 +156,12 @@ public class Map extends JComponent implements TileBasedMap {
 					break;
 				case 'b':
 					landCost = 1.2;
+					break;
+				case 'm':
+					landCost = 50.0;
+					break;
+				default:
+					landCost = 1000;
 					break;
 				}
 

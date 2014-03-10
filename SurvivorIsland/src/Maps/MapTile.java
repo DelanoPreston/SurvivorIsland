@@ -65,6 +65,11 @@ public class MapTile extends JComponent {
 			type = TileType.JUNGLE;
 			covering = Covering.JUNGLE;
 			break;
+		case 'm':
+			imageKey = 4;
+			type = TileType.JUNGLE;
+			covering = Covering.JUNGLE;
+			break;
 		default:
 			imageKey = 0;
 			type = TileType.UNKNOWN;
