@@ -5,8 +5,9 @@ import javax.swing.JFrame;
 public class Main {
 
 	public static void main(String[] args) {
-		ContentBank.ContentLoader();
+		try{
 		JFrame frame = new JFrame();
+		ContentBank.ContentLoader();
 		GamePanel gamePanel = new GamePanel();
 		frame.setSize(850, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -14,6 +15,11 @@ public class Main {
 		frame.setVisible(true);
 		frame.add(gamePanel);
 		frame.setVisible(true);
+		}catch(Exception e){
+//			IOClass io = new IOClass();
+			e.printStackTrace();
+		}
+		
 	}
 
 }

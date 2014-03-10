@@ -51,8 +51,8 @@ public class GamePanel extends JPanel {
 	IOClass iostuff;
 	public Level level;
 	CustomEventSource source;
-	double translateX = 0;
-	double translateY = 0;
+	double translateX = -6400;
+	double translateY = -6400;
 	double scale = 1.0;
 
 	/**
@@ -73,7 +73,7 @@ public class GamePanel extends JPanel {
 		createLayout();
 
 		// creates the button layout
-		createButtonLayout();
+		//createButtonLayout();
 
 		// adds the keyboard listener for keyboard input
 		addKeyListener(new KeyboardListener());
@@ -84,7 +84,7 @@ public class GamePanel extends JPanel {
 		// makes the file io class, and gets the map data
 		// iostuff = new IOClass();
 		// level.setMap(iostuff.ReadMap());
-		int size = 32;
+		int size = 128;
 		IslandGenerator iGen = new IslandGenerator(size, size);
 		iGen.generateIsland(size, size, 1, 16);
 		level.setMap(new Map(iGen.getCharMap()));
