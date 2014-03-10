@@ -245,12 +245,43 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if (arg0.getActionCommand().equals("structure")) {
+			// gm - game menu
+			if (arg0.getActionCommand().equals("gm structure")) {
+				System.out.println("structure menu");
 				CardLayout cl = (CardLayout) (cards.getLayout());
 				cl.show(cards, "Structure Buttons");
-			} else if (arg0.getActionCommand().equals("bm build wall")) {
-				System.out.println("oh ya");
-			}else if (arg0.getActionCommand().equals("bm cancel")) {
+			} else if (arg0.getActionCommand().equals("gm furniture")) {
+				System.out.println("furniture menu");
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "Furniture Buttons");
+			} else if (arg0.getActionCommand().equals("gm roster")) {
+				System.out.println("roster list");
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "Structure Buttons");
+			}
+
+			// bm - build menu
+			if (arg0.getActionCommand().equals("bm build wooden wall")) {
+				System.out.println("oh ya wooden wall");
+			} else if (arg0.getActionCommand().equals("bm build stone wall")) {
+				System.out.println("oh ya stone wall");
+			} else if (arg0.getActionCommand().equals("bm cancel")) {
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "Main Buttons");
+			}
+
+			// fm - furniture menu
+			if (arg0.getActionCommand().equals("fm build bed")) {
+				System.out.println("bed woo hoo");
+				// CardLayout cl = (CardLayout) (cards.getLayout());
+				// cl.show(cards, "Main Buttons");
+			} else if (arg0.getActionCommand().equals("fm cancel")) {
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "Main Buttons");
+			}
+
+			// rm - roster menu
+			if (arg0.getActionCommand().equals("rm cancel")) {
 				CardLayout cl = (CardLayout) (cards.getLayout());
 				cl.show(cards, "Main Buttons");
 			}
@@ -472,6 +503,9 @@ public class GamePanel extends JPanel {
 		JPanel StructureButtonsCard = createBuildingButtons();
 		cards.add(StructureButtonsCard, "Structure Buttons");
 
+		JPanel FurnitureButtonsCard = createFurnitureButtons();
+		cards.add(FurnitureButtonsCard, "Furniture Buttons");
+
 		JPanel RosterButtonsCard = createRosterViewer();
 		cards.add(RosterButtonsCard, "Roster Buttons");
 
@@ -496,23 +530,34 @@ public class GamePanel extends JPanel {
 		temp.add(Box.createVerticalGlue());
 
 		// this is the build structure button
-		JButton btnBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnBuildStructure.setPreferredSize(new Dimension(64, 64));
-		btnBuildStructure.setActionCommand("structure");
-		btnBuildStructure.setBackground(new Color(0, 96, 0, 255));
-		btnBuildStructure.addActionListener(btnListener);
-		temp.add(btnBuildStructure);
+		JButton btnGMBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
+		btnGMBuildStructure.setPreferredSize(new Dimension(64, 64));
+		btnGMBuildStructure.setActionCommand("gm structure");
+		btnGMBuildStructure.setBackground(new Color(0, 96, 0, 255));
+		btnGMBuildStructure.addActionListener(btnListener);
+		temp.add(btnGMBuildStructure);
+
+		// space
+		temp.add(Box.createRigidArea(new Dimension(0, 3)));
+
+		// this is the build structure button
+		JButton btnGMBuildFurniture = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
+		btnGMBuildFurniture.setPreferredSize(new Dimension(64, 64));
+		btnGMBuildFurniture.setActionCommand("gm furniture");
+		btnGMBuildFurniture.setBackground(new Color(0, 96, 0, 255));
+		btnGMBuildFurniture.addActionListener(btnListener);
+		temp.add(btnGMBuildFurniture);
 
 		// space
 		temp.add(Box.createRigidArea(new Dimension(0, 3)));
 
 		// this is the roster button
-		JButton btnRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
-		btnRoster.setPreferredSize(new Dimension(64, 64));
-		btnRoster.setActionCommand("roster");
-		btnRoster.setBackground(new Color(0, 96, 0, 255));
-		btnRoster.addActionListener(btnListener);
-		temp.add(btnRoster);
+		JButton btnGMRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
+		btnGMRoster.setPreferredSize(new Dimension(64, 64));
+		btnGMRoster.setActionCommand("gm roster");
+		btnGMRoster.setBackground(new Color(0, 96, 0, 255));
+		btnGMRoster.addActionListener(btnListener);
+		temp.add(btnGMRoster);
 
 		return temp;
 	}
@@ -530,12 +575,23 @@ public class GamePanel extends JPanel {
 		temp.add(Box.createVerticalGlue());
 
 		// this is the build structure button
-		JButton btnBMBuildWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
-		btnBMBuildWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWall.setActionCommand("bm build wall");
-		btnBMBuildWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWall);
+		JButton btnBMBuildWoodenWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
+		btnBMBuildWoodenWall.setPreferredSize(new Dimension(64, 64));
+		btnBMBuildWoodenWall.setActionCommand("bm build wooden wall");
+		btnBMBuildWoodenWall.setBackground(new Color(0, 96, 0, 255));
+		btnBMBuildWoodenWall.addActionListener(btnListener);
+		temp.add(btnBMBuildWoodenWall);
+
+		// space
+		temp.add(Box.createRigidArea(new Dimension(0, 3)));
+
+		// this is the build structure button
+		JButton btnBMBuildWtoneWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
+		btnBMBuildWtoneWall.setPreferredSize(new Dimension(64, 64));
+		btnBMBuildWtoneWall.setActionCommand("bm build stone wall");
+		btnBMBuildWtoneWall.setBackground(new Color(0, 96, 0, 255));
+		btnBMBuildWtoneWall.addActionListener(btnListener);
+		temp.add(btnBMBuildWtoneWall);
 
 		// space
 		temp.add(Box.createRigidArea(new Dimension(0, 3)));
@@ -551,8 +607,59 @@ public class GamePanel extends JPanel {
 		return temp;
 	}
 
+	private JPanel createFurnitureButtons() {
+		JPanel temp = new JPanel();
+
+		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
+		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
+
+		ButtonListener btnListener = new ButtonListener();
+
+		// makes buttons stick to the bottom right
+		temp.add(Box.createVerticalGlue());
+
+		// this is the build structure button
+		JButton btnBMBuildWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
+		btnBMBuildWall.setPreferredSize(new Dimension(64, 64));
+		btnBMBuildWall.setActionCommand("fm build bed");
+		btnBMBuildWall.setBackground(new Color(0, 96, 0, 255));
+		btnBMBuildWall.addActionListener(btnListener);
+		temp.add(btnBMBuildWall);
+
+		// space
+		temp.add(Box.createRigidArea(new Dimension(0, 3)));
+
+		// this is the build menu cancel button
+		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
+		btnBMCancel.setPreferredSize(new Dimension(64, 64));
+		btnBMCancel.setActionCommand("fm cancel");
+		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
+		btnBMCancel.addActionListener(btnListener);
+		temp.add(btnBMCancel);
+
+		return temp;
+	}
+
 	private JPanel createRosterViewer() {
 		JPanel temp = new JPanel();
+
+		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
+		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
+
+		ButtonListener btnListener = new ButtonListener();
+
+		// makes buttons stick to the bottom right
+		temp.add(Box.createVerticalGlue());
+
+		// this is the build menu cancel button
+		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
+		btnBMCancel.setPreferredSize(new Dimension(64, 64));
+		btnBMCancel.setActionCommand("rm cancel");
+		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
+		btnBMCancel.addActionListener(btnListener);
+		temp.add(btnBMCancel);
 
 		return temp;
 	}
