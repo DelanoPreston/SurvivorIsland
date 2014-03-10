@@ -26,6 +26,8 @@ public class ConstructionEntity extends Entity {
 
 	private void buildStructure() {
 		//some event placing the structure here
-		
+		if(structure != null){
+			
+		}
 	}
 }

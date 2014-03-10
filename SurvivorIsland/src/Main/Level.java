@@ -11,7 +11,6 @@ import Entity.ConstructionEntity;
 import Entity.Entity;
 import Entity.FurnitureEntity;
 import Entity.ItemEntity;
-import Entity.StructureEntity;
 import Entity.WallEntity;
 import Event.CustomEventClassListener;
 import Event.EntityEvent;

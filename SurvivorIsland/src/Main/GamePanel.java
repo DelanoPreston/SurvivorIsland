@@ -84,7 +84,7 @@ public class GamePanel extends JPanel {
 		// makes the file io class, and gets the map data
 		// iostuff = new IOClass();
 		// level.setMap(iostuff.ReadMap());
-		int size = 128;
+		int size = 32;
 		IslandGenerator iGen = new IslandGenerator(size, size);
 		iGen.generateIsland(size, size, 1, 16);
 		level.setMap(new Map(iGen.getCharMap()));

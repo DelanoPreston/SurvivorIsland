@@ -37,7 +37,7 @@ public class IOClass {
 				// read map character
 				char[] charLine = mapFileData[mapFileLine].toCharArray();
 				for (int j = 0; j < mapFileData[0].length(); j++) {
-					int hm = mapFileData[0].length();
+//					int hm = mapFileData[0].length();
 					tempMap[mapFileLine][j] = charLine[j];
 				}
 			}
