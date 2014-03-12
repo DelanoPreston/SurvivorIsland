@@ -67,25 +67,27 @@ public class ContentBank {
 				index++;
 			}
 
-			bigImg = ImageIO.read(new File("Images/ButtonIcons1.png"));
-			index = 0;
-			buttonIcons = new Image[3];
+//			bigImg = ImageIO.read(new File("Images/ButtonIcons1.png"));
+//			index = 0;
+//			buttonIcons = new Image[3];
+//
+//			for (int y = 0; y < 1; y++) {
+//				for (int x = 0; x < 3; x++) {
+//					buttonIcons[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 64, 64);
+//					index++;
+//				}
+//			}
 
-			for (int y = 0; y < 1; y++) {
-				for (int x = 0; x < 3; x++) {
+			bigImg = ImageIO.read(new File("Images/16buttons.png"));
+			index = 0;
+			buttonIcons = new Image[16];
+
+			for (int y = 0; y < 4; y++) {
+				for (int x = 0; x < 4; x++) {
 					buttonIcons[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 64, 64);
 					index++;
 				}
 			}
-
-			// sea = bigImg.getSubimage(0, 0, 16, 16);
-			// beach = bigImg.getSubimage(64, 0, 16, 16);
-			// forest = bigImg.getSubimage(0, 64, 16, 16);
-			// jungle = bigImg.getSubimage(64, 64, 16, 16);
-			// sea = bigImg.getSubimage(0, 0, 64, 64);
-			// beach = bigImg.getSubimage(64, 0, 64, 64);
-			// forest = bigImg.getSubimage(0, 64, 64, 64);
-			// jungle = bigImg.getSubimage(64, 64, 64, 64);
 
 			bigImg = ImageIO.read(new File("Images/oie_transparent.png"));
 
