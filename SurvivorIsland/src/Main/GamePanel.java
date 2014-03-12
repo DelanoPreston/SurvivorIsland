@@ -37,6 +37,7 @@ import Entity.WallEntity;
 import Event.CustomEventSource;
 import Items.Tool;
 import Items.ToolType;
+import Layout.CustomLayout;
 import Maps.IslandGenerator;
 import Maps.Map;
 import People.Human;
@@ -525,7 +526,7 @@ public class GamePanel extends JPanel {
 	private JPanel createMainButtonsW() {
 		JPanel temp = new JPanel();
 		// Container container = new Container();
-		temp.setLayout(new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
@@ -571,7 +572,7 @@ public class GamePanel extends JPanel {
 	private JPanel createBuildingButtonsW() {
 		JPanel temp = new JPanel();
 
-		temp.setLayout(new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
@@ -642,7 +643,7 @@ public class GamePanel extends JPanel {
 	private JPanel createFurnitureButtonsW() {
 		JPanel temp = new JPanel();
 
-		temp.setLayout(new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
@@ -677,7 +678,7 @@ public class GamePanel extends JPanel {
 	private JPanel createRosterViewerW() {
 		JPanel temp = new JPanel();
 
-		temp.setLayout(new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
