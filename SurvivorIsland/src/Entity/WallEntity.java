@@ -1,12 +1,13 @@
 package Entity;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
 import Main.ContentBank;
 import Main.Location;
 
-public class WallEntity extends StructureEntity {
+public class WallEntity extends PlaceableEntity {
 	private static final long serialVersionUID = -8870012075099802649L;
 	boolean[] adjWalls = {false, false, false, false};//treat like North, East, South, West
 	
@@ -60,5 +61,10 @@ public class WallEntity extends StructureEntity {
 		g2D.drawImage(ContentBank.woodenWalls[imageKey], location.getMapX(), location.getMapY(), null);
 		at.translate(8, 8);
 		g2D.setTransform(at);
+	}
+	
+	@Override
+	public Image getImage(){
+		return ContentBank.woodenWalls[imageKey];
 	}
 }

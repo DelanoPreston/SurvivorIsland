@@ -6,17 +6,19 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 
-public class CustomLayout implements LayoutManager {
+public class SubMenuLayout implements LayoutManager {
 	private int vgap;
+	private int rows;
 	private int minWidth = 0, minHeight = 0;
 	private int preferredWidth = 0, preferredHeight = 0;
 	private boolean sizeUnknown = true;
 
-	public CustomLayout() {
-		this(5);
+	public SubMenuLayout() {
+		this(3, 5);
 	}
 
-	public CustomLayout(int v) {
+	public SubMenuLayout(int inRows, int v) {
+		rows = inRows;
 		vgap = v;
 	}
 
@@ -134,12 +136,13 @@ public class CustomLayout implements LayoutManager {
 
 				// increase x and y, if appropriate
 				if (i > 0) {
-					int tempX = ((i - 1) / 3) + 1;
+					int tempX = ((i - 1) / rows) + 1;
 					
 					x = (int) (maxWidth - d.getWidth() - (parent.getComponent(0).getWidth() * tempX));// - insets.bottom;
 					
+					int tempY = ((i - 1) % rows) + 1;
 					
-					y = (int) (maxHeight - (d.getHeight() * ((i / 3) + 1)));// - insets.bottom;
+					y = (int) (maxHeight - (d.getHeight() * tempY));// - insets.bottom;
 				}else{
 					x = (int) (maxWidth - d.getWidth());// - insets.bottom;
 					y = (int) (maxHeight - d.getHeight());// - insets.bottom;

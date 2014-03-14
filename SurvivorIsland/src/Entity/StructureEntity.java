@@ -1,10 +1,11 @@
 package Entity;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 
 import Main.Location;
 
-public class StructureEntity extends Entity {
+public class StructureEntity extends PlaceableEntity {
 	private static final long serialVersionUID = 641474344878015532L;
 	int timer;
 	
@@ -19,5 +20,10 @@ public class StructureEntity extends Entity {
 	
 	public void paintComponent(Graphics2D g2D){
 		
+	}
+	
+	@Override
+	public Image getImage(){
+		return null;
 	}
 }

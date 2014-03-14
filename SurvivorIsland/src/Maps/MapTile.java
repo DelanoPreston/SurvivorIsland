@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 import Entity.Entity;
-import Entity.StructureEntity;
+import Entity.PlaceableEntity;
 
 public class MapTile extends JComponent {
 
@@ -14,11 +14,11 @@ public class MapTile extends JComponent {
 	Covering covering;
 	double landTileCost;
 	double seaTileCost;
-	StructureEntity entity;
+	PlaceableEntity entity;
 	int imageKey;
 	double[] tileLocation;
 
-	public void setEntity(StructureEntity inEntity){
+	public void setEntity(PlaceableEntity inEntity){
 		System.out.println("MapTile: EntityLocation: " + inEntity.getX() + "," + inEntity.getY());
 		entity = inEntity;
 	}

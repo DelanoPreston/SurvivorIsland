@@ -2,8 +2,11 @@ package Maps;
 
 import java.awt.image.BufferedImage;
 
+import Main.Location;
+
 public class ChunkImage {
 	BufferedImage chunkImage;
+	Location location;
 	boolean update;
 	
 	public ChunkImage(BufferedImage img){

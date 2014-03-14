@@ -22,6 +22,8 @@ public class ContentBank {
 	public static Image survivorW3;
 
 	public static Image[] woodenWalls;
+	public static Image[] stoneWalls;
+	
 	public static Image[] landTiles;
 	public static Image[] buttonIcons;
 
@@ -78,12 +80,12 @@ public class ContentBank {
 //				}
 //			}
 
-			bigImg = ImageIO.read(new File("Images/16buttons.png"));
+			bigImg = ImageIO.read(new File("Images/ButtonIcons1.png"));
 			index = 0;
-			buttonIcons = new Image[16];
+			buttonIcons = new Image[64];
 
-			for (int y = 0; y < 4; y++) {
-				for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 8; y++) {
+				for (int x = 0; x < 8; x++) {
 					buttonIcons[index] = (Image) bigImg.getSubimage(x * 64, y * 64, 64, 64);
 					index++;
 				}
@@ -98,13 +100,15 @@ public class ContentBank {
 			survivorW2 = bigImg.getSubimage(0, 128, 16, 32);
 			survivorW3 = bigImg.getSubimage(0, 160, 16, 32);
 
-			bigImg = ImageIO.read(new File("Images/Tools164.png"));
+			bigImg = ImageIO.read(new File("Images/Structures1.png"));
 			index = 0;
-			woodenAxe = bigImg.getSubimage(0, 0, 16, 16);
+			woodenAxe = bigImg.getSubimage(3 * 16, 0 * 16, 16, 16);
 
 			woodenWalls = new Image[16];
+			stoneWalls = new Image[16];
 			for (int x = 0; x < 16; x++) {
-				woodenWalls[index] = bigImg.getSubimage(x * 64, 15 * 64, 64, 64);
+				woodenWalls[index] = bigImg.getSubimage(x * 64, 0, 64, 64);//entire first row
+				stoneWalls[index] = bigImg.getSubimage(x * 64, 64, 64, 64);//entire second row
 				index++;
 			}
 		} catch (IOException e) {

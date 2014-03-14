@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -37,7 +36,8 @@ import Entity.WallEntity;
 import Event.CustomEventSource;
 import Items.Tool;
 import Items.ToolType;
-import Layout.CustomLayout;
+import Layout.MenuLayout;
+import Layout.SubMenuLayout;
 import Maps.IslandGenerator;
 import Maps.Map;
 import People.Human;
@@ -54,8 +54,8 @@ public class GamePanel extends JPanel {
 	IOClass iostuff;
 	public Level level;
 	CustomEventSource source;
-	double translateX = -6400;
-	double translateY = -6400;
+	double translateX = -3200;
+	double translateY = -3200;
 	double scale = 1.0;
 	JPanel cards;
 
@@ -88,7 +88,7 @@ public class GamePanel extends JPanel {
 		// makes the file io class, and gets the map data
 		// iostuff = new IOClass();
 		// level.setMap(iostuff.ReadMap());
-		int size = 128;
+		int size = 64;
 		IslandGenerator iGen = new IslandGenerator(size, size);
 		iGen.generateIsland(size, size, 1, 16);
 		level.setMap(new Map(iGen.getCharMap()));
@@ -123,8 +123,8 @@ public class GamePanel extends JPanel {
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setTransform(holder);
 
-		// if (level != null)
-		// level.paintComponent(g2D);
+		if (level != null)
+			level.paintComponent(g2D);
 
 		// this resets the at for the j components to draw normally
 		AffineTransform at = new AffineTransform();
@@ -334,7 +334,7 @@ public class GamePanel extends JPanel {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			// System.out.println(e.getModifiersEx());
-			if (e.getModifiersEx() == 4096) {// right click
+			if (e.getModifiersEx() == 2048) {// scroll click
 				showPopup = false;
 				// new x and y are defined by current mouse location subtracted
 				// by previously processed mouse location
@@ -366,10 +366,12 @@ public class GamePanel extends JPanel {
 
 				// make it a reasonable amount of zoom
 				// .1 gives a nice slow transition
-				reference.scale -= (.01 * e.getWheelRotation());
+				reference.scale -= (.1 * e.getWheelRotation());
 				// don't cross negative threshold.
 				// also, setting scale to 0 has bad effects
-				reference.scale = Math.max(0.03125, reference.scale);
+				reference.scale = Math.max(0.1, reference.scale);
+				reference.scale = Math.min(1, reference.scale);
+				System.out.println(reference.scale);
 				reference.repaint();
 			}
 		}
@@ -497,9 +499,9 @@ public class GamePanel extends JPanel {
 		cards = new JPanel(new CardLayout());
 
 		/*
-		 * Button Panel creation////////////////////////////////////possibly use cardlayout to show different buttons
+		 * Button Panel creation/
 		 */
-		
+
 		JPanel mainButtonsCard = createMainButtonsW();
 		cards.add(mainButtonsCard, "Main Buttons");// I think the "Main Buttons" is the identifier for this card
 
@@ -513,8 +515,9 @@ public class GamePanel extends JPanel {
 		cards.add(RosterButtonsCard, "Roster Buttons");
 
 		// adds button pane to cards
-		
+
 		JPanel temp = new JPanel(new BorderLayout());
+		temp.setBackground(new Color(0, 0, 0, 0));
 		temp.add(cards, BorderLayout.EAST);
 		this.add(temp, BorderLayout.SOUTH);
 
@@ -526,37 +529,11 @@ public class GamePanel extends JPanel {
 	private JPanel createMainButtonsW() {
 		JPanel temp = new JPanel();
 		// Container container = new Container();
-		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new MenuLayout(3, 5));// new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
-
 		ButtonListener btnListener = new ButtonListener();
-
-		// makes buttons stick to the bottom right
-//		temp.add(Box.createVerticalGlue());
-
-		// this is the build structure button
-		JButton btnGMBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnGMBuildStructure.setPreferredSize(new Dimension(64, 64));
-		btnGMBuildStructure.setActionCommand("gm structure");
-		btnGMBuildStructure.setBackground(new Color(0, 96, 0, 255));
-		btnGMBuildStructure.addActionListener(btnListener);
-		temp.add(btnGMBuildStructure);
-
-		// space
-//		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the build structure button
-		JButton btnGMBuildFurniture = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnGMBuildFurniture.setPreferredSize(new Dimension(64, 64));
-		btnGMBuildFurniture.setActionCommand("gm furniture");
-		btnGMBuildFurniture.setBackground(new Color(0, 96, 0, 255));
-		btnGMBuildFurniture.addActionListener(btnListener);
-		temp.add(btnGMBuildFurniture);
-
-		// space
-//		temp.add(Box.createRigidArea(new Dimension(0, 3)));
 
 		// this is the roster button
 		JButton btnGMRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
@@ -566,92 +543,112 @@ public class GamePanel extends JPanel {
 		btnGMRoster.addActionListener(btnListener);
 		temp.add(btnGMRoster);
 
+		// this is the build structure button
+		JButton btnGMBuildFurniture = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
+		btnGMBuildFurniture.setPreferredSize(new Dimension(64, 64));
+		btnGMBuildFurniture.setActionCommand("gm furniture");
+		btnGMBuildFurniture.setBackground(new Color(0, 96, 0, 255));
+		btnGMBuildFurniture.addActionListener(btnListener);
+		temp.add(btnGMBuildFurniture);
+
+		// this is the build structure button
+		JButton btnGMBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
+		btnGMBuildStructure.setPreferredSize(new Dimension(64, 64));
+		btnGMBuildStructure.setActionCommand("gm structure");
+		btnGMBuildStructure.setBackground(new Color(0, 96, 0, 255));
+		btnGMBuildStructure.addActionListener(btnListener);
+		temp.add(btnGMBuildStructure);
+
 		return temp;
 	}
 
 	private JPanel createBuildingButtonsW() {
 		JPanel temp = new JPanel();
 
-		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new SubMenuLayout(3, 5));// new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
 		ButtonListener btnListener = new ButtonListener();
 
-		// this is the build structure button
-		JButton btnBMBuildWoodenWall = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnBMBuildWoodenWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWoodenWall.setActionCommand("bm build wooden wall");
-		btnBMBuildWoodenWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWoodenWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWoodenWall);//, GridLayout(1,1));
-
-		// this is the build structure button
-		JButton btnBMBuildWtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
-		btnBMBuildWtoneWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWtoneWall.setActionCommand("bm build stone wall");
-		btnBMBuildWtoneWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWtoneWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWtoneWall);
-
-		// this is the build structure button
-		JButton btnBMBuildWtonreWall = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
-		btnBMBuildWtonreWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWtonreWall.setActionCommand("bm build stone wall");
-		btnBMBuildWtonreWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWtonreWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWtonreWall);
-
-		// this is the build structure button
-		JButton btnBMBuildWtosneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[3]));
-		btnBMBuildWtosneWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWtosneWall.setActionCommand("bm build stone wall");
-		btnBMBuildWtosneWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWtosneWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWtosneWall);
-
-		// this is the build structure button
-		JButton btnBMBuidldWtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[4]));
-		btnBMBuidldWtoneWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuidldWtoneWall.setActionCommand("bm build stone wall");
-		btnBMBuidldWtoneWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuidldWtoneWall.addActionListener(btnListener);
-		temp.add(btnBMBuidldWtoneWall);
-
-		// this is the build structure button
-		JButton btnBMBuildWwtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[5]));
-		btnBMBuildWwtoneWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWwtoneWall.setActionCommand("bm build stone wall");
-		btnBMBuildWwtoneWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWwtoneWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWwtoneWall);
-		
 		// this is the build menu cancel button
-		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[15]));
+		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[63]));
 		btnBMCancel.setPreferredSize(new Dimension(64, 64));
 		btnBMCancel.setActionCommand("bm cancel");
 		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
 		btnBMCancel.addActionListener(btnListener);
 		temp.add(btnBMCancel);
 
+		// this is the build structure button
+		JButton btnBMBuildWoodenWall = new JButton(new ImageIcon(ContentBank.buttonIcons[8]));
+		btnBMBuildWoodenWall.setPreferredSize(new Dimension(64, 64));
+		btnBMBuildWoodenWall.setActionCommand("bm build wooden wall");
+		btnBMBuildWoodenWall.setBackground(new Color(0, 96, 0, 255));
+		btnBMBuildWoodenWall.addActionListener(btnListener);
+		temp.add(btnBMBuildWoodenWall);// , GridLayout(1,1));
+
+		// this is the build structure button
+		JButton btnBMBuildWtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[9]));
+		btnBMBuildWtoneWall.setPreferredSize(new Dimension(64, 64));
+		btnBMBuildWtoneWall.setActionCommand("bm build stone wall");
+		btnBMBuildWtoneWall.setBackground(new Color(0, 96, 0, 255));
+		btnBMBuildWtoneWall.addActionListener(btnListener);
+		temp.add(btnBMBuildWtoneWall);
+
+//		// this is the build structure button
+//		JButton btnBMBuildWtonreWall = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
+//		btnBMBuildWtonreWall.setPreferredSize(new Dimension(64, 64));
+//		btnBMBuildWtonreWall.setActionCommand("bm build stone wall");
+//		btnBMBuildWtonreWall.setBackground(new Color(0, 96, 0, 255));
+//		btnBMBuildWtonreWall.addActionListener(btnListener);
+//		temp.add(btnBMBuildWtonreWall);
+//
+//		// this is the build structure button
+//		JButton btnBMBuildWtosneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[3]));
+//		btnBMBuildWtosneWall.setPreferredSize(new Dimension(64, 64));
+//		btnBMBuildWtosneWall.setActionCommand("bm build stone wall");
+//		btnBMBuildWtosneWall.setBackground(new Color(0, 96, 0, 255));
+//		btnBMBuildWtosneWall.addActionListener(btnListener);
+//		temp.add(btnBMBuildWtosneWall);
+//
+//		// this is the build structure button
+//		JButton btnBMBuidldWtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[4]));
+//		btnBMBuidldWtoneWall.setPreferredSize(new Dimension(64, 64));
+//		btnBMBuidldWtoneWall.setActionCommand("bm build stone wall");
+//		btnBMBuidldWtoneWall.setBackground(new Color(0, 96, 0, 255));
+//		btnBMBuidldWtoneWall.addActionListener(btnListener);
+//		temp.add(btnBMBuidldWtoneWall);
+//
+//		// this is the build structure button
+//		JButton btnBMBuildWwtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[5]));
+//		btnBMBuildWwtoneWall.setPreferredSize(new Dimension(64, 64));
+//		btnBMBuildWwtoneWall.setActionCommand("bm build stone wall");
+//		btnBMBuildWwtoneWall.setBackground(new Color(0, 96, 0, 255));
+//		btnBMBuildWwtoneWall.addActionListener(btnListener);
+//		temp.add(btnBMBuildWwtoneWall);
+
 		JPanel retTemp = new JPanel(new BorderLayout());
 		retTemp.add(temp, BorderLayout.SOUTH);
-		
+
 		return retTemp;
 	}
 
 	private JPanel createFurnitureButtonsW() {
 		JPanel temp = new JPanel();
 
-		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new SubMenuLayout(3, 5));// new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
-
 		ButtonListener btnListener = new ButtonListener();
 
-		// makes buttons stick to the bottom right
-//		temp.add(Box.createVerticalGlue());
+		// this is the build menu cancel button
+		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[63]));
+		btnBMCancel.setPreferredSize(new Dimension(64, 64));
+		btnBMCancel.setActionCommand("fm cancel");
+		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
+		btnBMCancel.addActionListener(btnListener);
+		temp.add(btnBMCancel);
 
 		// this is the build structure button
 		JButton btnBMBuildWall = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
@@ -661,34 +658,23 @@ public class GamePanel extends JPanel {
 		btnBMBuildWall.addActionListener(btnListener);
 		temp.add(btnBMBuildWall);
 
-		// space
-//		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the build menu cancel button
-		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[15]));
-		btnBMCancel.setPreferredSize(new Dimension(64, 64));
-		btnBMCancel.setActionCommand("fm cancel");
-		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
-		btnBMCancel.addActionListener(btnListener);
-		temp.add(btnBMCancel);
-
 		return temp;
 	}
 
 	private JPanel createRosterViewerW() {
 		JPanel temp = new JPanel();
 
-		temp.setLayout(new CustomLayout(5));//new GridLayout(3, 0, 5, 5));
+		temp.setLayout(new SubMenuLayout(3, 5));// new GridLayout(3, 0, 5, 5));
 		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
 
 		ButtonListener btnListener = new ButtonListener();
 
 		// makes buttons stick to the bottom right
-//		temp.add(Box.createVerticalGlue());
+		// temp.add(Box.createVerticalGlue());
 
 		// this is the build menu cancel button
-		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[15]));
+		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[63]));
 		btnBMCancel.setPreferredSize(new Dimension(64, 64));
 		btnBMCancel.setActionCommand("rm cancel");
 		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
