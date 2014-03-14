@@ -23,7 +23,6 @@ public class ContentBank {
 
 	public static Image[] woodenWalls;
 	public static Image[] stoneWalls;
-	
 	public static Image[] landTiles;
 	public static Image[] buttonIcons;
 
@@ -34,8 +33,9 @@ public class ContentBank {
 	public static HashMap<String, Item> food = new HashMap<>();
 	public static HashMap<String, Item> furniture = new HashMap<>();
 
-	public static String[] boySurviorNames = { "Rob", "Jared", "Doug", "Rufus", "Royce" };
-	public static String[] girlSurviorNames = { "Sara", "Casandra", "Elizabeth", "Susan", "Erica" };
+	public static String[] maleSurviorFirstNames = { "Rob", "Jared", "Doug", "Rufus", "Royce", "Thomas" };
+	public static String[] femaleSurviorFirstNames = { "Sara", "Casandra", "Elizabeth", "Susan", "Erica" };
+	public static String[] SurviorLastNames = { "Brown", "White", "Purple", "Red", "Yellow", "Blue", "Orange", "Green", "Black" };
 
 	public static void ContentLoader() {
 		random = new Random();
@@ -123,5 +123,18 @@ public class ContentBank {
 		food = io.loadItems(new File(System.getProperty("user.dir") + "/Items/Food"), "Food");
 		furniture = io.loadItems(new File(System.getProperty("user.dir") + "/Items/Furniture"), "Furniture");
 	}
-
+	
+	public static Image getImage(String arrayName, int imageKey){
+		switch(arrayName){
+		case "woodenWalls":
+			return woodenWalls[imageKey];
+		case "stoneWalls":
+			return stoneWalls[imageKey];
+		case "landTiles":
+			return landTiles[imageKey];
+		case "buttonIcons":
+			return buttonIcons[imageKey];
+		}
+		return null;
+	}
 }

@@ -1,14 +1,11 @@
 package Components;
 
+import java.io.Serializable;
 
-public class Position {
+
+public class Position implements Serializable{
+	private static final long serialVersionUID = -708214087544636232L;
 	public double x;
 	public double y;
 	public float rot;
-	
-	public Position(double x1, double y1, float rot1){
-		x = x1;
-		y = y1;
-		rot = rot1;
-	}
 }
