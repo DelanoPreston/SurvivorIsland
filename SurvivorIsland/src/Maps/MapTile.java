@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Entity.PlaceableEntity;
 
 public class MapTile extends JComponent {
@@ -23,7 +23,7 @@ public class MapTile extends JComponent {
 		entity = inEntity;
 	}
 	
-	public Entity getEntity(){
+	public Entityz getEntity(){
 		return entity;
 	}
 	

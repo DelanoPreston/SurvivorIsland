@@ -5,7 +5,7 @@ import java.awt.MouseInfo;
 
 import Main.Location;
 
-public class ConstructionEntity extends Entity {
+public class ConstructionEntity extends Entityz {
 	private static final long serialVersionUID = 6870326360861517120L;
 	private PlaceableEntity structure;
 	private double progress;

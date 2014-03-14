@@ -6,7 +6,7 @@ import Items.Furniture;
 import Main.ContentBank;
 import Main.Location;
 
-public class FurnitureEntity extends Entity {
+public class FurnitureEntity extends Entityz {
 
 	private static final long serialVersionUID = -8112519755819574716L;
 	public Furniture furniture;

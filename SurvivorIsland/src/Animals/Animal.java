@@ -1,9 +1,9 @@
 package Animals;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Main.Location;
 
-public class Animal extends Entity {
+public class Animal extends Entityz {
 	private static final long serialVersionUID = 481638741773743044L;
 	int health;
 	MovementType movementType;

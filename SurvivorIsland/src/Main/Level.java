@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entity.ConstructionEntity;
-import Entity.Entity;
+import Entity.Entityz;
 import Entity.FurnitureEntity;
 import Entity.ItemEntity;
 import Entity.WallEntity;
@@ -34,7 +34,7 @@ public class Level implements Serializable, CustomEventClassListener {
 //	private List<StructureEntity> structureEntities = new ArrayList<>();
 	private List<Plant> plants = new ArrayList<>();
 	private BaseGameFunctions bgf = new BaseGameFunctions();
-	private Entity selectedEntity = null;
+	private Entityz selectedEntity = null;
 
 	public void addHuman(Survivor human) {
 		humans.add(human);
@@ -53,7 +53,7 @@ public class Level implements Serializable, CustomEventClassListener {
 //		structureEntities.add(structure);
 	}
 
-	public Entity getSelectedEntity() {
+	public Entityz getSelectedEntity() {
 		return selectedEntity;
 	}
 
@@ -118,8 +118,8 @@ public class Level implements Serializable, CustomEventClassListener {
 	}
 
 	@Override
-	public synchronized Entity handleFindEntityEvent(HumanEntityEvent e) {
-		Entity entity = null;
+	public synchronized Entityz handleFindEntityEvent(HumanEntityEvent e) {
+		Entityz entity = null;
 		switch (e.entityType.toLowerCase()) {
 		case "item:itementities":
 			// System.out.println(e.entity.location[0] + "," + e.entity.location[1]);

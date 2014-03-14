@@ -6,7 +6,7 @@ import Items.Item;
 import Main.ContentBank;
 import Main.Location;
 
-public class ItemEntity extends Entity {
+public class ItemEntity extends Entityz {
 	private static final long serialVersionUID = -1163587124918848417L;
 	public Item item;
 	public boolean targetted;

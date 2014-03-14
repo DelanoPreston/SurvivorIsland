@@ -6,7 +6,7 @@ import javax.swing.JComponent;
 
 import Main.Location;
 
-public class Entity extends JComponent{
+public class Entityz extends JComponent{
 	private static final long serialVersionUID = 723472537018845637L;
 	public String name;
 	protected Location location;
@@ -43,7 +43,7 @@ public class Entity extends JComponent{
 		return imageKey;
 	}
 	
-	public Entity(String inName, Location inLocation, double inWeight, boolean inSolid){
+	public Entityz(String inName, Location inLocation, double inWeight, boolean inSolid){
 		name = inName;
 		location = inLocation;
 		location.setLocationAtTile();
@@ -52,7 +52,7 @@ public class Entity extends JComponent{
 		type = EntityType.LAND;
 	}
 	
-	public Entity(String inName, Location inLocation, double inWeight){
+	public Entityz(String inName, Location inLocation, double inWeight){
 		name = inName;
 		location = inLocation;
 		location.setLocationAtTile();

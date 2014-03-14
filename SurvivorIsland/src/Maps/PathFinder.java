@@ -1,6 +1,6 @@
 package Maps;
 
-import Entity.Entity;
+import Entity.Entityz;
 
 
 public interface PathFinder {
@@ -25,5 +25,5 @@ public interface PathFinder {
 	 * @return The path found from start to end, or null if no path can be
 	 *         found.
 	 */
-	public Path findPath(Entity entity, int sx, int sy, int tx, int ty);
+	public Path findPath(Entityz entity, int sx, int sy, int tx, int ty);
 }

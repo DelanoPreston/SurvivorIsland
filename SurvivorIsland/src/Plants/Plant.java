@@ -1,9 +1,9 @@
 package Plants;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Main.Location;
 
-public class Plant extends Entity {
+public class Plant extends Entityz {
 
 	private static final long serialVersionUID = -4168484559108893122L;
 

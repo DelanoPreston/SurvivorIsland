@@ -3,7 +3,7 @@ package Maps;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import Entity.Entity;
+import Entity.Entityz;
 
 public class AStarPathFinder implements PathFinder {
 	/** The set of nodes that have been searched through */
@@ -75,7 +75,7 @@ public class AStarPathFinder implements PathFinder {
 	/**
 	 * @see PathFinder#findPath(UnitMover, int, int, int, int)
 	 */
-	public Path findPath(Entity entity, int startX, int startY, int targetX, int targetY) {
+	public Path findPath(Entityz entity, int startX, int startY, int targetX, int targetY) {
 		// easy first check, if the destination is blocked, we can't get there
 
 		if (map.blocked(entity, targetX, targetY)) {
@@ -300,7 +300,7 @@ public class AStarPathFinder implements PathFinder {
 	 *        The y coordinate of the location to check
 	 * @return True if the location is valid for the given mover
 	 */
-	protected boolean isValidLocation(Entity entity, int sx, int sy, int x, int y) {
+	protected boolean isValidLocation(Entityz entity, int sx, int sy, int x, int y) {
 		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
 
 		if ((!invalid) && ((sx != x) || (sy != y))) {
@@ -325,7 +325,7 @@ public class AStarPathFinder implements PathFinder {
 	 *        The y coordinate of the target location
 	 * @return The cost of movement through the given tile
 	 */
-	public float getMovementCost(Entity entity, int sx, int sy, int tx, int ty) {
+	public float getMovementCost(Entityz entity, int sx, int sy, int tx, int ty) {
 		return map.getCost(entity, sx, sy, tx, ty);
 	}
 
@@ -344,7 +344,7 @@ public class AStarPathFinder implements PathFinder {
 	 *        The y coordinate of the target location
 	 * @return The heuristic cost assigned to the tile
 	 */
-	public float getHeuristicCost(Entity entity, int x, int y, int tx, int ty) {
+	public float getHeuristicCost(Entityz entity, int x, int y, int tx, int ty) {
 		return heuristic.getCost(map, entity, x, y, tx, ty);
 	}
 

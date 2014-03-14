@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Entity.ItemEntity;
 import Entity.WallEntity;
 import Event.CustomEventSource;
@@ -383,7 +383,7 @@ public class GamePanel extends JPanel {
 			// double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
 			Location loc = new Location(e.getX(), e.getY());
 			Human temp = new Human("mouse", loc, 0.0, false, reference.source);
-			Entity tempSel = reference.level.getSelectedEntity();
+			Entityz tempSel = reference.level.getSelectedEntity();
 			tempSel = reference.source.findEntityEvent(temp, "humans");
 			if (tempSel != null && bgf.getDistance(loc, tempSel.getMapLocation()) < 25)
 				System.out.println("you found: " + tempSel.name);

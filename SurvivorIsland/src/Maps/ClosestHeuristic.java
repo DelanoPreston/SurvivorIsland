@@ -1,12 +1,12 @@
 package Maps;
 
-import Entity.Entity;
+import Entity.Entityz;
 
 public class ClosestHeuristic implements AStarHeuristic {
 	/**
 	 * @see AStarHeuristic#getCost(TileBasedMap, UnitMover, int, int, int, int)
 	 */
-	public float getCost(TileBasedMap map, Entity entity, int x, int y, int tx, int ty) {
+	public float getCost(TileBasedMap map, Entityz entity, int x, int y, int tx, int ty) {
 		float dx = tx - x;
 		float dy = ty - y;
 

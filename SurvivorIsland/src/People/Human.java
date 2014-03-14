@@ -4,14 +4,14 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Event.CustomEventSource;
 import Main.BaseGameFunctions;
 import Main.Location;
 import Maps.AStarPathFinder;
 import Maps.Path;
 
-public class Human extends Entity {
+public class Human extends Entityz {
 	/**
 	 * this is just the id of the serializing object (verification thing)
 	 */

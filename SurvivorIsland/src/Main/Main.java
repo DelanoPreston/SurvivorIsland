@@ -19,7 +19,9 @@ public class Main {
 //			IOClass io = new IOClass();
 			e.printStackTrace();
 		}
-		
+		//https://github.com/richardlord/Asteroids
+		//https://github.com/richardlord/Ash
+		//http://www.ashframework.org/
 	}
 
 }

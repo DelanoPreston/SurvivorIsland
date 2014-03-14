@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Maps.Map;
 import People.Human;
 
@@ -23,7 +23,7 @@ public class CustomEventSource implements Serializable{
 
 	// call this method whenever you want to notify
 	// the event listeners of the particular event
-	public synchronized Entity findEntityEvent(Human entity, String sType) {
+	public synchronized Entityz findEntityEvent(Human entity, String sType) {
 		HumanEntityEvent event = new HumanEntityEvent(this, entity, sType);
 		Iterator<CustomEventClassListener> i = _listeners.iterator();
 		while (i.hasNext()) {
@@ -31,7 +31,7 @@ public class CustomEventSource implements Serializable{
 		}
 		return null;
 	}
-	public synchronized void removeEntityEvent(Entity entity, String sType){
+	public synchronized void removeEntityEvent(Entityz entity, String sType){
 		EntityEvent event = new EntityEvent(this, entity, sType);
 		Iterator<CustomEventClassListener> i = _listeners.iterator();
 		while (i.hasNext()) {
@@ -46,7 +46,7 @@ public class CustomEventSource implements Serializable{
 		}
 		return 0;
 	}
-	public synchronized int[] getAdjacentTileLocation(Entity entity, String sType){
+	public synchronized int[] getAdjacentTileLocation(Entityz entity, String sType){
 		EntityEvent event = new EntityEvent(this, entity, sType);
 		Iterator<CustomEventClassListener> i = _listeners.iterator();
 		while (i.hasNext()) {
@@ -68,7 +68,7 @@ public class CustomEventSource implements Serializable{
 //		}
 //		return null;
 //	}
-	public synchronized void createStructure(Entity entity, String subS){
+	public synchronized void createStructure(Entityz entity, String subS){
 		EntityEvent event = new EntityEvent(this, entity, subS);
 		Iterator<CustomEventClassListener> i = _listeners.iterator();
 		while (i.hasNext()) {

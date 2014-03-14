@@ -10,7 +10,7 @@ import java.awt.image.PixelGrabber;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
-import Entity.Entity;
+import Entity.Entityz;
 import Entity.WallEntity;
 import Main.ContentBank;
 
@@ -252,7 +252,7 @@ public class Map extends JComponent implements TileBasedMap {
 	}
 
 	@Override
-	public boolean blocked(Entity entity, int x, int y) {
+	public boolean blocked(Entityz entity, int x, int y) {
 		if (getTile(x, y).entity != null && getTile(x, y).entity.solid)
 			return true;
 		return false;
@@ -291,7 +291,7 @@ public class Map extends JComponent implements TileBasedMap {
 	}
 
 	@Override
-	public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
+	public float getCost(Entityz entity, int sx, int sy, int tx, int ty) {
 		double tempCost = Math.max(getTile(tx, ty).landTileCost, getTile(sx, sy).landTileCost);
 		if (Math.abs(sx - tx) == 1 && Math.abs(sy - ty) == 1)
 			return (float) Math.sqrt(tempCost + tempCost);

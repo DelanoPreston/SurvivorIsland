@@ -1,6 +1,6 @@
 package Maps;
 
-import Entity.Entity;
+import Entity.Entityz;
 
 public interface TileBasedMap {
 	/**
@@ -43,7 +43,7 @@ public interface TileBasedMap {
 	 *            The y coordinate of the tile to check
 	 * @return True if the location is blocked
 	 */
-	public boolean blocked(Entity entity, int x, int y);
+	public boolean blocked(Entityz entity, int x, int y);
 
 	/**
 	 * Get the cost of moving through the given tile. This can be used to make
@@ -62,5 +62,5 @@ public interface TileBasedMap {
 	 *            The y coordinate of the tile we're moving to
 	 * @return The relative cost of moving across the given tile
 	 */
-	public float getCost(Entity entity, int sx, int sy, int tx, int ty);
+	public float getCost(Entityz entity, int sx, int sy, int tx, int ty);
 }
