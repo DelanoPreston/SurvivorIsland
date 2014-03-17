@@ -4,21 +4,26 @@ import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
+import ashley.core.Engine;
 
+import com.artemis.Aspect;
+import com.artemis.Entity;
+import com.artemis.systems.EntityProcessingSystem;
 //import ashley.core.Engine;
-import Ash.Engine;
-import Nodes.RenderNode;
 
-public class RenderSystem {//extends system
-	Container container;//display container
-	List<RenderNode> nodes = new ArrayList<>();
+public class RenderSystem extends EntityProcessingSystem {
 	
-	public RenderSystem(Container inCont){
-		container = inCont;
+
+	Container container;// display container
+
+	public RenderSystem(Aspect aspect) {
+		super(aspect);
+		// TODO Auto-generated constructor stub
 	}
 	
-	//@Override
-	public void addToEngine(Engine engine){
-//		nodes = engine.getNodeList(RenderNode.class);
+	@Override
+	protected void process(Entity arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

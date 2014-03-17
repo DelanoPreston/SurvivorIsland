@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import Items.Item;
+import NoGoodAnymore.Item;
 
 public class ContentBank {
 	public static Random random;

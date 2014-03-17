@@ -2,8 +2,8 @@ package Event;
 
 import java.util.EventListener;
 
-import Entity.Entityz;
 import Maps.Map;
+import NoGoodAnymore.Entityz;
 
 public interface CustomEventClassListener extends EventListener{
 	public Entityz handleFindEntityEvent(HumanEntityEvent e);

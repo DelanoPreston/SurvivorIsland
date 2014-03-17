@@ -1,6 +1,6 @@
 package Maps;
 
-import Entity.Entityz;
+import NoGoodAnymore.Entityz;
 
 public interface TileBasedMap {
 	/**

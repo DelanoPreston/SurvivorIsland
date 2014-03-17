@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
-import Items.Food;
-import Items.Furniture;
-import Items.Item;
-import Items.Tool;
-import Items.ToolType;
 import Maps.Map;
+import NoGoodAnymore.Food;
+import NoGoodAnymore.Furniture;
+import NoGoodAnymore.Item;
+import NoGoodAnymore.Tool;
+import NoGoodAnymore.ToolType;
 
 public class IOClass {
 

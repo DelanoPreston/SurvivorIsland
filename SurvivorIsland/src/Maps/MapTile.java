@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
-import Entity.Entityz;
-import Entity.PlaceableEntity;
+import NoGoodAnymore.Entityz;
+import NoGoodAnymore.PlaceableEntity;
 
 public class MapTile extends JComponent {
 

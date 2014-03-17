@@ -24,11 +24,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import Items.Food;
-import Items.Furniture;
-import Items.Item;
-import Items.Tool;
-import Items.ToolType;
+import NoGoodAnymore.Food;
+import NoGoodAnymore.Furniture;
+import NoGoodAnymore.Item;
+import NoGoodAnymore.Tool;
+import NoGoodAnymore.ToolType;
 
 @SuppressWarnings("serial")
 public class ItemCreatorPanel extends JPanel {

@@ -3,7 +3,7 @@ package Maps;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import Entity.Entityz;
+import NoGoodAnymore.Entityz;
 
 public class AStarPathFinder implements PathFinder {
 	/** The set of nodes that have been searched through */

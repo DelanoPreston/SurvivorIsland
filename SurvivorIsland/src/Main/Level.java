@@ -7,19 +7,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import Entity.ConstructionEntity;
-import Entity.Entityz;
-import Entity.FurnitureEntity;
-import Entity.ItemEntity;
-import Entity.WallEntity;
 import Event.CustomEventClassListener;
 import Event.EntityEvent;
 import Event.HumanEntityEvent;
 import Event.StringEvent;
 import Maps.Map;
-import People.Human;
-import People.Survivor;
-import Plants.Plant;
+import NoGoodAnymore.ConstructionEntity;
+import NoGoodAnymore.Entityz;
+import NoGoodAnymore.FurnitureEntity;
+import NoGoodAnymore.Human;
+import NoGoodAnymore.ItemEntity;
+import NoGoodAnymore.Plant;
+import NoGoodAnymore.Survivor;
+import NoGoodAnymore.WallEntity;
 
 
 

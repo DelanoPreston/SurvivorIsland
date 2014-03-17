@@ -10,9 +10,9 @@ import java.awt.image.PixelGrabber;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
-import Entity.Entityz;
-import Entity.WallEntity;
 import Main.ContentBank;
+import NoGoodAnymore.Entityz;
+import NoGoodAnymore.WallEntity;
 
 public class Map extends JComponent implements TileBasedMap {
 	private static final long serialVersionUID = -1719918279039504911L;

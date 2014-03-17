@@ -30,18 +30,18 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
-import Entity.Entityz;
-import Entity.ItemEntity;
-import Entity.WallEntity;
 import Event.CustomEventSource;
-import Items.Tool;
-import Items.ToolType;
 import Layout.MenuLayout;
 import Layout.SubMenuLayout;
 import Maps.IslandGenerator;
 import Maps.Map;
-import People.Human;
-import People.Survivor;
+import NoGoodAnymore.Entityz;
+import NoGoodAnymore.Human;
+import NoGoodAnymore.ItemEntity;
+import NoGoodAnymore.Survivor;
+import NoGoodAnymore.Tool;
+import NoGoodAnymore.ToolType;
+import NoGoodAnymore.WallEntity;
 
 /**
  * GamePanel class that extends JPanel
