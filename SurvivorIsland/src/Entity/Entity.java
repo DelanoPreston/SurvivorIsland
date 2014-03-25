@@ -43,6 +43,15 @@ public class Entity extends JComponent{
 		return imageKey;
 	}
 	
+	public Entity(String inName, Location inLocation, boolean inSolid){
+		name = inName;
+		location = inLocation;
+		location.setLocationAtTile();
+		weight = 0.0;
+		solid = inSolid;
+		type = EntityType.LAND;
+	}
+	
 	public Entity(String inName, Location inLocation, double inWeight, boolean inSolid){
 		name = inName;
 		location = inLocation;

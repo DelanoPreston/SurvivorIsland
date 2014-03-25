@@ -1,5 +1,6 @@
 package People;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Survivor extends Human {
 
 	@Override
 	public void paintComponent(Graphics2D g2D) {
+		
 		g2D.drawImage(ContentBank.survivorM1, location.getMapX(), location.getMapY(), null);
 	}
 
@@ -53,18 +55,18 @@ public class Survivor extends Human {
 		}
 
 	}
-	
-	private void construct(){
-		
+
+	private void construct() {
+
 	}
-	
+
 	private void gather() {
 		if (targetItem == null && source.getEntityCountEvent("itementities", "targettable") > 0) {
 			targetItem = (ItemEntity) source.findEntityEvent(this, "item:itementities");
-			
+
 			targetItem.targetted = true;
 			destination = findClosestPath(targetItem.getMapLocation()).changePathToDoubleList();
-			//destination.add(targetItem.location);
+			// destination.add(targetItem.location);
 		} else if (targetItem != null) {
 			double tempdist = bgf.getDistance(location, targetItem.getMapLocation());
 			if (tempdist <= 5) {
@@ -82,7 +84,7 @@ public class Survivor extends Human {
 			timer = 0;
 		}
 	}
-	
+
 	protected void setDestination(int range) {
 		// double[] temp = new double[2];
 		// temp[0] = location[0] + bgf.random.nextInt(range * 2) - range;

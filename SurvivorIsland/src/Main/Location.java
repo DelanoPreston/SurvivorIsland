@@ -41,6 +41,11 @@ public class Location {
 		}
 	}
 	
+	public Location(){
+		this.x = 0;
+		this.y = 0;
+	}
+	
 	public Location(double inX, double inY) {
 		x = inX;
 		y = inY;

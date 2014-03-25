@@ -21,8 +21,8 @@ public class Map extends JComponent implements TileBasedMap {
 	char[][] charMap;
 	MapTile[][] map;
 	private boolean[][] visited;
-	int tileWidth = ContentBank.tileSize;
-	int tileHeight = ContentBank.tileSize;
+	int tileWidth = 16;//ContentBank.tileSize;
+	int tileHeight = 16;//ContentBank.tileSize;
 
 	public Map(char[][] mapKey) {
 		map = createMap(mapKey);
@@ -101,7 +101,9 @@ public class Map extends JComponent implements TileBasedMap {
 		for (int y = 0; y < chunkImages.length; y++) {
 			for (int x = 0; x < chunkImages[0].length; x++) {
 				// chunks[x][y].paintComponent(g2D);
-				g2D.drawImage(chunkImages[y][x].getImage(), x * tileWidth * ContentBank.tileSize, y * tileHeight * ContentBank.tileSize, null);
+				int xLoc = x * tileWidth * ContentBank.tileSize;
+				int yLoc = y * tileHeight * ContentBank.tileSize;
+				g2D.drawImage(chunkImages[y][x].getImage(), xLoc, yLoc, null);
 			}
 		}
 	}

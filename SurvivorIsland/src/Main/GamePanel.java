@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,8 +20,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -30,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+import Entity.ConstructionEntity;
 import Entity.Entity;
 import Entity.ItemEntity;
 import Entity.WallEntity;
@@ -59,6 +59,10 @@ public class GamePanel extends JPanel {
 	double scale = 1.0;
 	JPanel cards;
 
+	public Location getMouseLocation() {
+		return popupListener.getMouseLocation();
+	}
+
 	/**
 	 * Constructor for the GamePanel class that extends JPanel
 	 */
@@ -66,7 +70,7 @@ public class GamePanel extends JPanel {
 		// random = new Random();
 		setFocusable(true);
 
-		level = new Level();
+		level = new Level(this);
 		source = new CustomEventSource();
 		source.addEventListener(level);
 
@@ -88,7 +92,7 @@ public class GamePanel extends JPanel {
 		// makes the file io class, and gets the map data
 		// iostuff = new IOClass();
 		// level.setMap(iostuff.ReadMap());
-		int size = 64;
+		int size = 128;
 		IslandGenerator iGen = new IslandGenerator(size, size);
 		iGen.generateIsland(size, size, 1, 16);
 		level.setMap(new Map(iGen.getCharMap()));
@@ -264,7 +268,12 @@ public class GamePanel extends JPanel {
 
 			// bm - build menu
 			if (arg0.getActionCommand().equals("bm build wooden wall")) {
-				System.out.println("oh ya wooden wall");
+				// Location loc = new Location(popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY());
+				Location loc = new Location(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
+				// Location loc = ref.source.getTileAtLocation(tempLoc);
+				WallEntity wall = new WallEntity("Wall", new Location(), 3.4, true);
+				level.setConstruction(new ConstructionEntity("test", wall, loc, false));
+				System.out.println("oh ya wooden wall --- hopefully works!!!!!!!!!!!!!!");
 			} else if (arg0.getActionCommand().equals("bm build stone wall")) {
 				System.out.println("oh ya stone wall");
 			} else if (arg0.getActionCommand().equals("bm cancel")) {
@@ -312,6 +321,13 @@ public class GamePanel extends JPanel {
 			showPopup = true;
 		}
 
+		public Location getMouseLocation() {
+			if (location != null)
+				return new Location(location.getX(), location.getY());
+			else
+				return new Location(0, 0);
+		}
+
 		public Point2D GetPopupLocation() {
 			System.out.println("PopupLocation:" + location.getX() + "," + location.getY());
 			return location;
@@ -324,11 +340,18 @@ public class GamePanel extends JPanel {
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			// System.out.println(e.getButton());
-			if (showPopup)
-				ShowPopup(e);
-			else
-				showPopup = true;
+//			 System.out.println(e.getButton());
+
+			//if you are placing a construction entity, and you click the right click button, it will set const entity to null
+			if (level.placingEntity() && e.getButton() == 3)
+				level.endConstruction();
+			else {
+				// this is so that when you drag the screen, the popup menu does not appear
+				if (showPopup)
+					ShowPopup(e);
+				else
+					showPopup = true;
+			}
 		}
 
 		@Override
@@ -357,7 +380,7 @@ public class GamePanel extends JPanel {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			// System.out.println("Mouse Location:" + e.getX() + "," + e.getY());
+			getMousePosition(e);
 		}
 
 		@Override
@@ -381,14 +404,23 @@ public class GamePanel extends JPanel {
 			// this is clicking with no movement
 			// System.out.println("mouse clicked");
 			// double[] loc = { popupListener.GetPopupLocation().getX(), popupListener.GetPopupLocation().getY() };
-			Location loc = new Location(e.getX(), e.getY());
-			Human temp = new Human("mouse", loc, 0.0, false, reference.source);
-			Entity tempSel = reference.level.getSelectedEntity();
-			tempSel = reference.source.findEntityEvent(temp, "humans");
-			if (tempSel != null && bgf.getDistance(loc, tempSel.getMapLocation()) < 25)
-				System.out.println("you found: " + tempSel.name);
-			else
-				System.out.println("no one is there");
+			System.out.println("something");
+			if (level.placingEntity()) {
+				ConstructionEntity temp = level.getConstructionEntity();
+				ConstructionEntity asdf = new ConstructionEntity(temp);
+				asdf.setPlaced();
+				level.addConstruction(asdf);
+
+			} else {
+				// Location loc = new Location(e.getX(), e.getY());
+				Human temp = new Human("mouse", getMouseLocation(), 0.0, false, reference.source);
+				Entity tempSel = reference.level.getSelectedEntity();
+				tempSel = reference.source.findEntityEvent(temp, "humans");
+				if (tempSel != null && bgf.getDistance(getMouseLocation(), tempSel.getMapLocation()) < 25)
+					System.out.println("you found: " + tempSel.name);
+				else
+					System.out.println("no one is there");
+			}
 		}
 
 		@Override
@@ -417,6 +449,7 @@ public class GamePanel extends JPanel {
 			double x = ((reference.getWidth() / 2) - reference.translateX) - (((reference.getWidth() / 2) - e.getX()) / reference.scale);
 			double y = ((reference.getHeight() / 2) - reference.translateY) - (((reference.getHeight() / 2) - e.getY()) / reference.scale);
 			location = new Point2D.Double(x, y);
+			// System.out.println(location.getX() + ", " + location.getY());
 		}
 	}
 
@@ -595,37 +628,37 @@ public class GamePanel extends JPanel {
 		btnBMBuildWtoneWall.addActionListener(btnListener);
 		temp.add(btnBMBuildWtoneWall);
 
-//		// this is the build structure button
-//		JButton btnBMBuildWtonreWall = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
-//		btnBMBuildWtonreWall.setPreferredSize(new Dimension(64, 64));
-//		btnBMBuildWtonreWall.setActionCommand("bm build stone wall");
-//		btnBMBuildWtonreWall.setBackground(new Color(0, 96, 0, 255));
-//		btnBMBuildWtonreWall.addActionListener(btnListener);
-//		temp.add(btnBMBuildWtonreWall);
-//
-//		// this is the build structure button
-//		JButton btnBMBuildWtosneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[3]));
-//		btnBMBuildWtosneWall.setPreferredSize(new Dimension(64, 64));
-//		btnBMBuildWtosneWall.setActionCommand("bm build stone wall");
-//		btnBMBuildWtosneWall.setBackground(new Color(0, 96, 0, 255));
-//		btnBMBuildWtosneWall.addActionListener(btnListener);
-//		temp.add(btnBMBuildWtosneWall);
-//
-//		// this is the build structure button
-//		JButton btnBMBuidldWtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[4]));
-//		btnBMBuidldWtoneWall.setPreferredSize(new Dimension(64, 64));
-//		btnBMBuidldWtoneWall.setActionCommand("bm build stone wall");
-//		btnBMBuidldWtoneWall.setBackground(new Color(0, 96, 0, 255));
-//		btnBMBuidldWtoneWall.addActionListener(btnListener);
-//		temp.add(btnBMBuidldWtoneWall);
-//
-//		// this is the build structure button
-//		JButton btnBMBuildWwtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[5]));
-//		btnBMBuildWwtoneWall.setPreferredSize(new Dimension(64, 64));
-//		btnBMBuildWwtoneWall.setActionCommand("bm build stone wall");
-//		btnBMBuildWwtoneWall.setBackground(new Color(0, 96, 0, 255));
-//		btnBMBuildWwtoneWall.addActionListener(btnListener);
-//		temp.add(btnBMBuildWwtoneWall);
+		// // this is the build structure button
+		// JButton btnBMBuildWtonreWall = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
+		// btnBMBuildWtonreWall.setPreferredSize(new Dimension(64, 64));
+		// btnBMBuildWtonreWall.setActionCommand("bm build stone wall");
+		// btnBMBuildWtonreWall.setBackground(new Color(0, 96, 0, 255));
+		// btnBMBuildWtonreWall.addActionListener(btnListener);
+		// temp.add(btnBMBuildWtonreWall);
+		//
+		// // this is the build structure button
+		// JButton btnBMBuildWtosneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[3]));
+		// btnBMBuildWtosneWall.setPreferredSize(new Dimension(64, 64));
+		// btnBMBuildWtosneWall.setActionCommand("bm build stone wall");
+		// btnBMBuildWtosneWall.setBackground(new Color(0, 96, 0, 255));
+		// btnBMBuildWtosneWall.addActionListener(btnListener);
+		// temp.add(btnBMBuildWtosneWall);
+		//
+		// // this is the build structure button
+		// JButton btnBMBuidldWtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[4]));
+		// btnBMBuidldWtoneWall.setPreferredSize(new Dimension(64, 64));
+		// btnBMBuidldWtoneWall.setActionCommand("bm build stone wall");
+		// btnBMBuidldWtoneWall.setBackground(new Color(0, 96, 0, 255));
+		// btnBMBuidldWtoneWall.addActionListener(btnListener);
+		// temp.add(btnBMBuidldWtoneWall);
+		//
+		// // this is the build structure button
+		// JButton btnBMBuildWwtoneWall = new JButton(new ImageIcon(ContentBank.buttonIcons[5]));
+		// btnBMBuildWwtoneWall.setPreferredSize(new Dimension(64, 64));
+		// btnBMBuildWwtoneWall.setActionCommand("bm build stone wall");
+		// btnBMBuildWwtoneWall.setBackground(new Color(0, 96, 0, 255));
+		// btnBMBuildWwtoneWall.addActionListener(btnListener);
+		// temp.add(btnBMBuildWwtoneWall);
 
 		JPanel retTemp = new JPanel(new BorderLayout());
 		retTemp.add(temp, BorderLayout.SOUTH);
@@ -675,153 +708,6 @@ public class GamePanel extends JPanel {
 
 		// this is the build menu cancel button
 		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[63]));
-		btnBMCancel.setPreferredSize(new Dimension(64, 64));
-		btnBMCancel.setActionCommand("rm cancel");
-		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
-		btnBMCancel.addActionListener(btnListener);
-		temp.add(btnBMCancel);
-
-		return temp;
-	}
-
-	private JPanel createMainButtons() {
-		JPanel temp = new JPanel();
-		// Container container = new Container();
-		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
-		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
-
-		ButtonListener btnListener = new ButtonListener();
-
-		// makes buttons stick to the bottom right
-		temp.add(Box.createVerticalGlue());
-
-		// this is the build structure button
-		JButton btnGMBuildStructure = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnGMBuildStructure.setPreferredSize(new Dimension(64, 64));
-		btnGMBuildStructure.setActionCommand("gm structure");
-		btnGMBuildStructure.setBackground(new Color(0, 96, 0, 255));
-		btnGMBuildStructure.addActionListener(btnListener);
-		temp.add(btnGMBuildStructure);
-
-		// space
-		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the build structure button
-		JButton btnGMBuildFurniture = new JButton(new ImageIcon(ContentBank.buttonIcons[0]));
-		btnGMBuildFurniture.setPreferredSize(new Dimension(64, 64));
-		btnGMBuildFurniture.setActionCommand("gm furniture");
-		btnGMBuildFurniture.setBackground(new Color(0, 96, 0, 255));
-		btnGMBuildFurniture.addActionListener(btnListener);
-		temp.add(btnGMBuildFurniture);
-
-		// space
-		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the roster button
-		JButton btnGMRoster = new JButton(new ImageIcon(ContentBank.buttonIcons[1]));
-		btnGMRoster.setPreferredSize(new Dimension(64, 64));
-		btnGMRoster.setActionCommand("gm roster");
-		btnGMRoster.setBackground(new Color(0, 96, 0, 255));
-		btnGMRoster.addActionListener(btnListener);
-		temp.add(btnGMRoster);
-
-		return temp;
-	}
-
-	private JPanel createBuildingButtons() {
-		JPanel temp = new JPanel();
-
-		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
-		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
-
-		ButtonListener btnListener = new ButtonListener();
-
-		// makes buttons stick to the bottom right
-		temp.add(Box.createVerticalGlue());
-
-		// this is the build structure button
-		JButton btnBMBuildWoodenWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
-		btnBMBuildWoodenWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWoodenWall.setActionCommand("bm build wooden wall");
-		btnBMBuildWoodenWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWoodenWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWoodenWall);
-
-		// space
-		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the build structure button
-		JButton btnBMBuildWtoneWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
-		btnBMBuildWtoneWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWtoneWall.setActionCommand("bm build stone wall");
-		btnBMBuildWtoneWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWtoneWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWtoneWall);
-
-		// space
-		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the build menu cancel button
-		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
-		btnBMCancel.setPreferredSize(new Dimension(64, 64));
-		btnBMCancel.setActionCommand("bm cancel");
-		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
-		btnBMCancel.addActionListener(btnListener);
-		temp.add(btnBMCancel);
-
-		return temp;
-	}
-
-	private JPanel createFurnitureButtons() {
-		JPanel temp = new JPanel();
-
-		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
-		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
-
-		ButtonListener btnListener = new ButtonListener();
-
-		// makes buttons stick to the bottom right
-		temp.add(Box.createVerticalGlue());
-
-		// this is the build structure button
-		JButton btnBMBuildWall = new JButton(new ImageIcon(ContentBank.woodenWalls[0]));
-		btnBMBuildWall.setPreferredSize(new Dimension(64, 64));
-		btnBMBuildWall.setActionCommand("fm build bed");
-		btnBMBuildWall.setBackground(new Color(0, 96, 0, 255));
-		btnBMBuildWall.addActionListener(btnListener);
-		temp.add(btnBMBuildWall);
-
-		// space
-		temp.add(Box.createRigidArea(new Dimension(0, 3)));
-
-		// this is the build menu cancel button
-		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
-		btnBMCancel.setPreferredSize(new Dimension(64, 64));
-		btnBMCancel.setActionCommand("fm cancel");
-		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
-		btnBMCancel.addActionListener(btnListener);
-		temp.add(btnBMCancel);
-
-		return temp;
-	}
-
-	private JPanel createRosterViewer() {
-		JPanel temp = new JPanel();
-
-		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
-		temp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		temp.setBackground(new Color(0, 0, 0, 0));// sets the portion of the panel to transparent, so I can see the map
-
-		ButtonListener btnListener = new ButtonListener();
-
-		// makes buttons stick to the bottom right
-		temp.add(Box.createVerticalGlue());
-
-		// this is the build menu cancel button
-		JButton btnBMCancel = new JButton(new ImageIcon(ContentBank.buttonIcons[2]));
 		btnBMCancel.setPreferredSize(new Dimension(64, 64));
 		btnBMCancel.setActionCommand("rm cancel");
 		btnBMCancel.setBackground(new Color(0, 96, 0, 255));
